@@ -1,0 +1,97 @@
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
+});
+
+const sendEmail = async (options) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_FROM,
+            to: options.to,
+            subject: options.subject,
+            html: options.html
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: %s', info.messageId);
+        return info;
+    } catch (error) {
+        console.error('Email error:', error);
+        throw error;
+    }
+};
+
+const sendWelcomeEmail = async (user) => {
+    return sendEmail({
+        to: user.email,
+        subject: 'Welcome to Adyom Foundation!',
+        html: `
+      <div style="background: #F4E8D8; padding: 40px; text-align: center;">
+        <h1 style="color: #6B0000; font-family: serif;">Welcome to Adyom Foundation</h1>
+        <p style="color: #8B0000;">Awakening with Art. Rooted in Heritage. Inspired by Creativity.</p>
+        <p>Hello ${user.name},</p>
+        <p>Thank you for joining our community! We're excited to have you explore India's folk and tribal art traditions.</p>
+        <a href="${process.env.CLIENT_URL}/dashboard" style="background: #D9A441; color: #6B0000; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 20px;">Go to Dashboard</a>
+      </div>
+    `
+    });
+};
+
+const sendContactReply = async (contact) => {
+    return sendEmail({
+        to: contact.email,
+        subject: 'Thank you for contacting Adyom Foundation',
+        html: `
+      <div style="background: #F4E8D8; padding: 40px; text-align: center;">
+        <h1 style="color: #6B0000; font-family: serif;">Adyom Foundation</h1>
+        <p>Dear ${contact.name},</p>
+        <p>Thank you for reaching out! We've received your message and will respond within 48 hours.</p>
+        <p>Your inquiry: "${contact.message}"</p>
+      </div>
+    `
+    });
+};
+
+const sendCorporateLeadReply = async (lead) => {
+    return sendEmail({
+        to: lead.email,
+        subject: 'Adyom Foundation - Corporate Inquiry Received',
+        html: `
+      <div style="background: #F4E8D8; padding: 40px; text-align: center;">
+        <h1 style="color: #6B0000; font-family: serif;">Adyom Foundation - Samanvaya</h1>
+        <p>Dear ${lead.name},</p>
+        <p>Thank you for your interest in our Corporate & CSR programs. Our team will connect with you shortly.</p>
+        <p>Organization: ${lead.organization}</p>
+      </div>
+    `
+    });
+};
+
+const sendArtworkStatusEmail = async (user, artwork, status) => {
+    const statusMessages = {
+        approved: 'Your artwork has been approved and is now visible in the community gallery!',
+        rejected: 'Your artwork submission was not approved. Please review our guidelines and try again.'
+    };
+
+    return sendEmail({
+        to: user.email,
+        subject: `Artwork Submission Update - ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+        html: `
+      <div style="background: #F4E8D8; padding: 40px; text-align: center;">
+        <h1 style="color: #6B0000; font-family: serif;">Adyom Foundation</h1>
+        <p>Dear ${user.name},</p>
+        <p>${statusMessages[status]}</p>
+        <p>Artwork: "${artwork.title}"</p>
+      </div>
+    `
+    });
+};
+
+module.exports = { sendEmail, sendWelcomeEmail, sendContactReply, sendCorporateLeadReply, sendArtworkStatusEmail };
