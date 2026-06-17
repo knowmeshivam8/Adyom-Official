@@ -45,7 +45,7 @@ const quickLinks = [
 
 export default function Footer() {
     return (
-        <footer className="bg-heritage-terracotta text-text-main">
+        <footer className="bg-[#FFF7CC] text-heritage-brown">
             {/* Heritage decorative top border */}
             <div className="h-2 bg-gradient-to-r from-heritage-gold via-heritage-terracottaLight to-heritage-gold" />
 
@@ -59,15 +59,15 @@ export default function Footer() {
                                 A
                             </div>
                             <div>
-                                <h3 className="text-2xl font-heading font-bold text-text-main tracking-wide">
+                                <h3 className="text-2xl font-heading font-bold text-heritage-brown tracking-wide">
                                     Adyom
                                 </h3>
-                                <p className="text-xs text-text-main font-accent tracking-widest">
+                                <p className="text-xs text-heritage-brown font-accent font-bold tracking-widest">
                                     Foundation
                                 </p>
                             </div>
                         </div>
-                        <p className="text-sm font-body text-text-main leading-relaxed">
+                        <p className="text-sm font-body font-semibold text-heritage-brown leading-relaxed">
                             Preserving India's timeless heritage through art, mindfulness, and community.
                             Where tradition meets transformation — a canvas of heritage for the modern soul.
                         </p>
@@ -76,7 +76,7 @@ export default function Footer() {
                                 <a
                                     key={i}
                                     href="#"
-                                    className="w-9 h-9 rounded-full bg-white/20 hover:bg-white text-text-main hover:text-heritage-terracottaDark flex items-center justify-center transition-all duration-200"
+                                    className="w-9 h-9 rounded-full bg-heritage-brown/20 hover:bg-heritage-brown text-heritage-brown hover:text-heritage-creamLight flex items-center justify-center transition-all duration-200"
                                 >
                                     <Icon className="w-4 h-4" />
                                 </a>
@@ -86,16 +86,16 @@ export default function Footer() {
 
                     {/* Programs Column */}
                     <div className="space-y-4">
-                        <h4 className="text-lg font-heading font-semibold text-text-main">
+                        <h4 className="text-lg font-heading font-bold text-heritage-brown">
                             Our Programs
                         </h4>
-                        <Separator className="w-12 bg-white" />
+                        <Separator className="w-12 bg-heritage-brown" />
                         <ul className="space-y-2">
                             {programLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="text-sm font-body text-text-main hover:text-text-main transition-colors duration-200"
+                                        className="text-sm font-body font-semibold text-heritage-brown hover:text-heritage-creamLight transition-colors duration-200"
                                     >
                                         {link.name}
                                     </Link>
@@ -106,16 +106,16 @@ export default function Footer() {
 
                     {/* Quick Links Column */}
                     <div className="space-y-4">
-                        <h4 className="text-lg font-heading font-semibold text-text-main">
+                        <h4 className="text-lg font-heading font-bold text-heritage-brown">
                             Quick Links
                         </h4>
-                        <Separator className="w-12 bg-white" />
+                        <Separator className="w-12 bg-heritage-brown" />
                         <ul className="space-y-2">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="text-sm font-body text-text-main hover:text-text-main transition-colors duration-200"
+                                        className="text-sm font-body font-semibold text-heritage-brown hover:text-heritage-creamLight transition-colors duration-200"
                                     >
                                         {link.name}
                                     </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
                             <li>
                                 <Link
                                     to="/register"
-                                    className="text-sm font-body text-text-main hover:text-text-mainLight transition-colors font-semibold"
+                                    className="text-sm font-body font-bold text-heritage-brown hover:text-heritage-creamLight transition-colors"
                                 >
                                     Become a Member →
                                 </Link>
@@ -134,32 +134,32 @@ export default function Footer() {
 
                     {/* Contact Column */}
                     <div className="space-y-4">
-                        <h4 className="text-lg font-heading font-semibold text-text-main">
+                        <h4 className="text-lg font-heading font-bold text-heritage-brown">
                             Reach Us
                         </h4>
-                        <Separator className="w-12 bg-white" />
+                        <Separator className="w-12 bg-heritage-brown" />
                         <ul className="space-y-3">
                             <li className="flex items-start gap-2">
-                                <MapPin className="w-4 h-4 text-text-main mt-1" />
-                                <span className="text-sm font-body text-text-main">
+                                <MapPin className="w-4 h-4 text-heritage-brown mt-1" />
+                                <span className="text-sm font-body font-semibold text-heritage-brown">
                                     New Delhi, India
                                 </span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <Phone className="w-4 h-4 text-text-main mt-1" />
-                                <span className="text-sm font-body text-text-main">
+                                <Phone className="w-4 h-4 text-heritage-brown mt-1" />
+                                <span className="text-sm font-body font-semibold text-heritage-brown">
                                     +91 XXX-XXX-XXXX
                                 </span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <Mail className="w-4 h-4 text-text-main mt-1" />
-                                <span className="text-sm font-body text-text-main">
+                                <Mail className="w-4 h-4 text-heritage-brown mt-1" />
+                                <span className="text-sm font-body font-semibold text-heritage-brown">
                                     hello@adyomfoundation.org
                                 </span>
                             </li>
                         </ul>
                         <Link to="/contact">
-                            <button className="mt-2 px-4 py-2 bg-white text-heritage-terracottaDark text-sm font-body font-medium rounded-md hover:bg-whiteLight transition-colors">
+                            <button className="mt-2 px-4 py-2 bg-heritage-brown text-heritage-creamLight text-sm font-body font-bold rounded-md hover:bg-heritage-brownLight transition-colors">
                                 Send a Message
                             </button>
                         </Link>
@@ -170,12 +170,12 @@ export default function Footer() {
             {/* Bottom Bar */}
             <div className="border-t border-heritage-terracottaLight">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
-                    <p className="text-xs font-body text-text-main">
+                    <p className="text-xs font-body font-semibold text-heritage-brown">
                         © {new Date().getFullYear()} Adyom Foundation. All rights reserved.
                         Preserving heritage, nurturing creativity.
                     </p>
-                    <p className="text-xs font-body text-text-main flex items-center gap-1">
-                        Made with <Heart className="w-3 h-3 text-text-main" /> in India
+                    <p className="text-xs font-body font-semibold text-heritage-brown flex items-center gap-1">
+                        Made with <Heart className="w-3 h-3 text-heritage-brown" /> in India
                     </p>
                 </div>
             </div>

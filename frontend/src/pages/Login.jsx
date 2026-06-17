@@ -7,28 +7,40 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Lock, ArrowRight, Eye, EyeOff, LogIn } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
 
 export default function Login() {
+    const [isLogin, setIsLogin] = useState(true);
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const { login, register } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || '/dashboard';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        if (!isLogin && password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         setLoading(true);
         try {
-            const user = await login(email, password);
-            navigate(user.role === 'admin' ? '/admin' : from, { replace: true });
+            if (isLogin) {
+                const user = await login(email, password);
+                navigate(user.role === 'admin' ? '/admin' : '/');
+            } else {
+                const user = await register({ name, email, password });
+                navigate(user.role === 'admin' ? '/admin' : '/');
+            }
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed. Please try again.');
+            setError(err.response?.data?.message || `${isLogin ? 'Login' : 'Registration'} failed. Please try again.`);
         } finally {
             setLoading(false);
         }
@@ -42,8 +54,8 @@ export default function Login() {
 
                     <div className="text-center space-y-4 mb-6">
                         <div className="w-12 h-12 mx-auto rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-gold font-heading text-xl font-bold">A</div>
-                        <Badge variant="outlineGold" className="text-sm px-4 py-1">✦ Welcome Back</Badge>
-                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Log In to Adyom</h1>
+                        <Badge variant="outlineGold" className="text-sm px-4 py-1">✦ {isLogin ? 'Welcome Back' : 'Begin Your Journey'}</Badge>
+                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">{isLogin ? 'Log In to Adyom' : 'Join Adyom Foundation'}</h1>
                         <p className="font-body text-text-main">Continue your heritage journey</p>
                     </div>
 
@@ -54,6 +66,15 @@ export default function Login() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {!isLogin && (
+                            <div>
+                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Full Name</label>
+                                <div className="relative">
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
+                                    <Input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your full name" className="pl-10" />
+                                </div>
+                            </div>
+                        )}
                         <div>
                             <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Email Address</label>
                             <div className="relative">
@@ -71,18 +92,29 @@ export default function Login() {
                                 </button>
                             </div>
                         </div>
+                        {!isLogin && (
+                            <div>
+                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Confirm Password</label>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
+                                    <Input type={showPassword ? 'text' : 'password'} required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm your password" className="pl-10" />
+                                </div>
+                            </div>
+                        )}
                         <Button variant="gold" size="lg" type="submit" disabled={loading} className="w-full">
-                            {loading ? 'Logging in...' : <><LogIn className="mr-2 w-4 h-4" /> Log In</>}
+                            {loading ? (isLogin ? 'Logging in...' : 'Signing up...') : (
+                                <>{isLogin ? <LogIn className="mr-2 w-4 h-4" /> : <UserPlus className="mr-2 w-4 h-4" />} {isLogin ? 'Log In' : 'Sign Up'}</>
+                            )}
                         </Button>
                     </form>
 
                     <Separator className="my-6" />
 
                     <p className="text-center text-sm font-body text-text-main">
-                        Don't have an account?{' '}
-                        <Link to="/register" className="text-heritage-gold hover:text-heritage-goldLight font-semibold">
-                            Join Adyom →
-                        </Link>
+                        {isLogin ? "Don't have an account? " : "Already have an account? "}
+                        <button type="button" onClick={() => { setIsLogin(!isLogin); setError(''); }} className="text-heritage-gold hover:text-heritage-goldLight font-semibold">
+                            {isLogin ? "Sign Up →" : "Log In →"}
+                        </button>
                     </p>
                 </Card>
             </motion.div>

@@ -190,14 +190,14 @@ export default function Home() {
     ];
 
     const fallbackGalleryItems = [
-        { gradient: 'from-heritage-terracotta to-heritage-terracottaLight', Icon: Palette },
-        { gradient: 'from-heritage-gold to-heritage-goldLight', Icon: Brush },
-        { gradient: 'from-heritage-brown to-heritage-brownLight', Icon: Camera },
-        { gradient: 'from-heritage-sand to-heritage-creamDark', Icon: Music },
-        { gradient: 'from-heritage-terracottaLight to-heritage-gold', Icon: TreePine },
-        { gradient: 'from-heritage-goldDark to-heritage-terracotta', Icon: Sparkles },
-        { gradient: 'from-heritage-brownLight to-heritage-sand', Icon: Eye },
-        { gradient: 'from-heritage-creamDark to-heritage-terracottaLight', Icon: HandHeart },
+        { gradient: 'from-heritage-terracotta to-heritage-terracottaLight', Icon: Palette, imageUrl: '/images/gallery_gond_art.png' },
+        { gradient: 'from-heritage-gold to-heritage-goldLight', Icon: Brush, imageUrl: '/images/philosophy_mindfulness.png' },
+        { gradient: 'from-heritage-brown to-heritage-brownLight', Icon: Camera, imageUrl: '/images/philosophy_culture.png' },
+        { gradient: 'from-heritage-sand to-heritage-creamDark', Icon: Music, imageUrl: '/images/gallery_sohrai_art.png' },
+        { gradient: 'from-heritage-terracottaLight to-heritage-gold', Icon: TreePine, imageUrl: '/images/gallery_kolam_art.png' },
+        { gradient: 'from-heritage-goldDark to-heritage-terracotta', Icon: Sparkles, imageUrl: '/images/blog_thumbnail.png' },
+        { gradient: 'from-heritage-brownLight to-heritage-sand', Icon: Eye, imageUrl: '/images/hero_artisan.png' },
+        { gradient: 'from-heritage-creamDark to-heritage-terracottaLight', Icon: HandHeart, imageUrl: '/images/philosophy_community.png' },
     ];
 
     const [testimonials, setTestimonials] = useState(fallbackTestimonials);
@@ -322,7 +322,7 @@ export default function Home() {
 
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight drop-shadow-md">
                                 Rediscover
-                                <span className="text-text-main"> India's </span>
+                                <span className="text-heritage-terracotta"> India's </span>
                                 Timeless Heritage
                             </h1>
 
@@ -333,27 +333,27 @@ export default function Home() {
 
                             <div className="flex flex-wrap gap-4">
                                 <Link to="/programs">
-                                    <Button size="xl" className="bg-text-main text-heritage-terracotta hover:bg-text-main/90">
+                                    <Button size="xl" className="bg-heritage-terracotta text-white hover:bg-heritage-terracottaDark font-bold shadow-lg">
                                         Explore Programs
                                         <ArrowRight className="ml-2 w-5 h-5" />
                                     </Button>
                                 </Link>
                                 <Link to="/register">
-                                    <Button variant="outline" size="xl" className="border-text-main text-text-main hover:bg-text-main/10">
+                                    <Button variant="outline" size="xl" className="border-2 border-white text-white hover:bg-white hover:text-heritage-terracottaDark font-bold shadow-lg">
                                         Become a Member
                                     </Button>
                                 </Link>
                             </div>
 
-                            <div className="flex items-center gap-6 text-sm font-body text-gray-300">
+                            <div className="flex items-center gap-6 text-sm font-body font-bold text-white drop-shadow">
                                 <span className="flex items-center gap-1">
-                                    <Star className="w-4 h-4 text-text-main" /> 5,000+ Members
+                                    <Star className="w-4 h-4 text-heritage-terracotta" /> 5,000+ Members
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <BookOpen className="w-4 h-4 text-text-main" /> 200+ Programs
+                                    <BookOpen className="w-4 h-4 text-heritage-terracotta" /> 200+ Programs
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <Palette className="w-4 h-4 text-text-main" /> Heritage Revival
+                                    <Palette className="w-4 h-4 text-heritage-terracotta" /> Heritage Revival
                                 </span>
                             </div>
                         </motion.div>
@@ -364,7 +364,7 @@ export default function Home() {
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 120" className="w-full h-auto">
                         <path
-                            fill="#F4E8D8"
+                            fill="#FFFDF5"
                             d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,70 1440,60 L1440,120 L0,120 Z"
                         />
                     </svg>

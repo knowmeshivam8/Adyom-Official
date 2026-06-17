@@ -87,11 +87,12 @@ export const blogAPI = {
 // Gallery API
 export const galleryAPI = {
     getAll: (params) => API.get('/gallery', { params }),
+    getAllAdmin: () => API.get('/gallery/admin/all'),
     getById: (id) => API.get(`/gallery/${id}`),
     create: (data) => API.post('/gallery', data),
     update: (id, data) => API.put(`/gallery/${id}`, data),
     delete: (id) => API.delete(`/gallery/${id}`),
-    uploadImage: (id, data) => API.post(`/gallery/${id}/images`, data),
+    uploadImage: (data) => API.post('/gallery/upload', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
 };
 
 // Artwork API

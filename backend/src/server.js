@@ -12,9 +12,9 @@ dotenv.config();
 const app = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5678',
+    origin: true, // allow all origins — safe on local LAN/hotspot
     credentials: true
 }));
 app.use(cookieParser());
@@ -36,7 +36,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Static files
-app.use('/uploads', express.static('uploads'));
+const path = require('path');
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

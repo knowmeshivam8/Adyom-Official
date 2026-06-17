@@ -21,6 +21,10 @@ const sendEmail = async (options) => {
 
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent: %s', info.messageId);
+        // Log the preview URL for Ethereal test emails
+        if (process.env.SMTP_HOST === 'smtp.ethereal.email') {
+            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        }
         return info;
     } catch (error) {
         console.error('Email error:', error);
@@ -28,16 +32,24 @@ const sendEmail = async (options) => {
     }
 };
 
-const sendWelcomeEmail = async (user) => {
+const sendWelcomeEmail = async (user, password) => {
     return sendEmail({
         to: user.email,
-        subject: 'Welcome to Adyom Foundation!',
+        subject: 'Welcome to the Adyom Webinar Workshop!',
         html: `
       <div style="background: #F4E8D8; padding: 40px; text-align: center;">
         <h1 style="color: #6B0000; font-family: serif;">Welcome to Adyom Foundation</h1>
         <p style="color: #8B0000;">Awakening with Art. Rooted in Heritage. Inspired by Creativity.</p>
         <p>Hello ${user.name},</p>
-        <p>Thank you for joining our community! We're excited to have you explore India's folk and tribal art traditions.</p>
+        <p>Thank you for registering for our Webinar Workshop! We're excited to have you join us to explore India's folk and tribal art traditions.</p>
+        <p>Your account has been automatically created. If you wish to access the learning dashboard later, you can use the following credentials:</p>
+        <p style="font-weight: bold; font-size: 16px; background: #FFFDF5; padding: 10px; display: inline-block; border-radius: 4px;">
+           Email: ${user.email}<br>
+           Password: ${password}
+        </p>
+        <p>Please join our WhatsApp group to stay updated with the webinar details, schedules, and live session links:</p>
+        <a href="https://chat.whatsapp.com/JHI0jltrPyTEZl3uZwvNWA?s=cl&p=a&ilr=2" style="background: #25D366; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold;">Join WhatsApp Group</a>
+        <br><br>
         <a href="${process.env.CLIENT_URL}/dashboard" style="background: #D9A441; color: #6B0000; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 20px;">Go to Dashboard</a>
       </div>
     `
