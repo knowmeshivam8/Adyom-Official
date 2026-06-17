@@ -96,7 +96,7 @@ export default function Programs() {
                     </motion.div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0">
-                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#F4E8D8" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
+                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#FFFDF5" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
                 </div>
             </section>
 
@@ -190,13 +190,6 @@ export default function Programs() {
                                             <div className="flex items-center justify-between pt-2">
                                                 <span className="font-heading font-bold text-heritage-gold">{program.price}</span>
                                                 <div className="flex gap-2">
-                                                    {program.category === 'drishti' && (
-                                                        <Link to={`/meet/${program.slug || program._id}?title=${encodeURIComponent(program.title)}&url=https://chat.whatsapp.com/invite-link`}>
-                                                            <Button variant="gold" size="sm" className="hidden sm:flex">
-                                                                <Video className="w-3 h-3 mr-1" /> Join
-                                                            </Button>
-                                                        </Link>
-                                                    )}
                                                     <Link to={`/programs/${program.slug || program._id}`}>
                                                         <Button variant="outline" size="sm">Details <ArrowRight className="ml-1 w-3 h-3" /></Button>
                                                     </Link>

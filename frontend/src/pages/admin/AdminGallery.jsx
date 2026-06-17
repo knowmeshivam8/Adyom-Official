@@ -41,25 +41,26 @@ export default function AdminGallery() {
     const [createForm, setCreateForm] = useState({
         title: '', artist: '', category: 'painting', description: '', featured: false
     });
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         const fetchGallery = async () => {
             try {
-                const res = await galleryAPI.getAll();
+                const res = await galleryAPI.getAllAdmin();
                 const apiItems = res.data.data || [];
                 setGalleryItems(apiItems.map(item => ({
                     id: item._id || item.id,
                     title: item.title || '',
                     artist: item.artist || item.artistName || 'Unknown',
-                    category: item.category || 'Painting',
+                    category: item.category || 'painting',
                     description: item.description || '',
                     views: item.views || 0,
                     likes: item.likes?.length || item.likes || 0,
                     featured: item.featured || false,
-                    status: item.status || 'active',
+                    status: item.isPublished ? 'active' : 'hidden',
                     gradient: item.gradient || 'from-blue-500 to-indigo-600',
                     createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '',
-                    imageUrl: item.imageUrl || item.image || null,
+                    imageUrl: item.image || item.imageUrl || (item.images && item.images[0]?.url) || null,
                 })));
             } catch (err) {
                 console.error('Failed to fetch gallery items, using fallback:', err);
@@ -74,6 +75,16 @@ export default function AdminGallery() {
     const handleCreateItem = async (e) => {
         e.preventDefault();
         try {
+            let imageUrl = null;
+            if (selectedFile) {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                const uploadRes = await galleryAPI.uploadImage(formData);
+                if (uploadRes.data?.data?.url) {
+                    imageUrl = uploadRes.data.data.url;
+                }
+            }
+
             const res = await galleryAPI.create({
                 title: createForm.title,
                 artist: createForm.artist,
@@ -81,6 +92,7 @@ export default function AdminGallery() {
                 description: createForm.description,
                 featured: createForm.featured,
                 status: 'active',
+                image: imageUrl,
             });
             const newItem = res.data.data || res.data;
             setGalleryItems(prev => [...prev, {
@@ -94,10 +106,11 @@ export default function AdminGallery() {
                 status: newItem.status || 'active',
                 gradient: 'from-heritage-terracotta to-heritage-gold',
                 createdAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                imageUrl: newItem.imageUrl || null,
+                imageUrl: newItem.image || imageUrl || null,
             }]);
             setShowCreate(false);
             setCreateForm({ title: '', artist: '', category: 'painting', description: '', featured: false });
+            setSelectedFile(null);
         } catch (err) {
             console.error('Failed to create gallery item:', err);
             const created = {
@@ -118,13 +131,15 @@ export default function AdminGallery() {
         }
     };
 
-    const handleDeleteItem = async (id) => {
+    const handleDeleteItem = async (id, title) => {
+        if (!window.confirm(`Delete "${title}" from gallery? This cannot be undone.`)) return;
         try {
-            await galleryAPI.update(id, { status: 'hidden' });
-            setGalleryItems(prev => prev.map(i => i.id === id ? { ...i, status: 'hidden' } : i));
+            await galleryAPI.delete(id);
+            setGalleryItems(prev => prev.filter(i => i.id !== id));
         } catch (err) {
-            console.error('Failed to update gallery item:', err);
-            setGalleryItems(prev => prev.map(i => i.id === id ? { ...i, status: 'hidden' } : i));
+            console.error('Failed to delete gallery item:', err);
+            // Remove from UI anyway
+            setGalleryItems(prev => prev.filter(i => i.id !== id));
         }
     };
 
@@ -196,8 +211,8 @@ export default function AdminGallery() {
                                 <div><label className="text-sm font-medium mb-1.5 block">Images *</label>
                                     <div className="border-2 border-dashed border-heritage-gold/30 rounded-lg p-6 text-center">
                                         <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                                        <p className="text-sm text-muted-foreground">Upload gallery images</p>
-                                        <Input type="file" accept="image/*" multiple className="mt-3 max-w-xs mx-auto" />
+                                        <p className="text-sm text-muted-foreground">{selectedFile ? selectedFile.name : 'Upload gallery image'}</p>
+                                        <Input type="file" accept="image/*" onChange={(e) => setSelectedFile(e.target.files[0])} className="mt-3 max-w-xs mx-auto" />
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -239,7 +254,6 @@ export default function AdminGallery() {
                                             <Eye className="w-8 h-8 text-white group-hover:text-white transition-colors" />
                                         </div>
                                         {item.featured && <div className="absolute top-2 right-2"><Badge variant="gold" className="text-xs"><Star className="w-3 h-3 mr-1" />Featured</Badge></div>}
-                                        {item.status === 'hidden' && <div className="absolute top-2 left-2"><Badge variant="warning" className="text-xs">Hidden</Badge></div>}
                                     </div>
                                 ) : (
                                     <div className={`h-36 bg-gradient-to-br ${item.gradient} relative`}>
@@ -247,19 +261,15 @@ export default function AdminGallery() {
                                             <Palette className="w-10 h-10 text-white group-hover:text-white" />
                                         </div>
                                         {item.featured && <div className="absolute top-2 right-2"><Badge variant="gold" className="text-xs"><Star className="w-3 h-3 mr-1" />Featured</Badge></div>}
-                                        {item.status === 'hidden' && <div className="absolute top-2 left-2"><Badge variant="warning" className="text-xs">Hidden</Badge></div>}
                                     </div>
                                 )}
                                 <CardContent className="p-3">
                                     <h4 className="font-semibold text-sm truncate">{item.title}</h4>
                                     <p className="text-xs text-muted-foreground">{item.artist} · {item.category}</p>
-                                    <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                                        <Eye className="w-3 h-3" />{item.views}
-                                        <Heart className="w-3 h-3" />{item.likes}
-                                    </div>
                                 </CardContent>
-                                <CardFooter className="p-3 pt-0">
-                                    <Button variant="outlineGold" size="sm" className="w-full text-xs"><Edit className="w-3 h-3 mr-1" /> Edit</Button>
+                                <CardFooter className="p-3 pt-0 gap-2">
+                                    <Button variant="outlineGold" size="sm" className="flex-1 text-xs"><Edit className="w-3 h-3 mr-1" /> Edit</Button>
+                                    <Button variant="ghost" size="sm" className="text-red-500 hover:bg-red-50 hover:text-red-700 text-xs" onClick={() => handleDeleteItem(item.id, item.title)}><Trash2 className="w-3 h-3 mr-1" /> Delete</Button>
                                 </CardFooter>
                             </Card>
                         </motion.div>

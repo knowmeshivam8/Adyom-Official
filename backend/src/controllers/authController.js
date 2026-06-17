@@ -25,11 +25,26 @@ exports.register = async (req, res) => {
             });
         }
 
-        const { name, email, password, role, organization } = req.body;
+        const { name, email, password, role, organization, isWebinar } = req.body;
 
         // Check if user exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
+            if (isWebinar) {
+                // Just resend the welcome email and return success
+                try {
+                    await sendWelcomeEmail(existingUser, "(Your existing account password)");
+                } catch (emailError) {
+                    console.error('Welcome email failed:', emailError);
+                }
+                return res.status(200).json({
+                    success: true,
+                    message: 'Webinar registration updated',
+                    token: 'webinar-token',
+                    user: { id: existingUser._id, name: existingUser.name, email: existingUser.email }
+                });
+            }
+
             return res.status(400).json({
                 success: false,
                 message: 'Email already registered'
@@ -51,7 +66,7 @@ exports.register = async (req, res) => {
 
         // Send welcome email
         try {
-            await sendWelcomeEmail(user);
+            await sendWelcomeEmail(user, password);
         } catch (emailError) {
             console.error('Welcome email failed:', emailError);
         }

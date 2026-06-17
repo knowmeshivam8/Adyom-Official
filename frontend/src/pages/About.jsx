@@ -64,7 +64,7 @@ export default function About() {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 80" className="w-full h-auto">
-                        <path fill="#F4E8D8" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
+                        <path fill="#FFFDF5" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
                     </svg>
                 </div>
             </section>

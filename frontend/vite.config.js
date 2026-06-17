@@ -10,10 +10,15 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,       // expose on all network interfaces (LAN, hotspot)
     port: 5678,
     allowedHosts: true,
     proxy: {
       '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
+      '/uploads': {
         target: 'http://localhost:5001',
         changeOrigin: true,
       },
