@@ -54,26 +54,33 @@ export default function Gallery() {
     useEffect(() => {
         const fetchGallery = async () => {
             try {
-                const res = await galleryAPI.getAll({ status: 'published', limit: 20 });
+                const res = await galleryAPI.getAll({ limit: 50 });
                 const apiItems = res.data.data || res.data.galleries || res.data;
                 if (Array.isArray(apiItems) && apiItems.length > 0) {
-                    setGalleryItems(apiItems.map(item => ({
+                    const fromApi = apiItems.map(item => ({
                         title: item.title || 'Untitled',
                         category: item.category || 'painting',
-                        artist: item.artist || item.author || 'Unknown',
+                        artist: item.artist || item.artistName || item.uploadedBy?.name || 'Unknown',
                         gradient: categoryGradients[item.category] || 'from-heritage-terracotta to-heritage-gold',
                         Icon: categoryIcons[item.category] || Palette,
-                        image: item.coverImage || item.image || null,
-                    })));
+                        image: item.image || (item.images && item.images[0]?.url) || null,
+                    }));
+                    // Always show API items first, then the static fallback images below
+                    setGalleryItems([...fromApi, ...fallbackItems]);
+                } else {
+                    setGalleryItems(fallbackItems);
                 }
             } catch (err) {
-                // Backend not available — use fallback data
                 setGalleryItems(fallbackItems);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchGallery();
+        // Poll every 30 seconds so new uploads from admin appear automatically
+        const interval = setInterval(fetchGallery, 30000);
+        return () => clearInterval(interval);
     }, []);
 
     const filtered = galleryItems.filter(
@@ -95,7 +102,7 @@ export default function Gallery() {
                     </motion.div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0">
-                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#F4E8D8" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
+                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#FFFDF5" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
                 </div>
             </section>
 

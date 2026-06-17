@@ -14,6 +14,7 @@ import ArtisanConnect from '@/pages/ArtisanConnect';
 import Gallery from '@/pages/Gallery';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
+import LearningPlayer from '@/pages/LearningPlayer';
 import VideoPage from '@/pages/VideoPage';
 import Contact from '@/pages/Contact';
 import Login from '@/pages/Login';
@@ -62,6 +63,11 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/programs" element={<Programs />} />
             <Route path="/programs/:slug" element={<ProgramDetail />} />
+            <Route path="/programs/:slug/learn" element={
+              <ProtectedRoute roles={['member', 'admin']}>
+                <LearningPlayer />
+              </ProtectedRoute>
+            } />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/artisan-connect" element={<ArtisanConnect />} />
             <Route path="/gallery" element={<Gallery />} />

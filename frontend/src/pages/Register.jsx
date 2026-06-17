@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
+import { authAPI } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,12 +23,12 @@ const interestOptions = [
 
 export default function Register() {
     const [formData, setFormData] = useState({
-        name: '', email: '', password: '', confirmPassword: '', phone: '', interests: [],
+        name: '', email: '', phone: '', interests: [],
     });
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { register } = useAuth();
+    const [isSuccess, setIsSuccess] = useState(false);
     const navigate = useNavigate();
 
     const toggleInterest = (key) => {
@@ -43,24 +43,19 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match.');
-            return;
-        }
-        if (formData.password.length < 6) {
-            setError('Password must be at least 6 characters.');
-            return;
-        }
+        const autoPassword = Math.random().toString(36).slice(-8) + 'A1!'; // Ensure it meets length and complexity
+
         setLoading(true);
         try {
-            await register({
+            await authAPI.register({
                 name: formData.name,
                 email: formData.email,
-                password: formData.password,
+                password: autoPassword,
                 phone: formData.phone,
                 interests: formData.interests,
+                isWebinar: true
             });
-            navigate('/dashboard');
+            setIsSuccess(true);
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed. Please try again.');
         } finally {
@@ -77,15 +72,30 @@ export default function Register() {
                     <div className="text-center space-y-4 mb-6">
                         <div className="w-12 h-12 mx-auto rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-gold font-heading text-xl font-bold">A</div>
                         <Badge variant="outlineGold" className="text-sm px-4 py-1">✦ Begin Your Journey</Badge>
-                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Join Adyom Foundation</h1>
+                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Register for Webinar</h1>
                         <p className="font-body text-text-main">Become part of our heritage community</p>
                     </div>
 
-                    {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm font-body mb-4">
-                            {error}
+                    {isSuccess ? (
+                        <div className="text-center space-y-4 py-8 animate-fade-in">
+                            <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
+                                <Heart className="w-8 h-8 text-green-600" />
+                            </div>
+                            <h2 className="text-3xl font-heading font-bold text-heritage-terracottaDark mb-2">Thank you for joining!</h2>
+                            <p className="font-body text-lg font-medium text-heritage-brown max-w-md mx-auto">
+                                You have successfully registered for the webinar. Please check your email for the WhatsApp group link and your account details.
+                            </p>
+                            <Button variant="outlineGold" size="lg" onClick={() => navigate('/')} className="mt-8 font-semibold">
+                                Return to Home
+                            </Button>
                         </div>
-                    )}
+                    ) : (
+                        <>
+                            {error && (
+                                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm font-body mb-4">
+                                    {error}
+                                </div>
+                            )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
@@ -109,22 +119,7 @@ export default function Register() {
                                 <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+91 XXX-XXX-XXXX" className="pl-10" />
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Password *</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                    <Input required type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} placeholder="Min 6 characters" className="pl-10" />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Confirm Password *</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                    <Input required type={showPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} placeholder="Confirm password" className="pl-10" />
-                                </div>
-                            </div>
-                        </div>
+
                         <div>
                             <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-2">Your Interests</label>
                             <div className="grid grid-cols-2 gap-2">
@@ -144,19 +139,13 @@ export default function Register() {
                             </div>
                         </div>
                         <Button variant="gold" size="lg" type="submit" disabled={loading} className="w-full">
-                            {loading ? 'Creating Account...' : <><ArrowRight className="mr-2 w-4 h-4" /> Join Adyom</>}
+                            {loading ? 'Registering...' : <><ArrowRight className="mr-2 w-4 h-4" /> Register for Webinar</>}
                         </Button>
                     </form>
+                        </>
+                    )}
 
-                    <Separator className="my-6" />
-
-                    <p className="text-center text-sm font-body text-text-main">
-                        Already a member?{' '}
-                        <Link to="/login" className="text-heritage-gold hover:text-heritage-goldLight font-semibold">
-                            Log In →
-                        </Link>
-                    </p>
-                </Card>
+                    </Card>
             </motion.div>
         </div>
     );

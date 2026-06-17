@@ -67,8 +67,8 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                    ? 'bg-heritage-creamLight/95 backdrop-blur-md shadow-lg'
-                    : 'bg-transparent'
+                    ? 'bg-heritage-creamLight/98 backdrop-blur-md shadow-lg'
+                    : 'bg-heritage-creamLight/80 backdrop-blur-sm'
                 }`}
         >
             {/* Heritage top accent line */}
@@ -101,11 +101,9 @@ export default function Navbar() {
                                     >
                                         <Link
                                             to={link.path}
-                                            className={`px-3 py-2 text-sm font-body font-medium transition-colors duration-200 flex items-center gap-1 ${location.pathname.startsWith(link.path)
+                                            className={`px-3 py-2 text-sm font-body font-bold transition-colors duration-200 flex items-center gap-1 ${location.pathname.startsWith(link.path)
                                                     ? 'text-heritage-terracottaDark'
-                                                    : scrolled
-                                                        ? 'text-heritage-brown hover:text-heritage-terracottaDark'
-                                                        : 'text-heritage-brownLight hover:text-heritage-terracottaDark'
+                                                    : 'text-heritage-brown hover:text-heritage-terracottaDark'
                                                 }`}
                                         >
                                             {link.name}
@@ -117,7 +115,7 @@ export default function Navbar() {
                                                     <Link
                                                         key={sub.name}
                                                         to={sub.path}
-                                                        className="block px-4 py-2 text-sm font-body text-heritage-brown hover:bg-heritage-cream hover:text-heritage-terracottaDark transition-colors"
+                                                        className="block px-4 py-2 text-sm font-body font-semibold text-heritage-brown hover:bg-heritage-cream hover:text-heritage-terracottaDark transition-colors"
                                                     >
                                                         {sub.name}
                                                     </Link>
@@ -128,11 +126,9 @@ export default function Navbar() {
                                 ) : (
                                     <Link
                                         to={link.path}
-                                        className={`px-3 py-2 text-sm font-body font-medium transition-colors duration-200 ${location.pathname === link.path
+                                        className={`px-3 py-2 text-sm font-body font-bold transition-colors duration-200 ${location.pathname === link.path
                                                 ? 'text-heritage-terracottaDark'
-                                                : scrolled
-                                                    ? 'text-heritage-brown hover:text-heritage-terracottaDark'
-                                                    : 'text-heritage-brownLight hover:text-heritage-terracottaDark'
+                                                : 'text-heritage-brown hover:text-heritage-terracottaDark'
                                             }`}
                                     >
                                         {link.name}
@@ -145,20 +141,26 @@ export default function Navbar() {
                     {/* Right side: Auth + CTA */}
                     <div className="hidden lg:flex items-center space-x-3">
                         {isAuthenticated ? (
-                            <div className="flex items-center space-x-3">
-                                <Link to={dashboardPath}>
-                                    <Button variant="gold" size="sm">
-                                        <LayoutDashboard className="w-4 h-4 mr-1" />
-                                        Dashboard
-                                    </Button>
-                                </Link>
-                                <div className="flex items-center space-x-2">
-                                    <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-gold font-heading text-sm">
-                                        {user?.name?.charAt(0) || 'U'}
+                            <div className="flex items-center space-x-4">
+                                {isAdmin && (
+                                    <Link to="/admin">
+                                        <Button variant="gold" size="sm">
+                                            <LayoutDashboard className="w-4 h-4 mr-1" />
+                                            Admin Panel
+                                        </Button>
+                                    </Link>
+                                )}
+                                <div className="flex items-center space-x-3 bg-heritage-cream px-3 py-1.5 rounded-full border border-heritage-creamDark">
+                                    <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-brown font-heading text-sm font-bold">
+                                        {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                                     </div>
+                                    <span className="font-body font-bold text-sm text-heritage-brown">
+                                        Hi, {user?.name?.split(' ')[0]}
+                                    </span>
+                                    <div className="w-px h-4 bg-heritage-creamDark mx-1"></div>
                                     <button
                                         onClick={handleLogout}
-                                        className="text-text-main hover:text-heritage-terracottaDark transition-colors"
+                                        className="text-text-main hover:text-heritage-terracottaDark transition-colors p-1"
                                         title="Logout"
                                     >
                                         <LogOut className="w-4 h-4" />
@@ -169,12 +171,12 @@ export default function Navbar() {
                             <div className="flex items-center space-x-2">
                                 <Link to="/login">
                                     <Button variant="ghost" size="sm">
-                                        Log In
+                                        Sign In / Sign Up
                                     </Button>
                                 </Link>
                                 <Link to="/register">
                                     <Button variant="gold" size="sm">
-                                        Join Adyom
+                                        Register for Webinar
                                     </Button>
                                 </Link>
                             </div>
@@ -199,7 +201,7 @@ export default function Navbar() {
                             <div key={link.name}>
                                 <Link
                                     to={link.path}
-                                    className="block px-4 py-3 text-sm font-body font-medium text-heritage-brown hover:text-heritage-terracottaDark hover:bg-heritage-cream rounded-md transition-colors"
+                                    className="block px-4 py-3 text-sm font-body font-bold text-heritage-brown hover:text-heritage-terracottaDark hover:bg-heritage-cream rounded-md transition-colors"
                                 >
                                     {link.name}
                                 </Link>
@@ -221,16 +223,26 @@ export default function Navbar() {
                         <div className="border-t border-heritage-creamDark pt-3 space-y-2">
                             {isAuthenticated ? (
                                 <>
-                                    <Link
-                                        to={dashboardPath}
-                                        className="block px-4 py-3 text-sm font-body font-medium text-heritage-terracottaDark"
-                                    >
-                                        <LayoutDashboard className="w-4 h-4 inline mr-2" />
-                                        Dashboard
-                                    </Link>
+                                    {isAdmin && (
+                                        <Link
+                                            to="/admin"
+                                            className="block px-4 py-3 text-sm font-body font-medium text-heritage-terracottaDark"
+                                        >
+                                            <LayoutDashboard className="w-4 h-4 inline mr-2" />
+                                            Admin Panel
+                                        </Link>
+                                    )}
+                                    <div className="px-4 py-3 flex items-center space-x-3 bg-heritage-cream">
+                                        <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-brown font-heading text-sm font-bold">
+                                            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                                        </div>
+                                        <span className="font-body font-bold text-sm text-heritage-brown">
+                                            Hi, {user?.name?.split(' ')[0]}
+                                        </span>
+                                    </div>
                                     <button
                                         onClick={handleLogout}
-                                        className="block px-4 py-3 text-sm font-body font-medium text-text-main w-full text-left"
+                                        className="block px-4 py-3 text-sm font-body font-medium text-text-main w-full text-left border-t border-heritage-creamDark"
                                     >
                                         <LogOut className="w-4 h-4 inline mr-2" />
                                         Logout
@@ -239,11 +251,11 @@ export default function Navbar() {
                             ) : (
                                 <>
                                     <Link to="/login" className="block px-4 py-3 text-sm font-body font-medium text-heritage-brown">
-                                        Log In
+                                        Sign In / Sign Up
                                     </Link>
                                     <Link to="/register" className="block">
                                         <Button variant="gold" size="sm" className="w-full">
-                                            Join Adyom
+                                            Register for Webinar
                                         </Button>
                                     </Link>
                                 </>
