@@ -1,5 +1,4 @@
 node_modules/
-.env
 *.zip
 .DS_Store
 frontend_backup/
@@ -9,3 +8,9 @@ frontend_backup/
 *.zip
 
 zip.13
+
+# Temp files and uploads
+backend/uploads/
+.tunnel_url
+
+config.bat

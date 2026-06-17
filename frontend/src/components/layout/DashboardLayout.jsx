@@ -152,11 +152,11 @@ export default function DashboardLayout() {
                     <div className="p-2 border-t border-heritage-terracottaLight space-y-1">
                         <Link
                             to="/"
-                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-body text-text-main hover:bg-heritage-terracottaLight/50 transition-all"
+                            className="flex items-center gap-3 px-3 py-2 rounded-md text-xs font-body font-bold bg-heritage-gold/20 text-heritage-gold hover:bg-heritage-gold hover:text-white transition-all"
                             title={collapsed ? 'Back to Site' : ''}
                         >
                             <Eye className="w-4 h-4 flex-shrink-0" />
-                            {!collapsed && <span>Back to Site</span>}
+                            {!collapsed && <span>← Back to Site</span>}
                         </Link>
                         <button
                             onClick={handleLogout}
@@ -174,6 +174,13 @@ export default function DashboardLayout() {
                     className={`${collapsed ? 'ml-16' : 'ml-64'
                         } flex-1 transition-all duration-300 min-h-[calc(100vh-1px)]`}
                 >
+                    {/* Top bar with Back to Site */}
+                    <div className="h-8 bg-heritage-cream/80 border-b border-heritage-gold/10 flex items-center justify-end px-6">
+                        <Link to="/" className="flex items-center gap-1 text-[11px] text-heritage-terracottaDark hover:text-heritage-terracotta font-body font-medium transition-colors">
+                            <Eye className="w-3 h-3" /> Back to Main Site
+                        </Link>
+                    </div>
+
                     <div className="p-6 md:p-8 max-w-6xl">
                         <Outlet />
                     </div>
