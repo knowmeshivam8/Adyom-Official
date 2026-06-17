@@ -10,6 +10,14 @@ const GallerySchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    artist: {
+        type: String,
+        default: ''
+    },
+    image: {
+        type: String,
+        default: null
+    },
     images: [{
         url: { type: String, required: true },
         caption: { type: String, default: '' },
@@ -17,8 +25,8 @@ const GallerySchema = new mongoose.Schema({
     }],
     category: {
         type: String,
-        enum: ['student-artwork', 'folk-art', 'community-projects', 'workshops', 'events', 'artisan-work'],
-        default: 'student-artwork'
+        enum: ['painting', 'folk-art', 'craft', 'photography', 'sculpture', 'textile', 'mindfulness', 'textile-art', 'mixed-media', 'student-artwork', 'community-projects', 'workshops', 'events', 'artisan-work'],
+        default: 'painting'
     },
     tags: [{
         type: String

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -213,6 +213,7 @@ export default function ProgramDetail() {
     const [sponsorSuccess, setSponsorSuccess] = useState('');
 
     const [enrollLoading, setEnrollLoading] = useState(false);
+    const navigate = useNavigate();
 
     // Compute enrolled modules for this program
     const enrolledProgram = user?.enrolledPrograms?.find(
@@ -332,14 +333,17 @@ export default function ProgramDetail() {
         );
     }
 
-    const openVideo = (url, title, moduleId) => {
-        setActiveVideo({ url, title, moduleId });
-        setShowVideoPlayer(true);
-    };
-
-    const closeVideoPlayer = () => {
-        setShowVideoPlayer(false);
-        setActiveVideo(null);
+    const openVideo = (url, title, moduleId, type, sessionNumber, sessionIndex) => {
+        // Construct the expected video ID that LearningPlayer generates
+        let videoId = '';
+        if (type === 'fundamentals' || title.startsWith('Fundamentals:')) {
+            videoId = `${moduleId}-fund`;
+        } else if (type === 'live-recording') {
+            videoId = `${moduleId}-live-${sessionIndex}`;
+        } else {
+            videoId = `${moduleId}-session-${sessionNumber || sessionIndex}`;
+        }
+        navigate(`/programs/${slug}/learn?module=${moduleId}&video=${videoId}`);
     };
 
     const getSessionTypeBadge = (type) => {
@@ -419,7 +423,7 @@ export default function ProgramDetail() {
                     </motion.div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0">
-                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#F4E8D8" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
+                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#FFFDF5" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
                 </div>
             </section>
 
@@ -451,7 +455,7 @@ export default function ProgramDetail() {
                                         viewport={{ once: true }}
                                         transition={{ delay: i * 0.1 }}
                                     >
-                                        <Card className={`overflow-hidden transition-shadow ${mod.isLocked ? 'opacity-60' : 'hover:shadow-md'}`}>
+                                        <Card className={`overflow-hidden transition-shadow ${mod.isLocked && !user ? 'opacity-60' : 'hover:shadow-md'}`}>
                                             <div
                                                 className="p-4 flex items-center justify-between cursor-pointer"
                                                 onClick={() => setExpandedModule(isExpanded ? null : mod._id)}
@@ -478,7 +482,7 @@ export default function ProgramDetail() {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    {mod.isLocked ? (
+                                                    {mod.isLocked && !user ? (
                                                         <>
                                                             <span className="text-xs text-heritage-terracotta/60 font-medium">Locked</span>
                                                             <Lock className="w-5 h-5 text-heritage-terracotta/40" />
@@ -497,7 +501,7 @@ export default function ProgramDetail() {
                                             </div>
 
                                             {/* Expanded module details */}
-                                            {isExpanded && !mod.isLocked && (
+                                            {isExpanded && (user || !mod.isLocked) && (
                                                 <div className="px-4 pb-4 border-t border-heritage-gold/10 pt-4">
                                                     {/* Module Enrollment Check for KalaPath */}
                                                     {program.programType === 'KalaPath' && (
@@ -537,7 +541,7 @@ export default function ProgramDetail() {
                                                             </h4>
                                                             <div
                                                                 className="bg-heritage-cream p-3 rounded flex items-center gap-2 cursor-pointer hover:bg-heritage-creamDark transition-colors"
-                                                                onClick={() => openVideo(mod.fundamentalsVideoUrl, `Fundamentals: ${mod.artFormName || mod.title}`, mod._id)}
+                                                                onClick={() => openVideo(mod.fundamentalsVideoUrl, `Fundamentals: ${mod.artFormName || mod.title}`, mod._id, 'fundamentals')}
                                                             >
                                                                 <Play className="w-4 h-4 text-heritage-gold" />
                                                                 <span className="text-sm text-text-main">Pre-recorded fundamentals — Click to Watch</span>
@@ -546,7 +550,7 @@ export default function ProgramDetail() {
                                                     )}
 
                                                     {/* Material List */}
-                                                    {mod.materialListUrl && enrolledModules.includes(mod._id) && (
+                                                    {mod.materialListUrl && (
                                                         <div className="mb-4">
                                                             <a href={mod.materialListUrl} target="_blank" rel="noopener noreferrer"
                                                                 className="inline-flex items-center gap-1 text-sm text-heritage-gold hover:text-heritage-terracottaDark">
@@ -565,12 +569,12 @@ export default function ProgramDetail() {
                                                                 {creationSessions.map((session, si) => (
                                                                     <div
                                                                         key={si}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl && enrolledModules.includes(mod._id) ? 'bg-purple-50/50 cursor-pointer hover:bg-purple-100/50 transition-colors' : 'bg-purple-50/50 opacity-80'}`}
-                                                                        onClick={() => session.videoUrl && enrolledModules.includes(mod._id) && openVideo(session.videoUrl, session.title, mod._id)}
+                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl ? 'bg-purple-50/50 cursor-pointer hover:bg-purple-100/50 transition-colors' : 'bg-purple-50/50 opacity-80'}`}
+                                                                        onClick={() => session.videoUrl && openVideo(session.videoUrl, session.title, mod._id, 'creation', session.sessionNumber, si)}
                                                                     >
                                                                         <span className="text-xs font-bold text-purple-600 w-6">{session.sessionNumber || si + 1}.</span>
                                                                         <span className="text-sm text-text-main flex-1">{session.title}</span>
-                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ? <Play className="w-4 h-4 text-purple-500" /> : <Lock className="w-4 h-4 text-purple-300" />}
+                                                                        {session.videoUrl ? <Play className="w-4 h-4 text-purple-500" /> : <span className="w-4 h-4" />}
                                                                         {session.duration && <span className="text-xs text-muted-foreground">{session.duration}</span>}
                                                                     </div>
                                                                 ))}
@@ -588,12 +592,12 @@ export default function ProgramDetail() {
                                                                 {applicationSessions.map((session, si) => (
                                                                     <div
                                                                         key={si}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl && enrolledModules.includes(mod._id) ? 'bg-teal-50/50 cursor-pointer hover:bg-teal-100/50 transition-colors' : 'bg-teal-50/50 opacity-80'}`}
-                                                                        onClick={() => session.videoUrl && enrolledModules.includes(mod._id) && openVideo(session.videoUrl, session.title, mod._id)}
+                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl ? 'bg-teal-50/50 cursor-pointer hover:bg-teal-100/50 transition-colors' : 'bg-teal-50/50 opacity-80'}`}
+                                                                        onClick={() => session.videoUrl && openVideo(session.videoUrl, session.title, mod._id, 'application', session.sessionNumber, si)}
                                                                     >
                                                                         <span className="text-xs font-bold text-teal-600 w-6">{session.sessionNumber || creationSessions.length + si + 1}.</span>
                                                                         <span className="text-sm text-text-main flex-1">{session.title}</span>
-                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ? <Play className="w-4 h-4 text-teal-500" /> : <Lock className="w-4 h-4 text-teal-300" />}
+                                                                        {session.videoUrl ? <Play className="w-4 h-4 text-teal-500" /> : <span className="w-4 h-4" />}
                                                                         {session.duration && <span className="text-xs text-muted-foreground">{session.duration}</span>}
                                                                     </div>
                                                                 ))}
@@ -611,9 +615,10 @@ export default function ProgramDetail() {
                                                                 {liveRecordings.map((rec, ri) => (
                                                                     <div
                                                                         key={ri}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${rec.videoUrl ? 'bg-red-50/50 cursor-pointer hover:bg-red-100/50 transition-colors' : 'bg-red-50/50'}`}
-                                                                        onClick={() => rec.videoUrl && openVideo(rec.videoUrl, rec.title, mod._id)}
+                                                                        className={`flex items-center gap-2 p-2 rounded ${rec.videoUrl ? 'bg-red-50/50 cursor-pointer hover:bg-red-100/50 transition-colors' : 'bg-red-50/50 opacity-80'}`}
+                                                                        onClick={() => rec.videoUrl && openVideo(rec.videoUrl, rec.title || `Live Recording ${ri + 1}`, mod._id, 'live-recording', ri, ri)}
                                                                     >
+                                                                        <span className="text-xs font-bold text-red-600 w-6">{ri + 1}.</span>
                                                                         <Play className="w-4 h-4 text-red-500" />
                                                                         <span className="text-sm text-text-main flex-1">{rec.title}</span>
                                                                         {rec.recordedAt && (
@@ -627,13 +632,37 @@ export default function ProgramDetail() {
                                                         </div>
                                                     )}
 
-                                                    {/* Submission reminder */}
-                                                    <div className="mt-4 p-3 bg-heritage-gold/10 rounded border border-heritage-gold/20">
-                                                        <p className="text-xs text-text-main flex items-center gap-1">
-                                                            <FileText className="w-3 h-3 text-heritage-gold" />
-                                                            After completing this module, submit <strong>1 artwork</strong> and <strong>1 activity work</strong> for certification.
-                                                        </p>
-                                                    </div>
+                                                    {/* Submit / Upload Work */}
+                                                    {user && (
+                                                        <div className="mt-5 p-4 bg-heritage-cream rounded-lg border border-heritage-gold/30">
+                                                            <h4 className="text-sm font-heading font-semibold text-heritage-terracottaDark mb-1 flex items-center gap-1">
+                                                                <FileText className="w-4 h-4" /> Submit Your Work
+                                                            </h4>
+                                                            <p className="text-xs text-text-main mb-3">
+                                                                After completing this module, upload <strong>1 artwork</strong> and <strong>1 activity work</strong> for certification.
+                                                            </p>
+                                                            <label
+                                                                htmlFor={`upload-${mod._id}`}
+                                                                className="inline-flex items-center gap-2 cursor-pointer bg-heritage-terracotta hover:bg-heritage-terracottaDark text-white text-sm font-body font-semibold px-4 py-2 rounded-lg transition-colors"
+                                                            >
+                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0L8 8m4-4l4 4" /></svg>
+                                                                Upload &amp; Submit
+                                                            </label>
+                                                            <input
+                                                                id={`upload-${mod._id}`}
+                                                                type="file"
+                                                                accept="image/*,video/*,.pdf"
+                                                                multiple
+                                                                className="hidden"
+                                                                onChange={(e) => {
+                                                                    const files = Array.from(e.target.files);
+                                                                    if (files.length > 0) {
+                                                                        alert(`${files.length} file(s) selected for "${mod.artFormName || mod.title}". Submission feature coming soon!`);
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )}
                                         </Card>
@@ -731,30 +760,6 @@ export default function ProgramDetail() {
                 </div>
             </section>
 
-            {/* Video Player Overlay */}
-            {showVideoPlayer && activeVideo && (
-                <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-                    <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden">
-                        <div className="flex items-center justify-between p-4 bg-black/90">
-                            <h3 className="text-white font-heading font-semibold text-sm truncate pr-4">{activeVideo.title}</h3>
-                            <button
-                                onClick={closeVideoPlayer}
-                                className="text-white/70 hover:text-white transition-colors p-1"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div className="aspect-video">
-                            <SecureVideoPlayer
-                                videoUrl={activeVideo.url}
-                                videoId={`program-${activeVideo.moduleId || 'detail'}`}
-                                title={activeVideo.title}
-                                onEnded={closeVideoPlayer}
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Sponsor Code Modal */}
             {showSponsorModal && (
