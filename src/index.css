@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 12 32% 88%;
+    --foreground: 24 40% 13%;
+    --card: 12 32% 88%;
+    --card-foreground: 24 40% 13%;
+    --popover: 12 32% 88%;
+    --popover-foreground: 24 40% 13%;
+    --primary: 0 100% 21%;
+    --primary-foreground: 12 32% 88%;
+    --secondary: 12 28% 76%;
+    --secondary-foreground: 24 40% 13%;
+    --muted: 12 20% 84%;
+    --muted-foreground: 24 10% 45%;
+    --accent: 36 61% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 12 20% 76%;
+    --input: 12 20% 76%;
+    --ring: 0 100% 21%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 24 40% 6%;
+    --foreground: 38 60% 95%;
+    --card: 24 40% 8%;
+    --card-foreground: 38 60% 95%;
+    --popover: 24 40% 8%;
+    --popover-foreground: 38 60% 95%;
+    --primary: 0 100% 34%;
+    --primary-foreground: 38 60% 95%;
+    --secondary: 36 61% 53%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 24 20% 15%;
+    --muted-foreground: 38 30% 70%;
+    --accent: 36 61% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 24 20% 20%;
+    --input: 24 20% 20%;
+    --ring: 0 100% 34%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-text-main font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif text-text-main leading-tight tracking-tight;
+  }
+}
+
+/* Heritage Decorative Styles */
+.heritage-border {
+  border-image: linear-gradient(135deg, #D9A441, #C48C7C, #D9A441) 1;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.heritage-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D9A441, #C48C7C, #D9A441, transparent);
+}
+
+.folk-art-corner::before {
+  content: '❋';
+  position: absolute;
+  color: #D9A441;
+  font-size: 1.5rem;
+  top: -8px;
+  left: -8px;
+}
+
+.folk-art-corner::after {
+  content: '❋';
+  position: absolute;
+  color: #D9A441;
+  font-size: 1.5rem;
+  bottom: -8px;
+  right: -8px;
+}
+
+.mandala-bg {
+  background-image: radial-gradient(circle, transparent 30%, #D9A441 31%, transparent 32%, transparent 60%, #C48C7C 61%, transparent 62%, transparent 90%, #D9A441 91%, transparent 92%);
+  background-size: 60px 60px;
+  opacity: 0.05;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #D9A441, #E8C36A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-terracotta {
+  background: linear-gradient(135deg, #C48C7C, #D69F8E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EDD8D0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C48C7C;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D69F8E;
+}
+
+/* Selection styling */
+::selection {
+  background: #D9A441;
+  color: #4A332C;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Terracotta Texture Overlay */
+.bg-heritage-terracotta,
+.bg-heritage-terracottaLight,
+.bg-heritage-terracottaDark {
+  background-image: 
+    radial-gradient(ellipse at top, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0.05) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.28'/%3E%3C/svg%3E") !important;
+  background-blend-mode: soft-light, multiply;
+}
