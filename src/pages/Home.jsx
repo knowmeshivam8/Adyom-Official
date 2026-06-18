@@ -26,10 +26,8 @@ import {
     Calendar,
     ChevronLeft,
     ChevronRight,
-    Loader2,
     Mail,
     Phone,
-    Quote,
     Infinity,
     Compass,
     Leaf,
@@ -40,84 +38,99 @@ import {
 } from 'lucide-react';
 import { programAPI, testimonialAPI, galleryAPI } from '@/api';
 
-// Animation variants
+// ============ COLOR PALETTE ============
+// Primary: #B87333 (Terracotta/Copper)
+// Secondary: #C9A96E (Warm Gold)
+// Background: #FDFBF7 (Warm Cream)
+// Dark: #3C2F2B (Deep Brown)
+// Accent: #8F6B5A (Muted Brown)
+// Light: #F5E6D3 (Soft Beige)
+// Text: #4A3A32 (Warm Dark)
+
+// ============ ANIMATION VARIANTS ============
 const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
+    initial: { opacity: 0, y: 50 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
+    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 const fadeInLeft = {
-    initial: { opacity: 0, x: -50 },
+    initial: { opacity: 0, x: -60 },
     animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.7 },
+    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 const fadeInRight = {
-    initial: { opacity: 0, x: 50 },
+    initial: { opacity: 0, x: 60 },
     animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.7 },
+    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 const fadeInScale = {
-    initial: { opacity: 0, scale: 0.9 },
+    initial: { opacity: 0, scale: 0.92 },
     animate: { opacity: 1, scale: 1 },
-    transition: { duration: 0.5 },
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 const staggerContainer = {
     animate: {
-        transition: { staggerChildren: 0.1 },
+        transition: { staggerChildren: 0.15, delayChildren: 0.1 },
     },
 };
 
-// Program categories
+// ============ PROGRAM DATA ============
 const programHighlights = [
     {
         icon: Eye,
         title: 'Drishti',
         subtitle: 'The Vision',
         desc: 'Visual arts, painting, & contemporary expression rooted in heritage',
-        gradient: 'from-rose-400 to-rose-600',
+        gradient: 'from-[#B87333] to-[#C9A96E]',
+        color: '#B87333',
     },
     {
         icon: Lightbulb,
         title: 'Chaitanya',
         subtitle: 'The Awakening',
         desc: 'Mindfulness, meditation, & inner transformation practices',
-        gradient: 'from-amber-400 to-amber-600',
+        gradient: 'from-[#C9A96E] to-[#B87333]',
+        color: '#C9A96E',
     },
     {
         icon: Palette,
         title: 'Kala-Path',
         subtitle: 'The Art Journey',
         desc: 'Structured art courses from basics to mastery',
-        gradient: 'from-emerald-400 to-emerald-600',
+        gradient: 'from-[#8F6B5A] to-[#B87333]',
+        color: '#8F6B5A',
     },
     {
         icon: HandHeart,
         title: 'Sparsh',
         subtitle: 'The Touch',
         desc: 'Hands-on craft workshops in pottery, weaving, & folk art',
-        gradient: 'from-sky-400 to-sky-600',
+        gradient: 'from-[#D4A574] to-[#C9A96E]',
+        color: '#D4A574',
     },
     {
         icon: Camera,
         title: 'Pratibimb',
         subtitle: 'The Reflection',
         desc: 'Photography & visual storytelling through cultural lens',
-        gradient: 'from-purple-400 to-purple-600',
+        gradient: 'from-[#8B7B6B] to-[#6B5B4B]',
+        color: '#8B7B6B',
     },
     {
         icon: Music,
         title: 'Kala-Vritti',
         subtitle: 'The Art Living',
         desc: 'Career support for emerging artists & creatives',
-        gradient: 'from-indigo-400 to-indigo-600',
+        gradient: 'from-[#C9A96E] to-[#8F6B5A]',
+        color: '#C9A96E',
     },
 ];
 
-// Why Join reasons
+// ============ WHY JOIN DATA ============
 const whyJoinReasons = [
     {
         icon: Heart,
@@ -151,7 +164,7 @@ const whyJoinReasons = [
     },
 ];
 
-// Community impact stats
+// ============ IMPACT STATS ============
 const impactStats = [
     { number: '5,000+', label: 'Community Members', icon: Users },
     { number: '200+', label: 'Programs & Workshops', icon: BookOpen },
@@ -195,7 +208,7 @@ export default function Home() {
             category: 'Drishti',
             level: 'Intermediate',
             duration: '12 Weeks',
-            image: 'from-heritage-terracotta to-heritage-gold',
+            image: 'from-[#B87333] to-[#D4A574]',
             desc: 'Master traditional Indian painting techniques — from Madhubani to miniature art.',
         },
         {
@@ -203,7 +216,7 @@ export default function Home() {
             category: 'Chaitanya',
             level: 'All Levels',
             duration: '8 Weeks',
-            image: 'from-heritage-gold to-heritage-terracottaLight',
+            image: 'from-[#C9A96E] to-[#B87333]',
             desc: 'Deep meditation practices rooted in ancient wisdom, adapted for modern life.',
         },
         {
@@ -211,30 +224,28 @@ export default function Home() {
             category: 'Sparsh',
             level: 'Beginner',
             duration: '4 Weeks',
-            image: 'from-heritage-brownLight to-heritage-brown',
+            image: 'from-[#8F6B5A] to-[#6B4F3A]',
             desc: 'Hands-on pottery workshop exploring India\'s rich terracotta traditions.',
         },
     ];
 
     const fallbackGalleryItems = [
-        { gradient: 'from-heritage-terracotta to-heritage-terracottaLight', Icon: Palette },
-        { gradient: 'from-heritage-gold to-heritage-goldLight', Icon: Brush },
-        { gradient: 'from-heritage-brown to-heritage-brownLight', Icon: Camera },
-        { gradient: 'from-heritage-sand to-heritage-creamDark', Icon: Music },
-        { gradient: 'from-heritage-terracottaLight to-heritage-gold', Icon: TreePine },
-        { gradient: 'from-heritage-goldDark to-heritage-terracotta', Icon: Sparkles },
-        { gradient: 'from-heritage-brownLight to-heritage-sand', Icon: Eye },
-        { gradient: 'from-heritage-creamDark to-heritage-terracottaLight', Icon: HandHeart },
+        { gradient: 'from-[#B87333] to-[#D4A574]', Icon: Palette },
+        { gradient: 'from-[#C9A96E] to-[#F5E6D3]', Icon: Brush },
+        { gradient: 'from-[#8F6B5A] to-[#6B4F3A]', Icon: Camera },
+        { gradient: 'from-[#D4A574] to-[#C9A96E]', Icon: Music },
+        { gradient: 'from-[#F5E6D3] to-[#C9A96E]', Icon: TreePine },
+        { gradient: 'from-[#B87333] to-[#8F6B5A]', Icon: Sparkles },
+        { gradient: 'from-[#6B4F3A] to-[#F5E6D3]', Icon: Eye },
+        { gradient: 'from-[#F5E6D3] to-[#B87333]', Icon: HandHeart },
     ];
 
     const [testimonials, setTestimonials] = useState(fallbackTestimonials);
     const [featuredPrograms, setFeaturedPrograms] = useState(fallbackFeaturedPrograms);
     const [galleryItems, setGalleryItems] = useState(fallbackGalleryItems);
-    const [loading, setLoading] = useState({ testimonials: false, programs: false, gallery: false });
 
     useEffect(() => {
         const fetchHomeData = async () => {
-            // Fetch testimonials
             try {
                 const res = await testimonialAPI.getPublic({ status: 'approved', limit: 6 });
                 if (res.data?.data?.length > 0) {
@@ -249,7 +260,6 @@ export default function Home() {
                 console.log('Using fallback testimonials');
             }
 
-            // Fetch featured programs
             try {
                 const res = await programAPI.getFeatured();
                 if (res.data?.data?.length > 0) {
@@ -258,38 +268,21 @@ export default function Home() {
                         category: p.category || 'General',
                         level: p.level || 'All Levels',
                         duration: p.duration || '8 Weeks',
-                        image: p.image ? '' : 'from-heritage-terracotta to-heritage-gold',
+                        image: p.image ? '' : 'from-[#B87333] to-[#D4A574]',
                         desc: p.description || p.shortDesc || '',
                         slug: p.slug || p._id,
                         imageUrl: p.image || null,
                     })));
                 }
             } catch (err) {
-                try {
-                    const res = await programAPI.getAll({ status: 'published', limit: 3 });
-                    if (res.data?.data?.length > 0) {
-                        setFeaturedPrograms(res.data.data.map(p => ({
-                            title: p.title,
-                            category: p.category || 'General',
-                            level: p.level || 'All Levels',
-                            duration: p.duration || '8 Weeks',
-                            image: p.image ? '' : 'from-heritage-terracotta to-heritage-gold',
-                            desc: p.description || p.shortDesc || '',
-                            slug: p.slug || p._id,
-                            imageUrl: p.image || null,
-                        })));
-                    }
-                } catch (err2) {
-                    console.log('Using fallback programs');
-                }
+                console.log('Using fallback programs');
             }
 
-            // Fetch gallery preview
             try {
                 const res = await galleryAPI.getAll({ status: 'published', limit: 8 });
                 if (res.data?.data?.length > 0) {
                     setGalleryItems(res.data.data.map(item => ({
-                        gradient: item.image ? '' : 'from-heritage-terracotta to-heritage-terracottaLight',
+                        gradient: item.image ? '' : 'from-[#B87333] to-[#D4A574]',
                         Icon: item.image ? null : Palette,
                         imageUrl: item.image || null,
                         title: item.title || '',
@@ -304,164 +297,188 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-heritage-creamLight via-white to-heritage-creamLight/50 overflow-hidden">
-            
+        <div className="min-h-screen font-serif bg-[#FDFBF7]">
+
             {/* ============ HERO SECTION ============ */}
-            <section className="relative min-h-[90vh] overflow-hidden flex items-center">
-                {/* Background Image with Overlay */}
+            <section className="relative min-h-[90vh] overflow-hidden flex items-center bg-gradient-to-b from-[#FDFBF7] via-[#F5E6D3]/40 to-[#FDFBF7]">
+                {/* Decorative Background Elements */}
                 <div className="absolute inset-0 z-0">
-                    <img src="/images/hero_artisan.png" alt="Artisan drawing intricate Indian mandala patterns" className="w-full h-full object-cover object-center" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-                    
-                    {/* Animated decorative elements */}
-                    <motion.div 
-                        className="absolute top-20 left-20 text-6xl opacity-20 text-heritage-goldLight"
-                        animate={{ y: [0, -20, 0] }}
-                        transition={{ duration: 4, repeat: Infinity }}
+                    <motion.div
+                        className="absolute top-10 right-10 text-8xl opacity-[0.06] text-[#B87333]"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
                     >
                         ✦
                     </motion.div>
-                    <motion.div 
-                        className="absolute bottom-20 right-20 text-8xl opacity-10 text-heritage-goldLight"
-                        animate={{ y: [0, 20, 0] }}
-                        transition={{ duration: 5, repeat: Infinity }}
+                    <motion.div
+                        className="absolute bottom-20 left-10 text-9xl opacity-[0.04] text-[#8F6B5A]"
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
                     >
                         ✧
                     </motion.div>
+                    <motion.div
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#B87333]/10"
+                        animate={{ scale: [1, 1.08, 1] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-[#C9A96E]/8"
+                        animate={{ scale: [1.08, 1, 1.08] }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    />
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-                    <div className="max-w-2xl pt-12 md:pt-0">
+                    <div className="max-w-4xl mx-auto text-center pt-12 md:pt-0">
                         <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
                             className="space-y-8"
                         >
                             <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ duration: 0.5 }}
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.7, delay: 0.2 }}
                                 className="inline-block"
                             >
-                                <Badge className="text-sm px-6 py-2 bg-heritage-gold/20 border-heritage-gold/40 text-heritage-goldLight backdrop-blur-sm">
+                                <span className="inline-block px-6 py-2.5 bg-[#B87333]/10 border border-[#B87333]/20 text-[#B87333] font-serif text-sm tracking-widest uppercase">
                                     <Sparkles className="w-3 h-3 mr-2 inline" />
-                                    Canvas of Heritage — Where Tradition Meets Transformation
+                                    Canvas of Heritage
                                     <Sparkles className="w-3 h-3 ml-2 inline" />
-                                </Badge>
+                                </span>
                             </motion.div>
 
-                            <motion.h1 
-                                className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight drop-shadow-lg"
+                            <motion.h1
+                                className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#3C2F2B] leading-[1.1]"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
+                                transition={{ delay: 0.3, duration: 0.9 }}
                             >
                                 Rediscover
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-heritage-gold to-amber-300"> India's </span>
-                                Timeless Heritage
+                                <br />
+                                <span className="text-[#B87333]">India's</span> Timeless
+                                <br />
+                                <span className="text-[#C9A96E]">Heritage</span>
                             </motion.h1>
 
-                            <motion.p 
-                                className="text-lg md:text-xl font-light text-heritage-goldLight/90 leading-relaxed"
+                            <motion.p
+                                className="text-lg md:text-xl font-serif font-light text-[#6B5B4B] leading-relaxed max-w-2xl mx-auto"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
+                                transition={{ delay: 0.4, duration: 0.9 }}
                             >
                                 Art, mindfulness, culture & community — a living canvas where heritage
                                 breathes, creativity awakens, and souls find their roots.
                             </motion.p>
 
-                            <motion.div 
-                                className="flex flex-wrap gap-4"
+                            <motion.div
+                                className="flex flex-wrap gap-4 justify-center"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4 }}
+                                transition={{ delay: 0.5, duration: 0.9 }}
                             >
                                 <Link to="/programs">
-                                    <Button size="xl" className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-xl transition-all duration-300 group font-medium">
+                                    <Button
+                                        size="xl"
+                                        className="bg-[#B87333] hover:bg-[#8F6B5A] text-white hover:shadow-xl transition-all duration-300 group font-serif text-base px-10 py-3 rounded-none"
+                                    >
                                         Explore Programs
                                         <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                     </Button>
                                 </Link>
                                 <Link to="/register">
-                                    <Button variant="outline" size="xl" className="border-heritage-gold/50 text-heritage-goldLight hover:bg-heritage-gold/10 font-light">
+                                    <Button
+                                        variant="outline"
+                                        size="xl"
+                                        className="border-[#B87333]/40 text-[#3C2F2B] hover:bg-[#B87333]/5 font-serif text-base px-10 py-3 rounded-none"
+                                    >
                                         Become a Member
                                     </Button>
                                 </Link>
                             </motion.div>
 
-                            <motion.div 
-                                className="flex flex-wrap items-center gap-4 text-sm font-light text-heritage-goldLight/70"
+                            <motion.div
+                                className="flex flex-wrap items-center justify-center gap-6 text-sm font-serif text-[#8F6B5A]"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 }}
+                                transition={{ delay: 0.6, duration: 0.9 }}
                             >
-                                <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                                    <Star className="w-4 h-4 text-heritage-gold" /> 5,000+ Members
+                                <span className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm border border-[#B87333]/10">
+                                    <Star className="w-4 h-4 text-[#B87333]" /> 5,000+ Members
                                 </span>
-                                <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                                    <BookOpen className="w-4 h-4 text-heritage-gold" /> 200+ Programs
+                                <span className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm border border-[#B87333]/10">
+                                    <BookOpen className="w-4 h-4 text-[#B87333]" /> 200+ Programs
                                 </span>
-                                <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                                    <Palette className="w-4 h-4 text-heritage-gold" /> Heritage Revival
+                                <span className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm border border-[#B87333]/10">
+                                    <Palette className="w-4 h-4 text-[#B87333]" /> Heritage Revival
                                 </span>
                             </motion.div>
                         </motion.div>
                     </div>
                 </div>
 
-                {/* Bottom wave */}
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 120" className="w-full h-auto" preserveAspectRatio="none">
-                        <path fill="#FAF5EE" d="M0,60 C480,120 960,0 1440,60 L1440,120 L0,120 Z" />
+                        <path fill="#FDFBF7" d="M0,60 C480,120 960,0 1440,60 L1440,120 L0,120 Z" />
                     </svg>
                 </div>
             </section>
 
             {/* ============ WHAT YOU'LL LEARN ============ */}
-            <section className="py-20 md:py-28">
+            <section className="py-24 md:py-32 bg-[#FDFBF7]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div {...fadeInUp} className="text-center mb-16">
-                        <Badge variant="outlineGold" className="mb-4 text-sm px-4 py-1.5 border-heritage-gold/50 font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-20"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#B87333] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#B87333]/30 pb-2">
                             ✦ Our Programs
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-brown">
-                            What You'll Learn at <span className="text-transparent bg-clip-text bg-gradient-to-r from-heritage-gold to-amber-400">Adyom</span>
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#3C2F2B]">
+                            What You'll Learn at <span className="text-[#B87333]">Adyom</span>
                         </h2>
-                        <p className="mt-4 text-lg font-light text-heritage-brownLight max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg font-serif font-light text-[#8F6B5A] max-w-2xl mx-auto">
                             Six streams of heritage learning — each a path to rediscovery, mastery, and inner transformation
                         </p>
-                        <Separator className="w-24 mx-auto mt-4 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-20 h-px mx-auto mt-6 bg-[#B87333]" />
                     </motion.div>
 
                     <motion.div
                         variants={staggerContainer}
                         initial="initial"
                         whileInView="animate"
-                        viewport={{ once: true }}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                        viewport={{ once: true, margin: "-50px" }}
+                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
                         {programHighlights.map((item, i) => (
-                            <motion.div key={i} variants={fadeInUp}>
-                                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-heritage-gold/10 bg-white overflow-hidden relative">
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-heritage-gold/5 to-transparent rounded-full -mr-12 -mt-12" />
-                                    <CardContent className="p-6 space-y-4">
-                                        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                            <motion.div
+                                key={i}
+                                variants={fadeInUp}
+                                whileHover={{ y: -6 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <div className="group bg-white border border-[#B87333]/10 p-8 hover:shadow-xl transition-all duration-500 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#B87333]/5 to-transparent" />
+                                    <div className="relative space-y-4">
+                                        <div className={`w-14 h-14 flex items-center justify-center bg-gradient-to-br ${item.gradient} text-white group-hover:scale-110 transition-transform duration-500`}>
                                             <item.icon className="w-7 h-7" />
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-serif font-bold text-heritage-brown">{item.title}</h3>
-                                            <p className="text-sm font-light text-heritage-brownLight italic">{item.subtitle}</p>
+                                            <h3 className="text-2xl font-serif font-normal text-[#3C2F2B]">{item.title}</h3>
+                                            <p className="text-sm font-serif font-light text-[#8F6B5A] italic">{item.subtitle}</p>
                                         </div>
-                                        <p className="text-sm font-light text-heritage-brownLight leading-relaxed">{item.desc}</p>
+                                        <p className="text-sm font-serif font-light text-[#6B5B4B] leading-relaxed">{item.desc}</p>
                                         <Link to={`/programs?category=${item.title.toLowerCase()}`}>
-                                            <Button variant="ghost" size="sm" className="text-heritage-gold hover:text-heritage-goldDark p-0 font-light">
-                                                Learn More <ArrowRight className="ml-1 w-4 h-4" />
-                                            </Button>
+                                            <span className="inline-block text-[#B87333] hover:text-[#8F6B5A] font-serif text-sm transition-colors duration-300 group-hover:translate-x-1">
+                                                Learn More <ArrowRight className="inline w-4 h-4 ml-1" />
+                                            </span>
                                         </Link>
-                                    </CardContent>
-                                </Card>
+                                    </div>
+                                </div>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -469,53 +486,69 @@ export default function Home() {
             </section>
 
             {/* ============ WHY JOIN ============ */}
-            <section className="py-20 md:py-28 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-heritage-terracotta via-heritage-terracottaDark to-heritage-brown">
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-20 left-20 w-64 h-64 border-4 border-heritage-gold/30 rounded-full animate-spin-slow" />
-                        <div className="absolute bottom-20 right-20 w-80 h-80 border-4 border-heritage-gold/20 rounded-full animate-spin-slower" />
-                    </div>
+            <section className="py-24 md:py-32 relative overflow-hidden bg-[#3C2F2B]">
+                <div className="absolute inset-0 opacity-[0.04]">
+                    <div className="absolute top-20 left-20 w-64 h-64 border-4 border-[#C9A96E] rounded-full animate-spin-slow" />
+                    <div className="absolute bottom-20 right-20 w-80 h-80 border-4 border-[#C9A96E]/50 rounded-full animate-spin-slower" />
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div {...fadeInUp} className="text-center mb-16">
-                        <Badge className="mb-4 text-sm px-6 py-2 bg-heritage-gold text-heritage-brown border-none shadow-lg font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-20"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#C9A96E] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#C9A96E]/30 pb-2">
                             <Sparkles className="w-3 h-3 mr-2 inline" />
                             Why Adyom?
                             <Sparkles className="w-3 h-3 ml-2 inline" />
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#FDFBF7]">
                             Why Join the Adyom Community?
                         </h2>
-                        <p className="mt-4 text-lg font-light text-heritage-goldLight/90 max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg font-serif font-light text-[#D4A574] max-w-2xl mx-auto">
                             More than a platform — a movement to preserve, practice, and prosper through heritage
                         </p>
-                        <Separator className="w-24 mx-auto mt-4 bg-heritage-gold/50" />
+                        <div className="w-20 h-px mx-auto mt-6 bg-[#C9A96E]" />
                     </motion.div>
 
                     <motion.div
                         variants={staggerContainer}
                         initial="initial"
                         whileInView="animate"
-                        viewport={{ once: true }}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                        viewport={{ once: true, margin: "-50px" }}
+                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
                         {whyJoinReasons.map((item, i) => (
-                            <motion.div key={i} variants={fadeInUp}>
-                                <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 space-y-4 hover:bg-white transition-colors duration-300 border border-white/20 shadow-lg hover:shadow-2xl group">
-                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-heritage-gold/20 to-heritage-gold/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <item.icon className="w-6 h-6 text-heritage-gold" />
+                            <motion.div
+                                key={i}
+                                variants={fadeInUp}
+                                whileHover={{ y: -4 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <div className="bg-white/5 backdrop-blur-sm p-8 hover:bg-white/10 transition-all duration-500 border border-white/5 group">
+                                    <div className="w-12 h-12 flex items-center justify-center bg-[#C9A96E]/20 group-hover:scale-110 transition-transform duration-500">
+                                        <item.icon className="w-6 h-6 text-[#C9A96E]" />
                                     </div>
-                                    <h3 className="text-xl font-serif font-semibold text-heritage-brown">{item.title}</h3>
-                                    <p className="text-sm font-light text-heritage-brownLight leading-relaxed">{item.desc}</p>
+                                    <h3 className="text-xl font-serif font-normal text-[#FDFBF7] mt-4">{item.title}</h3>
+                                    <p className="text-sm font-serif font-light text-[#D4A574] leading-relaxed mt-2">{item.desc}</p>
                                 </div>
                             </motion.div>
                         ))}
                     </motion.div>
 
-                    <motion.div {...fadeInUp} className="text-center mt-12">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mt-12"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                    >
                         <Link to="/register">
-                            <Button size="xl" className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-xl transition-all duration-300 group font-medium">
+                            <Button
+                                size="xl"
+                                className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white hover:shadow-xl transition-all duration-300 group font-serif text-base px-10 py-3 rounded-none"
+                            >
                                 Join the Movement <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Button>
                         </Link>
@@ -524,73 +557,89 @@ export default function Home() {
 
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 80" className="w-full h-auto" preserveAspectRatio="none">
-                        <path fill="#FAF5EE" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
+                        <path fill="#FDFBF7" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
                     </svg>
                 </div>
             </section>
 
             {/* ============ FEATURED PROGRAMS ============ */}
-            <section className="py-20 md:py-28">
+            <section className="py-24 md:py-32 bg-[#FDFBF7]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div {...fadeInUp} className="text-center mb-16">
-                        <Badge variant="outlineGold" className="mb-4 text-sm px-4 py-1.5 border-heritage-gold/50 font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-20"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#B87333] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#B87333]/30 pb-2">
                             ✦ Featured Programs
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-brown">
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#3C2F2B]">
                             Begin Your Heritage Journey
                         </h2>
-                        <p className="mt-4 text-lg font-light text-heritage-brownLight max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg font-serif font-light text-[#8F6B5A] max-w-2xl mx-auto">
                             Curated programs that blend tradition with transformation
                         </p>
-                        <Separator className="w-24 mx-auto mt-4 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-20 h-px mx-auto mt-6 bg-[#B87333]" />
                     </motion.div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {featuredPrograms.map((program, i) => (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.15 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ delay: i * 0.15, duration: 0.7 }}
+                                whileHover={{ y: -6 }}
                             >
-                                <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-heritage-gold/10">
-                                    <div className={`h-48 ${program.imageUrl ? '' : 'bg-gradient-to-br ' + program.image} flex items-center justify-center relative overflow-hidden`}>
+                                <div className="bg-white border border-[#B87333]/10 hover:shadow-xl transition-all duration-500 overflow-hidden">
+                                    <div className={`h-52 ${program.imageUrl ? '' : 'bg-gradient-to-br ' + program.image} flex items-center justify-center relative overflow-hidden`}>
                                         {program.imageUrl ? (
-                                            <img src={program.imageUrl} alt={program.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                            <img src={program.imageUrl} alt={program.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
                                         ) : (
                                             <div className="text-center">
-                                                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-3">
+                                                <div className="w-16 h-16 flex items-center justify-center bg-white/20 backdrop-blur-sm mx-auto mb-3">
                                                     <Palette className="w-8 h-8 text-white" />
                                                 </div>
-                                                <Badge className="bg-white/20 backdrop-blur-sm text-white border-none font-light">{program.category}</Badge>
+                                                <span className="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm text-white font-serif text-sm border-none">
+                                                    {program.category}
+                                                </span>
                                             </div>
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#3C2F2B]/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
                                     </div>
-                                    <CardContent className="p-6 space-y-3">
-                                        <h3 className="text-lg font-serif font-semibold text-heritage-brown group-hover:text-heritage-terracotta transition-colors">
+                                    <div className="p-6 space-y-3">
+                                        <h3 className="text-xl font-serif font-normal text-[#3C2F2B] hover:text-[#B87333] transition-colors duration-300">
                                             {program.title}
                                         </h3>
-                                        <p className="text-sm font-light text-heritage-brownLight">{program.desc}</p>
-                                        <div className="flex items-center gap-3 text-xs font-light text-heritage-brownLight">
-                                            <Badge variant="secondary" className="bg-heritage-gold/10 text-heritage-brown font-light">{program.level}</Badge>
+                                        <p className="text-sm font-serif font-light text-[#6B5B4B]">{program.desc}</p>
+                                        <div className="flex items-center gap-3 text-xs font-serif text-[#8F6B5A]">
+                                            <span className="px-3 py-1 bg-[#B87333]/10 text-[#3C2F2B]">{program.level}</span>
                                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {program.duration}</span>
                                         </div>
                                         <Link to={`/programs/${program.slug || program._id || ''}`}>
-                                            <Button variant="outline" size="sm" className="w-full mt-2 border-heritage-gold/30 text-heritage-brown hover:bg-heritage-gold hover:text-white transition-all duration-300 font-light">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="w-full mt-2 border-[#B87333]/30 text-[#3C2F2B] hover:bg-[#B87333] hover:text-white transition-all duration-300 font-serif rounded-none"
+                                            >
                                                 View Program <ArrowRight className="ml-1 w-4 h-4" />
                                             </Button>
                                         </Link>
-                                    </CardContent>
-                                </Card>
+                                    </div>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
 
-                    <div className="text-center mt-10">
+                    <div className="text-center mt-12">
                         <Link to="/programs">
-                            <Button variant="outline" size="lg" className="border-heritage-gold/50 text-heritage-brown hover:bg-heritage-gold hover:text-white transition-all duration-300 font-light">
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                className="border-[#B87333]/40 text-[#3C2F2B] hover:bg-[#B87333] hover:text-white transition-all duration-300 font-serif text-base px-10 py-3 rounded-none"
+                            >
                                 View All Programs <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
                         </Link>
@@ -599,42 +648,48 @@ export default function Home() {
             </section>
 
             {/* ============ ARTISAN CONNECT ============ */}
-            <section className="py-20 md:py-28 bg-gradient-to-b from-heritage-creamLight to-white">
+            <section className="py-24 md:py-32 bg-[#F5E6D3]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <motion.div {...fadeInLeft} className="space-y-6">
+                        <motion.div
+                            {...fadeInLeft}
+                            className="space-y-6"
+                            whileInView="animate"
+                            viewport={{ once: true, margin: "-50px" }}
+                        >
                             <div>
-                                <Badge variant="outlineGold" className="mb-3 text-sm px-4 py-1.5 border-heritage-gold/50 font-light">
+                                <span className="inline-block text-[#B87333] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#B87333]/30 pb-2">
                                     ✦ Artisan Connect
-                                </Badge>
-                                <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-brown">
-                                    Empowering India's <span className="text-transparent bg-clip-text bg-gradient-to-r from-heritage-gold to-amber-400">Artisans</span>
+                                </span>
+                                <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#3C2F2B]">
+                                    Empowering India's <span className="text-[#B87333]">Artisans</span>
                                 </h2>
                             </div>
-                            
-                            <motion.div 
-                                className="bg-gradient-to-r from-heritage-gold/10 to-heritage-terracotta/10 p-6 rounded-2xl border-l-4 border-heritage-gold"
-                                whileHover={{ scale: 1.02 }}
+
+                            <motion.div
+                                className="bg-white/60 p-8 border-l-4 border-[#B87333]"
+                                whileHover={{ scale: 1.01 }}
+                                transition={{ duration: 0.3 }}
                             >
-                                <p className="font-serif text-lg text-heritage-brown italic font-light">"Every hand that crafts tells a story of heritage"</p>
+                                <p className="font-serif text-lg text-[#3C2F2B] italic font-light">"Every hand that crafts tells a story of heritage"</p>
                             </motion.div>
-                            
-                            <Separator className="w-20 bg-heritage-gold/50" />
-                            
-                            <p className="font-light text-heritage-brownLight leading-relaxed">
+
+                            <div className="w-16 h-px bg-[#B87333]" />
+
+                            <p className="font-serif font-light text-[#6B5B4B] leading-relaxed">
                                 Artisan Connect is our initiative to support, promote, and preserve the work of traditional
                                 Indian artisans. We provide platforms for visibility, tools for modern expression, and a
                                 community that values handmade craft.
                             </p>
-                            
-                            <ul className="space-y-3 font-light text-heritage-brownLight">
+
+                            <ul className="space-y-3 font-serif font-light text-[#6B5B4B]">
                                 {[
                                     'Showcase & sell traditional artwork on our gallery',
                                     'Connect with heritage lovers and collectors worldwide',
                                     'Access workshops for skill enhancement & modern techniques',
                                     'Corporate partnerships for sustainable artisan support',
                                 ].map((item, i) => (
-                                    <motion.li 
+                                    <motion.li
                                         key={i}
                                         initial={{ opacity: 0, x: -20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
@@ -642,50 +697,55 @@ export default function Home() {
                                         transition={{ delay: i * 0.1 }}
                                         className="flex items-start gap-3"
                                     >
-                                        <div className="w-5 h-5 rounded-full bg-heritage-gold/20 flex items-center justify-center mt-0.5 flex-shrink-0">
-                                            <Star className="w-3 h-3 text-heritage-gold" />
-                                        </div>
+                                        <span className="w-5 h-5 flex items-center justify-center bg-[#B87333]/20 flex-shrink-0 mt-0.5">
+                                            <Star className="w-3 h-3 text-[#B87333]" />
+                                        </span>
                                         <span>{item}</span>
                                     </motion.li>
                                 ))}
                             </ul>
-                            
+
                             <Link to="/artisan-connect">
-                                <Button className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-xl transition-all duration-300 group font-medium">
+                                <Button className="bg-[#B87333] hover:bg-[#8F6B5A] text-white hover:shadow-xl transition-all duration-300 group font-serif text-base px-10 py-3 rounded-none">
                                     Meet Our Artisans <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </Button>
                             </Link>
                         </motion.div>
 
-                        <motion.div {...fadeInRight} className="relative">
+                        <motion.div
+                            {...fadeInRight}
+                            className="relative"
+                            whileInView="animate"
+                            viewport={{ once: true, margin: "-50px" }}
+                        >
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-4">
                                     {[
-                                        { gradient: 'from-heritage-terracotta to-heritage-terracottaLight', icon: Palette },
-                                        { gradient: 'from-heritage-gold to-heritage-goldLight', icon: HandHeart },
+                                        { gradient: 'from-[#B87333] to-[#D4A574]', icon: Palette },
+                                        { gradient: 'from-[#C9A96E] to-[#F5E6D3]', icon: HandHeart },
                                     ].map((item, i) => (
-                                        <motion.div 
+                                        <motion.div
                                             key={i}
-                                            className={`h-48 rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center`}
+                                            className={`h-48 bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}
                                             whileHover={{ scale: 1.03 }}
                                             transition={{ duration: 0.3 }}
                                         >
-                                            <item.icon className="w-16 h-16 text-white/60" />
+                                            <item.icon className="w-16 h-16 text-white/50" />
                                         </motion.div>
                                     ))}
                                 </div>
                                 <div className="space-y-4 mt-8">
                                     {[
-                                        { gradient: 'from-heritage-brown to-heritage-brownLight', icon: Users },
-                                        { gradient: 'from-heritage-sand to-heritage-creamDark', icon: Globe },
+                                        { gradient: 'from-[#8F6B5A] to-[#6B4F3A]', icon: Users },
+                                        { gradient: 'from-[#F5E6D3] to-[#D4A574]', icon: Globe },
                                     ].map((item, i) => (
-                                        <motion.div 
+                                        <motion.div
                                             key={i}
-                                            className={`h-48 rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center`}
+                                            className={`h-48 bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}
                                             whileHover={{ scale: 1.03 }}
                                             transition={{ duration: 0.3 }}
                                         >
-                                            <item.icon className="w-16 h-16 text-white/60" />
+                                            <item.icon className="w-16 h-16 text-white/50" />
                                         </motion.div>
                                     ))}
                                 </div>
@@ -696,44 +756,50 @@ export default function Home() {
             </section>
 
             {/* ============ COMMUNITY IMPACT ============ */}
-            <section className="py-20 md:py-28 bg-gradient-to-br from-heritage-terracotta via-heritage-terracottaDark to-heritage-brown relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-20 left-20 w-64 h-64 border-4 border-heritage-gold/30 rounded-full animate-spin-slow" />
-                    <div className="absolute bottom-20 right-20 w-80 h-80 border-4 border-heritage-gold/20 rounded-full animate-spin-slower" />
+            <section className="py-24 md:py-32 bg-[#3C2F2B] relative overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.04]">
+                    <div className="absolute top-20 left-20 w-64 h-64 border-4 border-[#C9A96E] rounded-full animate-spin-slow" />
+                    <div className="absolute bottom-20 right-20 w-80 h-80 border-4 border-[#C9A96E]/50 rounded-full animate-spin-slower" />
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div {...fadeInUp} className="text-center mb-12">
-                        <Badge className="mb-4 text-sm px-6 py-2 bg-heritage-gold text-heritage-brown border-none shadow-lg font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-16"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#C9A96E] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#C9A96E]/30 pb-2">
                             <Sparkles className="w-3 h-3 mr-2 inline" />
                             Community Impact
                             <Sparkles className="w-3 h-3 ml-2 inline" />
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#FDFBF7]">
                             Our Growing Heritage Community
                         </h2>
                     </motion.div>
 
-                    <motion.div 
+                    <motion.div
                         className="grid md:grid-cols-4 gap-8"
                         variants={staggerContainer}
                         initial="initial"
                         whileInView="animate"
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "-50px" }}
                     >
                         {impactStats.map((stat, i) => (
                             <motion.div
                                 key={i}
                                 variants={fadeInScale}
-                                className="text-center space-y-3 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/20 transition-all duration-300"
+                                whileHover={{ y: -4 }}
+                                className="text-center space-y-3 bg-white/5 backdrop-blur-sm p-8 border border-white/5 hover:bg-white/10 transition-all duration-500"
                             >
-                                <div className="w-16 h-16 mx-auto rounded-full bg-heritage-gold/20 flex items-center justify-center">
-                                    <stat.icon className="w-8 h-8 text-heritage-gold" />
+                                <div className="w-16 h-16 mx-auto flex items-center justify-center bg-[#C9A96E]/20">
+                                    <stat.icon className="w-8 h-8 text-[#C9A96E]" />
                                 </div>
-                                <p className="text-3xl md:text-4xl font-serif font-bold text-white">
+                                <p className="text-3xl md:text-4xl font-serif font-normal text-[#FDFBF7]">
                                     {stat.number}
                                 </p>
-                                <p className="text-sm font-light text-heritage-goldLight/80">{stat.label}</p>
+                                <p className="text-sm font-serif font-light text-[#D4A574]">{stat.label}</p>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -741,55 +807,65 @@ export default function Home() {
 
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 80" className="w-full h-auto" preserveAspectRatio="none">
-                        <path fill="#FAF5EE" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
+                        <path fill="#FDFBF7" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
                     </svg>
                 </div>
             </section>
 
             {/* ============ GALLERY PREVIEW ============ */}
-            <section className="py-20 md:py-28">
+            <section className="py-24 md:py-32 bg-[#FDFBF7]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div {...fadeInUp} className="text-center mb-16">
-                        <Badge variant="outlineGold" className="mb-4 text-sm px-4 py-1.5 border-heritage-gold/50 font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-20"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#B87333] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#B87333]/30 pb-2">
                             ✦ Heritage Gallery
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-brown">
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#3C2F2B]">
                             A Canvas of Heritage
                         </h2>
-                        <p className="mt-4 text-lg font-light text-heritage-brownLight max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg font-serif font-light text-[#8F6B5A] max-w-2xl mx-auto">
                             Where art, craft, and culture come alive
                         </p>
-                        <Separator className="w-24 mx-auto mt-4 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-20 h-px mx-auto mt-6 bg-[#B87333]" />
                     </motion.div>
 
-                    <motion.div 
+                    <motion.div
                         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
                         variants={staggerContainer}
                         initial="initial"
                         whileInView="animate"
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "-50px" }}
                     >
                         {galleryItems.map((item, i) => (
                             <motion.div
                                 key={i}
                                 variants={fadeInScale}
-                                className={`group relative h-48 md:h-56 rounded-2xl ${item.imageUrl ? '' : 'bg-gradient-to-br ' + item.gradient} overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300`}
+                                whileHover={{ scale: 1.03 }}
+                                className={`group relative h-48 md:h-56 ${item.imageUrl ? '' : 'bg-gradient-to-br ' + item.gradient} overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500`}
                             >
                                 {item.imageUrl ? (
-                                    <img src={item.imageUrl} alt={item.title || 'Gallery item'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src={item.imageUrl} alt={item.title || 'Gallery item'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity">
-                                        {item.Icon && <item.Icon className="w-12 h-12 text-white group-hover:scale-110 transition-transform duration-300" />}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                                        {item.Icon && <item.Icon className="w-12 h-12 text-white group-hover:scale-110 transition-transform duration-500" />}
                                     </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#3C2F2B]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             </motion.div>
                         ))}
                     </motion.div>
 
-                    <div className="text-center mt-10">
+                    <div className="text-center mt-12">
                         <Link to="/gallery">
-                            <Button variant="outline" size="lg" className="border-heritage-gold/50 text-heritage-brown hover:bg-heritage-gold hover:text-white transition-all duration-300 font-light">
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                className="border-[#B87333]/40 text-[#3C2F2B] hover:bg-[#B87333] hover:text-white transition-all duration-300 font-serif text-base px-10 py-3 rounded-none"
+                            >
                                 Explore Gallery <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
                         </Link>
@@ -798,21 +874,26 @@ export default function Home() {
             </section>
 
             {/* ============ TESTIMONIALS ============ */}
-            <section className="py-20 md:py-28 bg-gradient-to-b from-heritage-creamLight to-white">
+            <section className="py-24 md:py-32 bg-[#F5E6D3]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div {...fadeInUp} className="text-center mb-16">
-                        <Badge variant="outlineGold" className="mb-4 text-sm px-4 py-1.5 border-heritage-gold/50 font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center mb-20"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="inline-block text-[#B87333] font-serif text-sm tracking-[0.3em] uppercase mb-4 border-b border-[#B87333]/30 pb-2">
                             ✦ Voices of Heritage
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-brown">
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#3C2F2B]">
                             What Our Community Says
                         </h2>
-                        <Separator className="w-24 mx-auto mt-4 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-20 h-px mx-auto mt-6 bg-[#B87333]" />
                     </motion.div>
 
                     <div className="max-w-3xl mx-auto">
-                        <Card className="p-8 md:p-10 border-2 border-heritage-gold/20 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white relative overflow-hidden">
-                            <div className="absolute top-4 right-4 text-heritage-gold/20 text-6xl font-serif">❋</div>
+                        <div className="bg-white/80 backdrop-blur-sm p-10 md:p-14 border border-[#B87333]/20 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+                            <div className="absolute top-4 right-6 text-[#B87333]/10 text-7xl font-serif">❋</div>
 
                             <motion.div
                                 key={currentTestimonial}
@@ -822,26 +903,26 @@ export default function Home() {
                                 className="space-y-6"
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-heritage-gold to-amber-400 flex items-center justify-center text-white font-serif text-xl font-bold shadow-lg">
+                                    <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#8F6B5A] text-[#FDFBF7] font-serif text-xl">
                                         {testimonials[currentTestimonial].avatar}
                                     </div>
                                     <div>
-                                        <h4 className="font-serif font-semibold text-heritage-brown text-lg">
+                                        <h4 className="font-serif font-normal text-[#3C2F2B] text-lg">
                                             {testimonials[currentTestimonial].name}
                                         </h4>
-                                        <p className="text-sm font-light text-heritage-brownLight">
+                                        <p className="text-sm font-serif font-light text-[#8F6B5A]">
                                             {testimonials[currentTestimonial].role}
                                         </p>
                                     </div>
                                 </div>
 
-                                <p className="text-lg font-light text-heritage-brownLight italic leading-relaxed">
+                                <p className="text-lg font-serif font-light text-[#6B5B4B] italic leading-relaxed">
                                     "{testimonials[currentTestimonial].content}"
                                 </p>
 
                                 <div className="flex items-center gap-1">
                                     {[...Array(5)].map((_, s) => (
-                                        <Star key={s} className="w-5 h-5 text-heritage-gold fill-heritage-gold" />
+                                        <Star key={s} className="w-5 h-5 text-[#B87333] fill-[#B87333]" />
                                     ))}
                                 </div>
                             </motion.div>
@@ -849,7 +930,7 @@ export default function Home() {
                             <div className="flex items-center justify-between mt-8">
                                 <button
                                     onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-                                    className="w-10 h-10 rounded-full bg-heritage-gold/10 hover:bg-heritage-gold text-heritage-brown hover:text-white flex items-center justify-center transition-all duration-300"
+                                    className="w-10 h-10 flex items-center justify-center bg-[#B87333]/10 hover:bg-[#B87333] text-[#3C2F2B] hover:text-white transition-all duration-300"
                                 >
                                     <ChevronLeft className="w-5 h-5" />
                                 </button>
@@ -858,75 +939,97 @@ export default function Home() {
                                         <button
                                             key={i}
                                             onClick={() => setCurrentTestimonial(i)}
-                                            className={`w-3 h-3 rounded-full transition-all duration-300 ${i === currentTestimonial ? 'bg-heritage-gold w-6' : 'bg-heritage-gold/30'}`}
+                                            className={`w-3 h-3 transition-all duration-500 ${i === currentTestimonial ? 'bg-[#B87333] w-6' : 'bg-[#B87333]/30'}`}
                                         />
                                     ))}
                                 </div>
                                 <button
                                     onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
-                                    className="w-10 h-10 rounded-full bg-heritage-gold/10 hover:bg-heritage-gold text-heritage-brown hover:text-white flex items-center justify-center transition-all duration-300"
+                                    className="w-10 h-10 flex items-center justify-center bg-[#B87333]/10 hover:bg-[#B87333] text-[#3C2F2B] hover:text-white transition-all duration-300"
                                 >
                                     <ChevronRight className="w-5 h-5" />
                                 </button>
                             </div>
-                        </Card>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* ============ CTA SECTION ============ */}
-            <section className="py-16 md:py-20 bg-gradient-to-r from-heritage-brown to-heritage-terracottaDark relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-96 h-96 border-4 border-heritage-gold/30 rounded-full -mr-48 -mt-48" />
-                    <div className="absolute bottom-0 left-0 w-96 h-96 border-4 border-heritage-gold/20 rounded-full -ml-48 -mb-48" />
+            <section className="py-20 md:py-24 bg-[#3C2F2B] relative overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.04]">
+                    <div className="absolute top-0 right-0 w-96 h-96 border-4 border-[#C9A96E] rounded-full -mr-48 -mt-48" />
+                    <div className="absolute bottom-0 left-0 w-96 h-96 border-4 border-[#C9A96E]/50 rounded-full -ml-48 -mb-48" />
                 </div>
-                
+
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div {...fadeInUp} className="text-center max-w-3xl mx-auto space-y-8">
-                        <Badge className="px-6 py-2.5 bg-heritage-gold text-heritage-brown border-none shadow-lg font-light">
+                    <motion.div
+                        {...fadeInUp}
+                        className="text-center max-w-3xl mx-auto space-y-8"
+                        whileInView="animate"
+                        viewport={{ once: true, margin: "-50px" }}
+                    >
+                        <span className="inline-block px-6 py-2.5 bg-[#C9A96E] text-[#3C2F2B] font-serif text-sm tracking-[0.3em] uppercase border-none">
                             <Sparkles className="w-3 h-3 mr-2 inline" />
                             Start Your Journey
                             <Sparkles className="w-3 h-3 ml-2 inline" />
-                        </Badge>
-                        
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-heritage-cream">
+                        </span>
+
+                        <h2 className="text-3xl md:text-5xl font-serif font-normal text-[#FDFBF7]">
                             Ready to Rediscover Heritage?
                         </h2>
-                        
-                        <p className="text-lg font-light text-heritage-goldLight/90 leading-relaxed">
+
+                        <p className="text-lg font-serif font-light text-[#D4A574] leading-relaxed">
                             Whether you seek mindful creativity, heritage art, or community connection —
                             Adyom Foundation is your canvas. Let's begin.
                         </p>
-                        
+
                         <div className="flex flex-wrap gap-4 justify-center">
                             <Link to="/register">
-                                <Button size="xl" className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-xl transition-all duration-300 group font-medium">
+                                <Button
+                                    size="xl"
+                                    className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white hover:shadow-xl transition-all duration-300 group font-serif text-base px-10 py-3 rounded-none"
+                                >
                                     Become a Member <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </Button>
                             </Link>
                             <Link to="/contact">
-                                <Button variant="outline" size="xl" className="border-heritage-gold/50 text-heritage-goldLight hover:bg-heritage-gold/10 font-light">
+                                <Button
+                                    variant="outline"
+                                    size="xl"
+                                    className="border-[#C9A96E]/40 text-[#FDFBF7] hover:bg-[#C9A96E]/10 font-serif text-base px-10 py-3 rounded-none"
+                                >
                                     Contact Us
                                 </Button>
                             </Link>
                             <Link to="/corporate">
-                                <Button variant="outline" size="xl" className="border-heritage-gold/50 text-heritage-goldLight hover:bg-heritage-gold/10 font-light">
+                                <Button
+                                    variant="outline"
+                                    size="xl"
+                                    className="border-[#C9A96E]/40 text-[#FDFBF7] hover:bg-[#C9A96E]/10 font-serif text-base px-10 py-3 rounded-none"
+                                >
                                     Corporate Programs
                                 </Button>
                             </Link>
                         </div>
-                        
-                        <div className="flex flex-wrap gap-6 justify-center text-sm font-light text-heritage-goldLight/70">
-                            <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-heritage-gold" /> New Delhi, India</span>
-                            <span className="flex items-center gap-2"><Mail className="w-4 h-4 text-heritage-gold" /> hello@adyomfoundation.org</span>
-                            <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-heritage-gold" /> +91 XXX-XXX-XXXX</span>
+
+                        <div className="flex flex-wrap gap-6 justify-center text-sm font-serif text-[#D4A574]">
+                            <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-[#C9A96E]" /> New Delhi, India</span>
+                            <span className="flex items-center gap-2"><Mail className="w-4 h-4 text-[#C9A96E]" /> hello@adyomfoundation.org</span>
+                            <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-[#C9A96E]" /> +91 XXX-XXX-XXXX</span>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Custom CSS for animations */}
-            <style jsx>{`
+            {/* ============ CUSTOM STYLES ============ */}
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+
+                * {
+                    font-family: 'Playfair Display', 'Georgia', serif;
+                }
+
                 @keyframes spin-slow {
                     from { transform: rotate(0deg); }
                     to { transform: rotate(360deg); }
@@ -940,6 +1043,15 @@ export default function Home() {
                 }
                 .animate-spin-slower {
                     animation: spin-slower 30s linear infinite;
+                }
+
+                /* Override any sans-serif defaults */
+                .font-serif {
+                    font-family: 'Playfair Display', 'Georgia', serif !important;
+                }
+                
+                button, .button, a, p, h1, h2, h3, h4, h5, h6, span, div {
+                    font-family: 'Playfair Display', 'Georgia', serif;
                 }
             `}</style>
         </div>

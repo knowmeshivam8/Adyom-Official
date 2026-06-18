@@ -99,33 +99,32 @@ export default function Navbar() {
 
     return (
         <nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-                scrolled
-                    ? 'bg-white/95 backdrop-blur-md shadow-lg'
-                    : 'bg-gradient-to-b from-black/30 to-transparent'
-            }`}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+                ? 'bg-[#FDFBF7] shadow-lg'
+                : 'bg-[#FDFBF7]/95 backdrop-blur-sm shadow-sm'
+                }`}
         >
-            {/* Heritage top accent line */}
-            <div className="h-1 bg-gradient-to-r from-transparent via-heritage-gold to-transparent" />
+            {/* Heritage top accent line - always visible */}
+            <div className="h-px bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 md:h-20">
-                    {/* Logo */}
+                    {/* Logo - Always Dark */}
                     <Link to="/" className="flex items-center space-x-3 group">
-                        <div className="w-11 h-11 md:w-12 md:h-12 rounded-2xl bg-gradient-to-br from-heritage-gold to-amber-400 flex items-center justify-center text-heritage-brown font-serif text-xl md:text-2xl font-bold shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <div className="w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-xl md:text-2xl group-hover:bg-[#B87333] transition-colors duration-300">
                             A
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl md:text-2xl font-serif font-bold text-white tracking-wide drop-shadow-md group-hover:text-heritage-goldLight transition-colors duration-300">
+                            <span className="text-xl md:text-2xl font-serif font-normal tracking-wide text-[#3C2F2B] group-hover:text-[#B87333] transition-colors duration-300">
                                 Adyom
                             </span>
-                            <span className="text-[10px] md:text-xs text-heritage-goldLight/70 font-light tracking-[0.2em] uppercase hidden sm:block">
+                            <span className="text-[10px] md:text-xs font-serif tracking-[0.2em] uppercase hidden sm:block text-[#8F6B5A]">
                                 Foundation
                             </span>
                         </div>
                     </Link>
 
-                    {/* Desktop Nav Links */}
+                    {/* Desktop Nav Links - Always Dark */}
                     <div className="hidden lg:flex items-center space-x-1">
                         {navLinks.map((link) => (
                             <div key={link.name} className="relative">
@@ -137,37 +136,33 @@ export default function Navbar() {
                                     >
                                         <Link
                                             to={link.path}
-                                            className={`px-3 py-2 text-sm font-light transition-all duration-300 flex items-center gap-1 rounded-lg ${
-                                                location.pathname.startsWith(link.path)
-                                                    ? 'text-heritage-goldLight bg-white/10 backdrop-blur-sm'
-                                                    : scrolled
-                                                        ? 'text-heritage-brown hover:text-heritage-gold hover:bg-heritage-gold/10'
-                                                        : 'text-white/90 hover:text-heritage-goldLight hover:bg-white/10'
-                                            }`}
+                                            className={`px-3 py-2 text-sm font-serif font-light transition-all duration-300 flex items-center gap-1 ${location.pathname.startsWith(link.path)
+                                                ? 'text-[#B87333] bg-[#B87333]/10'
+                                                : 'text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5'
+                                                }`}
                                         >
                                             <link.icon className="w-4 h-4" />
                                             {link.name}
-                                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${
-                                                activeDropdown === link.name ? 'rotate-180' : ''
-                                            }`} />
+                                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${activeDropdown === link.name ? 'rotate-180' : ''
+                                                }`} />
                                         </Link>
                                         <AnimatePresence>
                                             {activeDropdown === link.name && (
                                                 <motion.div
-                                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 10 }}
                                                     transition={{ duration: 0.2 }}
-                                                    className="absolute top-full left-0 mt-2 w-56 bg-white shadow-2xl rounded-2xl border border-heritage-gold/20 py-2 overflow-hidden"
+                                                    className="absolute top-full left-0 mt-2 w-56 bg-[#FDFBF7] shadow-xl border border-[#B87333]/10 py-2"
                                                 >
                                                     {link.submenu.map((sub) => (
                                                         <Link
                                                             key={sub.name}
                                                             to={sub.path}
-                                                            className="block px-5 py-2.5 text-sm font-light text-heritage-brown hover:bg-gradient-to-r hover:from-heritage-gold/10 hover:to-transparent hover:text-heritage-gold transition-all duration-300"
+                                                            className="block px-5 py-2.5 text-sm font-serif font-light text-[#3C2F2B] hover:bg-[#B87333]/5 hover:text-[#B87333] transition-all duration-300"
                                                         >
                                                             <span className="flex items-center gap-2">
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-heritage-gold/30" />
+                                                                <span className="w-1.5 h-1.5 bg-[#B87333]/30" />
                                                                 {sub.name}
                                                             </span>
                                                         </Link>
@@ -179,13 +174,10 @@ export default function Navbar() {
                                 ) : (
                                     <Link
                                         to={link.path}
-                                        className={`px-3 py-2 text-sm font-light transition-all duration-300 flex items-center gap-1 rounded-lg ${
-                                            location.pathname === link.path
-                                                ? 'text-heritage-goldLight bg-white/10 backdrop-blur-sm'
-                                                : scrolled
-                                                    ? 'text-heritage-brown hover:text-heritage-gold hover:bg-heritage-gold/10'
-                                                    : 'text-white/90 hover:text-heritage-goldLight hover:bg-white/10'
-                                        }`}
+                                        className={`px-3 py-2 text-sm font-serif font-light transition-all duration-300 flex items-center gap-1 ${location.pathname === link.path
+                                            ? 'text-[#B87333] bg-[#B87333]/10'
+                                            : 'text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5'
+                                            }`}
                                     >
                                         <link.icon className="w-4 h-4" />
                                         {link.name}
@@ -195,25 +187,25 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    {/* Right side: Auth + CTA */}
+                    {/* Right side: Auth + CTA - Always Dark */}
                     <div className="hidden lg:flex items-center space-x-3">
                         {isAuthenticated ? (
                             <div className="flex items-center space-x-3">
                                 <Link to={dashboardPath}>
-                                    <Button 
-                                        className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-lg transition-all duration-300 font-medium text-sm px-4 py-2"
+                                    <Button
+                                        className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white transition-all duration-300 font-serif text-sm px-4 py-2"
                                     >
                                         <LayoutDashboard className="w-4 h-4 mr-1.5" />
                                         Dashboard
                                     </Button>
                                 </Link>
                                 <div className="flex items-center space-x-2">
-                                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-heritage-gold to-amber-400 flex items-center justify-center text-heritage-brown font-serif text-sm font-bold shadow-md">
+                                    <div className="w-9 h-9 flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-sm">
                                         {user?.name?.charAt(0) || 'U'}
                                     </div>
                                     <button
                                         onClick={handleLogout}
-                                        className="text-white/70 hover:text-heritage-goldLight transition-all duration-300 p-1.5 rounded-lg hover:bg-white/10"
+                                        className="text-[#8F6B5A] hover:text-[#B87333] transition-all duration-300 p-1.5"
                                         title="Logout"
                                     >
                                         <LogOut className="w-4 h-4" />
@@ -223,17 +215,15 @@ export default function Navbar() {
                         ) : (
                             <div className="flex items-center space-x-2">
                                 <Link to="/login">
-                                    <Button 
-                                        variant="ghost" 
-                                        className={`font-light hover:bg-white/10 transition-all duration-300 ${
-                                            scrolled ? 'text-heritage-brown hover:text-heritage-gold' : 'text-white/80 hover:text-white'
-                                        }`}
+                                    <Button
+                                        variant="ghost"
+                                        className="font-serif font-light text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5 transition-all duration-300"
                                     >
                                         Log In
                                     </Button>
                                 </Link>
                                 <Link to="/register">
-                                    <Button className="bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-lg transition-all duration-300 font-medium group">
+                                    <Button className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white transition-all duration-300 font-serif group">
                                         <Sparkles className="w-4 h-4 mr-1.5 group-hover:rotate-12 transition-transform duration-300" />
                                         Join Adyom
                                     </Button>
@@ -242,19 +232,17 @@ export default function Navbar() {
                         )}
                     </div>
 
-                    {/* Mobile Menu Toggle */}
+                    {/* Mobile Menu Toggle - Always Dark */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className={`lg:hidden p-2 rounded-lg transition-all duration-300 ${
-                            scrolled ? 'text-heritage-brown hover:bg-heritage-gold/10' : 'text-white hover:bg-white/10'
-                        }`}
+                        className="lg:hidden p-2 text-[#3C2F2B] hover:bg-[#B87333]/10 transition-all duration-300"
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - Always Dark */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -262,9 +250,9 @@ export default function Navbar() {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="lg:hidden bg-white shadow-2xl border-t border-heritage-gold/20 overflow-hidden"
+                        className="lg:hidden bg-[#FDFBF7] shadow-2xl border-t border-[#B87333]/10 overflow-hidden"
                     >
-                        <motion.div 
+                        <motion.div
                             variants={staggerMenu}
                             initial="initial"
                             animate="animate"
@@ -274,20 +262,20 @@ export default function Navbar() {
                                 <motion.div key={link.name} variants={menuItem}>
                                     <Link
                                         to={link.path}
-                                        className="flex items-center gap-3 px-4 py-3 text-sm font-light text-heritage-brown hover:text-heritage-gold hover:bg-gradient-to-r hover:from-heritage-gold/5 hover:to-transparent rounded-xl transition-all duration-300"
+                                        className="flex items-center gap-3 px-4 py-3 text-sm font-serif font-light text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5 transition-all duration-300"
                                         onClick={() => setIsOpen(false)}
                                     >
-                                        <link.icon className="w-5 h-5 text-heritage-gold/60" />
+                                        <link.icon className="w-5 h-5 text-[#B87333]/60" />
                                         {link.name}
-                                        {link.submenu && <ChevronDown className="w-4 h-4 ml-auto text-heritage-gold/40" />}
+                                        {link.submenu && <ChevronDown className="w-4 h-4 ml-auto text-[#B87333]/40" />}
                                     </Link>
                                     {link.submenu && (
-                                        <div className="ml-12 space-y-1 border-l-2 border-heritage-gold/20 pl-4">
+                                        <div className="ml-12 space-y-1 border-l-2 border-[#B87333]/20 pl-4">
                                             {link.submenu.map((sub) => (
                                                 <Link
                                                     key={sub.name}
                                                     to={sub.path}
-                                                    className="block px-4 py-2 text-xs font-light text-heritage-brownLight hover:text-heritage-gold transition-colors duration-300"
+                                                    className="block px-4 py-2 text-xs font-serif font-light text-[#8F6B5A] hover:text-[#B87333] transition-colors duration-300"
                                                     onClick={() => setIsOpen(false)}
                                                 >
                                                     {sub.name}
@@ -297,16 +285,16 @@ export default function Navbar() {
                                     )}
                                 </motion.div>
                             ))}
-                            
-                            <motion.div variants={menuItem} className="border-t border-heritage-gold/20 pt-4 mt-2 space-y-2">
+
+                            <motion.div variants={menuItem} className="border-t border-[#B87333]/10 pt-4 mt-2 space-y-2">
                                 {isAuthenticated ? (
                                     <>
                                         <Link
                                             to={dashboardPath}
-                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-heritage-brown hover:text-heritage-gold hover:bg-gradient-to-r hover:from-heritage-gold/5 hover:to-transparent rounded-xl transition-all duration-300"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-serif font-medium text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5 transition-all duration-300"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            <LayoutDashboard className="w-5 h-5 text-heritage-gold/60" />
+                                            <LayoutDashboard className="w-5 h-5 text-[#B87333]/60" />
                                             Dashboard
                                         </Link>
                                         <button
@@ -314,9 +302,9 @@ export default function Navbar() {
                                                 handleLogout();
                                                 setIsOpen(false);
                                             }}
-                                            className="flex items-center gap-3 px-4 py-3 text-sm font-light text-heritage-brown hover:text-red-500 hover:bg-red-50 rounded-xl transition-all duration-300 w-full"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-serif font-light text-[#3C2F2B] hover:text-red-500 hover:bg-red-50 transition-all duration-300 w-full"
                                         >
-                                            <LogOut className="w-5 h-5 text-heritage-gold/60" />
+                                            <LogOut className="w-5 h-5 text-[#B87333]/60" />
                                             Logout
                                         </button>
                                     </>
@@ -324,10 +312,10 @@ export default function Navbar() {
                                     <>
                                         <Link
                                             to="/login"
-                                            className="flex items-center gap-3 px-4 py-3 text-sm font-light text-heritage-brown hover:text-heritage-gold hover:bg-gradient-to-r hover:from-heritage-gold/5 hover:to-transparent rounded-xl transition-all duration-300"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-serif font-light text-[#3C2F2B] hover:text-[#B87333] hover:bg-[#B87333]/5 transition-all duration-300"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            <User className="w-5 h-5 text-heritage-gold/60" />
+                                            <User className="w-5 h-5 text-[#B87333]/60" />
                                             Log In
                                         </Link>
                                         <Link
@@ -335,18 +323,18 @@ export default function Navbar() {
                                             className="block"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            <Button className="w-full bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown hover:shadow-lg transition-all duration-300 font-medium group">
+                                            <Button className="w-full bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white transition-all duration-300 font-serif group">
                                                 <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                                                Join Adyom
+                                                Sign Up
                                             </Button>
                                         </Link>
                                     </>
                                 )}
                             </motion.div>
-                            
+
                             {/* Mobile Footer */}
                             <motion.div variants={menuItem} className="pt-4 text-center">
-                                <p className="text-[10px] text-heritage-brownLight/50 font-light tracking-wider">
+                                <p className="text-[10px] font-serif text-[#8F6B5A]/50 tracking-wider">
                                     © {new Date().getFullYear()} Adyom Foundation
                                 </p>
                             </motion.div>
@@ -355,17 +343,11 @@ export default function Navbar() {
                 )}
             </AnimatePresence>
 
-            <style jsx>{`
-                /* Custom scrollbar for dropdown */
-                .nav-dropdown::-webkit-scrollbar {
-                    width: 4px;
-                }
-                .nav-dropdown::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-                .nav-dropdown::-webkit-scrollbar-thumb {
-                    background: #D4A574;
-                    border-radius: 2px;
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+                
+                * {
+                    font-family: 'Playfair Display', 'Georgia', serif !important;
                 }
             `}</style>
         </nav>

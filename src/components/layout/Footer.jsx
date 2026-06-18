@@ -87,23 +87,23 @@ const staggerContainer = {
 
 export default function Footer() {
     return (
-        <footer className="relative bg-gradient-to-br from-heritage-terracotta via-heritage-terracottaDark to-heritage-brown overflow-hidden">
+        <footer className="relative bg-[#3C2F2B] overflow-hidden">
             {/* Decorative Background Elements */}
-            <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 left-0 w-64 h-64 border-4 border-heritage-gold/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
-                <div className="absolute bottom-0 right-0 w-96 h-96 border-4 border-heritage-gold/20 rounded-full translate-x-1/2 translate-y-1/2" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-4 border-heritage-gold/10 rounded-full" />
-                
+            <div className="absolute inset-0 opacity-[0.04]">
+                <div className="absolute top-0 left-0 w-64 h-64 border-4 border-[#C9A96E] rounded-full -translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 right-0 w-96 h-96 border-4 border-[#C9A96E] rounded-full translate-x-1/2 translate-y-1/2" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-4 border-[#C9A96E]/50 rounded-full" />
+
                 {/* Floating decorative elements */}
-                <motion.div 
-                    className="absolute top-20 left-20 text-4xl text-heritage-goldLight"
+                <motion.div
+                    className="absolute top-20 left-20 text-4xl text-[#C9A96E]"
                     animate={{ y: [0, -20, 0] }}
                     transition={{ duration: 4, repeat: Infinity }}
                 >
                     ✦
                 </motion.div>
-                <motion.div 
-                    className="absolute bottom-20 right-20 text-3xl text-heritage-goldLight"
+                <motion.div
+                    className="absolute bottom-20 right-20 text-3xl text-[#C9A96E]"
                     animate={{ y: [0, 20, 0] }}
                     transition={{ duration: 5, repeat: Infinity }}
                 >
@@ -112,11 +112,11 @@ export default function Footer() {
             </div>
 
             {/* Heritage Decorative Top Border */}
-            <div className="relative z-10 h-1 bg-gradient-to-r from-transparent via-heritage-gold to-transparent" />
+            <div className="relative z-10 h-px bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent" />
 
             {/* Main Footer Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-                <motion.div 
+                <motion.div
                     variants={staggerContainer}
                     initial="initial"
                     whileInView="animate"
@@ -126,25 +126,25 @@ export default function Footer() {
                     {/* Brand Column */}
                     <motion.div variants={fadeInUp} className="space-y-5">
                         <div className="flex items-center space-x-3">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-heritage-gold to-amber-400 flex items-center justify-center text-heritage-brown font-serif text-2xl font-bold shadow-lg">
+                            <div className="w-14 h-14 flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-2xl">
                                 A
                             </div>
                             <div>
-                                <h3 className="text-2xl font-serif font-bold text-white tracking-wide">
+                                <h3 className="text-2xl font-serif font-normal text-[#FDFBF7] tracking-wide">
                                     Adyom
                                 </h3>
-                                <p className="text-xs text-heritage-goldLight font-light tracking-[0.2em] uppercase">
+                                <p className="text-[10px] text-[#D4A574] font-serif tracking-[0.2em] uppercase">
                                     Foundation
                                 </p>
                             </div>
                         </div>
-                        
-                        <p className="text-sm text-heritage-goldLight/80 font-light leading-relaxed">
+
+                        <p className="text-sm font-serif font-light text-[#D4A574] leading-relaxed">
                             Preserving India's timeless heritage through art, mindfulness, and community.
                             Where tradition meets transformation — a canvas of heritage for the modern soul.
                         </p>
-                        
-                        <div className="flex items-center gap-2 text-xs text-heritage-goldLight/60 font-light">
+
+                        <div className="flex items-center gap-2 text-xs font-serif text-[#D4A574]/60">
                             <Shield className="w-3 h-3" />
                             <span>Est. 2018 • Trusted by 5000+</span>
                         </div>
@@ -156,7 +156,7 @@ export default function Footer() {
                                     href="#"
                                     whileHover={{ scale: 1.15, y: -3 }}
                                     whileTap={{ scale: 0.9 }}
-                                    className={`w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-heritage-goldLight hover:text-white flex items-center justify-center transition-all duration-300 border border-white/10 ${social.color}`}
+                                    className={`w-10 h-10 border border-white/5 bg-white/5 text-[#D4A574] hover:text-white flex items-center justify-center transition-all duration-300 ${social.color}`}
                                 >
                                     <social.icon className="w-4 h-4" />
                                 </motion.a>
@@ -166,18 +166,18 @@ export default function Footer() {
 
                     {/* Programs Column */}
                     <motion.div variants={fadeInUp} className="space-y-4">
-                        <h4 className="text-lg font-serif font-semibold text-white">
+                        <h4 className="text-lg font-serif font-normal text-[#FDFBF7]">
                             Our Programs
                         </h4>
-                        <div className="w-12 h-0.5 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-12 h-px bg-[#C9A96E]" />
                         <ul className="space-y-2.5">
                             {programLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center text-sm text-heritage-goldLight/80 hover:text-white font-light transition-all duration-300"
+                                        className="group flex items-center text-sm font-serif font-light text-[#D4A574] hover:text-[#FDFBF7] transition-all duration-300"
                                     >
-                                        <ChevronRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-all duration-300 text-heritage-gold" />
+                                        <ChevronRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-all duration-300 text-[#C9A96E]" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -187,18 +187,18 @@ export default function Footer() {
 
                     {/* Quick Links Column */}
                     <motion.div variants={fadeInUp} className="space-y-4">
-                        <h4 className="text-lg font-serif font-semibold text-white">
+                        <h4 className="text-lg font-serif font-normal text-[#FDFBF7]">
                             Quick Links
                         </h4>
-                        <div className="w-12 h-0.5 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-12 h-px bg-[#C9A96E]" />
                         <ul className="space-y-2.5">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center text-sm text-heritage-goldLight/80 hover:text-white font-light transition-all duration-300"
+                                        className="group flex items-center text-sm font-serif font-light text-[#D4A574] hover:text-[#FDFBF7] transition-all duration-300"
                                     >
-                                        <ChevronRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-all duration-300 text-heritage-gold" />
+                                        <ChevronRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-all duration-300 text-[#C9A96E]" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -206,7 +206,7 @@ export default function Footer() {
                             <li className="mt-3">
                                 <Link
                                     to="/register"
-                                    className="group inline-flex items-center gap-2 px-4 py-2 bg-heritage-gold/20 hover:bg-heritage-gold/30 text-heritage-goldLight hover:text-white rounded-lg border border-heritage-gold/30 transition-all duration-300 text-sm font-light"
+                                    className="group inline-flex items-center gap-2 px-4 py-2 bg-[#C9A96E]/20 hover:bg-[#C9A96E]/30 text-[#D4A574] hover:text-[#FDFBF7] border border-[#C9A96E]/30 transition-all duration-300 text-sm font-serif font-light"
                                 >
                                     Become a Member
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -217,41 +217,41 @@ export default function Footer() {
 
                     {/* Contact Column */}
                     <motion.div variants={fadeInUp} className="space-y-4">
-                        <h4 className="text-lg font-serif font-semibold text-white">
+                        <h4 className="text-lg font-serif font-normal text-[#FDFBF7]">
                             Reach Us
                         </h4>
-                        <div className="w-12 h-0.5 bg-gradient-to-r from-heritage-gold to-transparent" />
+                        <div className="w-12 h-px bg-[#C9A96E]" />
                         <ul className="space-y-3.5">
-                            <li className="group flex items-start gap-3 text-heritage-goldLight/80 hover:text-white transition-colors duration-300">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-heritage-gold/20 transition-colors duration-300 flex-shrink-0">
-                                    <MapPin className="w-4 h-4 text-heritage-gold" />
+                            <li className="group flex items-start gap-3 text-[#D4A574] hover:text-[#FDFBF7] transition-colors duration-300">
+                                <div className="w-8 h-8 border border-white/5 bg-white/5 flex items-center justify-center group-hover:bg-[#C9A96E]/20 transition-colors duration-300 flex-shrink-0">
+                                    <MapPin className="w-4 h-4 text-[#C9A96E]" />
                                 </div>
-                                <span className="text-sm font-light">New Delhi, India</span>
+                                <span className="text-sm font-serif font-light">New Delhi, India</span>
                             </li>
-                            <li className="group flex items-start gap-3 text-heritage-goldLight/80 hover:text-white transition-colors duration-300">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-heritage-gold/20 transition-colors duration-300 flex-shrink-0">
-                                    <Phone className="w-4 h-4 text-heritage-gold" />
+                            <li className="group flex items-start gap-3 text-[#D4A574] hover:text-[#FDFBF7] transition-colors duration-300">
+                                <div className="w-8 h-8 border border-white/5 bg-white/5 flex items-center justify-center group-hover:bg-[#C9A96E]/20 transition-colors duration-300 flex-shrink-0">
+                                    <Phone className="w-4 h-4 text-[#C9A96E]" />
                                 </div>
-                                <span className="text-sm font-light">+91 XXX-XXX-XXXX</span>
+                                <span className="text-sm font-serif font-light">+91 XXX-XXX-XXXX</span>
                             </li>
-                            <li className="group flex items-start gap-3 text-heritage-goldLight/80 hover:text-white transition-colors duration-300">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-heritage-gold/20 transition-colors duration-300 flex-shrink-0">
-                                    <Mail className="w-4 h-4 text-heritage-gold" />
+                            <li className="group flex items-start gap-3 text-[#D4A574] hover:text-[#FDFBF7] transition-colors duration-300">
+                                <div className="w-8 h-8 border border-white/5 bg-white/5 flex items-center justify-center group-hover:bg-[#C9A96E]/20 transition-colors duration-300 flex-shrink-0">
+                                    <Mail className="w-4 h-4 text-[#C9A96E]" />
                                 </div>
-                                <span className="text-sm font-light">hello@adyomfoundation.org</span>
+                                <span className="text-sm font-serif font-light">hello@adyomfoundation.org</span>
                             </li>
-                            <li className="group flex items-start gap-3 text-heritage-goldLight/80 hover:text-white transition-colors duration-300">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-heritage-gold/20 transition-colors duration-300 flex-shrink-0">
-                                    <Clock className="w-4 h-4 text-heritage-gold" />
+                            <li className="group flex items-start gap-3 text-[#D4A574] hover:text-[#FDFBF7] transition-colors duration-300">
+                                <div className="w-8 h-8 border border-white/5 bg-white/5 flex items-center justify-center group-hover:bg-[#C9A96E]/20 transition-colors duration-300 flex-shrink-0">
+                                    <Clock className="w-4 h-4 text-[#C9A96E]" />
                                 </div>
-                                <span className="text-sm font-light">Mon–Fri: 10am–6pm IST</span>
+                                <span className="text-sm font-serif font-light">Mon–Fri: 10am–6pm IST</span>
                             </li>
                         </ul>
                         <Link to="/contact">
-                            <motion.button 
+                            <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="mt-2 w-full px-4 py-2.5 bg-gradient-to-r from-heritage-gold to-amber-400 text-heritage-brown font-medium rounded-lg hover:shadow-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
+                                className="mt-2 w-full px-4 py-2.5 bg-[#C9A96E] text-[#3C2F2B] hover:bg-[#B87333] hover:text-white transition-all duration-300 text-sm font-serif flex items-center justify-center gap-2"
                             >
                                 <Sparkles className="w-4 h-4" />
                                 Send a Message
@@ -263,22 +263,22 @@ export default function Footer() {
             </div>
 
             {/* Newsletter Subscription Bar */}
-            <div className="relative z-10 border-t border-white/10">
+            <div className="relative z-10 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <Globe className="w-5 h-5 text-heritage-gold" />
-                            <span className="text-sm text-heritage-goldLight/80 font-light">
+                            <Globe className="w-5 h-5 text-[#C9A96E]" />
+                            <span className="text-sm font-serif font-light text-[#D4A574]">
                                 Join our newsletter for heritage updates
                             </span>
                         </div>
                         <div className="flex w-full md:w-auto gap-2">
-                            <input 
-                                type="email" 
-                                placeholder="Enter your email" 
-                                className="flex-1 md:w-64 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder:text-heritage-goldLight/50 text-sm font-light focus:outline-none focus:border-heritage-gold/50 transition-colors"
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                className="flex-1 md:w-64 px-4 py-2 bg-white/5 border border-white/10 text-[#FDFBF7] placeholder:text-[#D4A574]/50 text-sm font-serif font-light focus:outline-none focus:border-[#C9A96E]/50 transition-colors"
                             />
-                            <button className="px-4 py-2 bg-heritage-gold text-heritage-brown font-medium rounded-lg hover:bg-heritage-gold/90 transition-colors duration-300 text-sm whitespace-nowrap">
+                            <button className="px-4 py-2 bg-[#C9A96E] text-[#3C2F2B] hover:bg-[#B87333] hover:text-white transition-colors duration-300 text-sm font-serif whitespace-nowrap">
                                 Subscribe
                             </button>
                         </div>
@@ -287,26 +287,32 @@ export default function Footer() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-sm">
+            <div className="relative z-10 border-t border-white/5 bg-black/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
-                    <p className="text-xs text-heritage-goldLight/60 font-light text-center md:text-left">
+                    <p className="text-xs font-serif font-light text-[#D4A574]/60 text-center md:text-left">
                         © {new Date().getFullYear()} Adyom Foundation. All rights reserved.
                         Preserving heritage, nurturing creativity.
                     </p>
-                    <p className="text-xs text-heritage-goldLight/60 font-light flex items-center gap-1.5">
-                        Made with 
+                    <p className="text-xs font-serif font-light text-[#D4A574]/60 flex items-center gap-1.5">
+                        Made with
                         <motion.span
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                         >
-                            <Heart className="w-3 h-3 text-heritage-gold fill-heritage-gold" />
+                            <Heart className="w-3 h-3 text-[#C9A96E] fill-[#C9A96E]" />
                         </motion.span>
                         in India
                     </p>
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+                
+                * {
+                    font-family: 'Playfair Display', 'Georgia', serif !important;
+                }
+
                 @keyframes spin-slow {
                     from { transform: rotate(0deg); }
                     to { transform: rotate(360deg); }

@@ -16,7 +16,7 @@ import { programAPI, sponsorAPI, userAPI } from '@/api';
 import { useAuth } from '@/context/AuthContext';
 import SecureVideoPlayer from '@/components/ui/SecureVideoPlayer';
 
-// Fallback data for Chaitanya/Sparsh programs when backend is unavailable
+// ============ FALLBACK DATA ============
 const fallbackProgram = {
     title: 'Chaitanya: The Awakening',
     category: 'chaitanya',
@@ -28,7 +28,7 @@ const fallbackProgram = {
     price: 'Enroll Now',
     instructor: 'Adyom Art Team',
     programDurationWeeks: 49,
-    desc: 'A year-long journey through 7 tribal and folk art forms of India. Each module explores a different art form with 4 creative sessions and 2 application sessions.',
+    desc: 'A year-long journey through 7 tribal and folk art forms of India.',
     modules: [
         {
             _id: 'mod1', title: 'Gond Art', artFormName: 'Gond Art', artFormType: 'tribal',
@@ -39,8 +39,8 @@ const fallbackProgram = {
                 { title: 'Session 2: Animal Motifs in Gond', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 3: Tree of Life Composition', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 4: Advanced Gond Storytelling', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Gond on Coasters (Application)', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Gond on Fridge Magnets (Application)', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 5: Gond on Coasters', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 6: Gond on Fridge Magnets', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
             ],
             liveRecordings: []
         },
@@ -53,8 +53,8 @@ const fallbackProgram = {
                 { title: 'Session 2: Human Figures in Warli', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 3: Warli Village Scenes', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 4: Tarpa Dance Composition', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Warli on Wooden Trays (Application)', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Warli Wall Art (Application)', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 5: Warli on Wooden Trays', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 6: Warli Wall Art', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
             ],
             liveRecordings: []
         },
@@ -67,106 +67,8 @@ const fallbackProgram = {
                 { title: 'Session 2: Nature Motifs in Madhubani', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 3: God & Goddess Depictions', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
                 { title: 'Session 4: Wedding Scene (Kohbar)', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Madhubani on Fabric (Application)', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Madhubani on Ceramic (Application)', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod4', title: 'Pattachitra Art', artFormName: 'Pattachitra Art', artFormType: 'folk',
-            description: 'Master the intricate scroll painting tradition from Odisha.',
-            isActive: true, isLocked: false, order: 4, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Introduction to Pattachitra', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Intricate Borders', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Deity Portraits', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Full Scroll Composition', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Pattachitra on Bookmarks', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Pattachitra on Canvas', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod5', title: 'Sohrai Art', artFormName: 'Sohrai Art', artFormType: 'tribal',
-            description: 'Discover the harvest festival wall painting tradition from Jharkhand.',
-            isActive: true, isLocked: false, order: 5, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Earth Colors and Mud Base', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Natural Motifs and Patterns', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Animal Depictions in Sohrai', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Harvest Celebration Scenes', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Sohrai on Earthen Pots', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Sohrai on Wall Panels', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod6', title: 'Kalamkari Art', artFormName: 'Kalamkari Art', artFormType: 'folk',
-            description: 'Learn the pen-drawn textile art tradition from Andhra Pradesh.',
-            isActive: true, isLocked: false, order: 6, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: The Kalamkari Pen Techniques', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Floral and Vine Patterns', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Mythological Figures', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Detailed Scene Composition', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Kalamkari on Tote Bags', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Kalamkari on Cushion Covers', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod7', title: 'Phad Painting', artFormName: 'Phad Painting', artFormType: 'folk',
-            description: 'Explore the scroll painting tradition from Rajasthan depicting folk deities.',
-            isActive: true, isLocked: false, order: 7, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Understanding Phad Layouts', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Character Construction', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Adding Colors and Details', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Completing a Scene', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Phad on Paper Banners', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Phad on Wooden Plaques', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod8', title: 'Pichwai Art', artFormName: 'Pichwai Art', artFormType: 'folk',
-            description: 'Learn the intricate backdrop paintings originating from Nathdwara, Rajasthan.',
-            isActive: false, isLocked: true, order: 8, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Lotus and Cow Motifs', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Background Construction', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Shrinathji Depiction', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Golden Detailing', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Pichwai on Canvas', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Pichwai Wall Hangings', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod9', title: 'Cheriyal Scroll Painting', artFormName: 'Cheriyal Scroll', artFormType: 'folk',
-            description: 'Discover the storytelling scroll art from Telangana.',
-            isActive: false, isLocked: true, order: 9, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Introduction to Cheriyal Formats', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Figures and Costumes', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Village Narratives', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Elaborate Borders', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Cheriyal on Plates', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Cheriyal Mini Scrolls', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-            ],
-            liveRecordings: []
-        },
-        {
-            _id: 'mod10', title: 'Kalighat Painting', artFormName: 'Kalighat Painting', artFormType: 'folk',
-            description: 'Explore the bold, sweeping brushstroke art from Bengal.',
-            isActive: false, isLocked: true, order: 10, materialListUrl: '#',
-            fundamentalsVideoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', sessions: [
-                { title: 'Session 1: Bold Outlines and Sweeping Curves', type: 'creation', sessionNumber: 1, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 2: Shading and Volume', type: 'creation', sessionNumber: 2, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 3: Mythological Subjects', type: 'creation', sessionNumber: 3, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 4: Everyday Life Scenes', type: 'creation', sessionNumber: 4, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 5: Kalighat on Postcards', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                { title: 'Session 6: Kalighat on Framed Canvas', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 5: Madhubani on Fabric', type: 'application', sessionNumber: 5, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                { title: 'Session 6: Madhubani on Ceramic', type: 'application', sessionNumber: 6, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
             ],
             liveRecordings: []
         },
@@ -177,7 +79,6 @@ const fallbackProgram = {
         'Apply each art form on 2 usable surfaces',
         'Receive Excellence Certificate after 3 and 6 module submissions',
         'Earn a Completion Certificate upon finishing all 7 modules',
-        'Access live class recordings and downloadable material lists',
     ],
 };
 
@@ -205,17 +106,15 @@ export default function ProgramDetail() {
     const [loading, setLoading] = useState(true);
     const [expandedModule, setExpandedModule] = useState(null);
     const [activeModules, setActiveModules] = useState([]);
-    const [activeVideo, setActiveVideo] = useState(null); // { url, title, moduleId }
+    const [activeVideo, setActiveVideo] = useState(null);
     const [showVideoPlayer, setShowVideoPlayer] = useState(false);
     const [showSponsorModal, setShowSponsorModal] = useState(false);
     const [sponsorCode, setSponsorCode] = useState('');
     const [sponsorLoading, setSponsorLoading] = useState(false);
     const [sponsorError, setSponsorError] = useState('');
     const [sponsorSuccess, setSponsorSuccess] = useState('');
-
     const [enrollLoading, setEnrollLoading] = useState(false);
 
-    // Compute enrolled modules for this program
     const enrolledProgram = user?.enrolledPrograms?.find(
         ep => String(ep.program?._id || ep.program) === String(program?._id || program?.slug)
     );
@@ -230,7 +129,6 @@ export default function ProgramDetail() {
             setEnrollLoading(true);
             const res = await userAPI.enrollProgram({ programId: program._id, moduleId });
             if (res.data.success) {
-                // Refresh page to update user context
                 window.location.reload();
             }
         } catch (error) {
@@ -250,7 +148,6 @@ export default function ProgramDetail() {
             setEnrollLoading(true);
             const res = await userAPI.enrollProgram({ programId });
             if (res.data.success) {
-                // Redirect to dashboard learning
                 window.location.href = '/dashboard/learning';
             }
         } catch (error) {
@@ -261,6 +158,26 @@ export default function ProgramDetail() {
         }
     };
 
+    const handleSponsorEnroll = async () => {
+        if (!sponsorCode.trim()) return;
+        setSponsorLoading(true);
+        setSponsorError('');
+        setSponsorSuccess('');
+        try {
+            const res = await sponsorAPI.enrollWithSponsor(sponsorCode, program._id);
+            if (res.data.success) {
+                setSponsorSuccess('Enrolled successfully! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = '/dashboard/learning';
+                }, 1500);
+            }
+        } catch (error) {
+            setSponsorError(error.response?.data?.message || 'Invalid sponsor code. Please try again.');
+        } finally {
+            setSponsorLoading(false);
+        }
+    };
+
     useEffect(() => {
         const fetchProgram = async () => {
             try {
@@ -268,8 +185,10 @@ export default function ProgramDetail() {
                 const apiProgram = res.data.data || res.data.program || res.data;
 
                 const isChaitanyaOrSparsh =
-                    apiProgram.programType === 'Chaitanya' || apiProgram.programType === 'Sparsh' || apiProgram.programType === 'KalaPath' || apiProgram.programType === 'KalaVritti' ||
-                    apiProgram.category === 'chaitanya' || apiProgram.category === 'sparsh' || apiProgram.category === 'kala-path' || apiProgram.category === 'kala-vritti';
+                    apiProgram.programType === 'Chaitanya' || apiProgram.programType === 'Sparsh' ||
+                    apiProgram.programType === 'KalaPath' || apiProgram.programType === 'KalaVritti' ||
+                    apiProgram.category === 'chaitanya' || apiProgram.category === 'sparsh' ||
+                    apiProgram.category === 'kala-path' || apiProgram.category === 'kala-vritti';
 
                 const modules = (apiProgram.modules || fallbackProgram.modules).map(m => ({
                     ...m,
@@ -319,11 +238,15 @@ export default function ProgramDetail() {
 
     if (!program) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-heritage-creamLight">
+            <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7]">
                 <div className="text-center space-y-4">
-                    <h2 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Program Not Found</h2>
-                    <p className="font-body text-text-main">The program you're looking for doesn't exist.</p>
-                    <Link to="/programs"><Button variant="gold">Back to Programs</Button></Link>
+                    <h2 className="text-2xl font-serif font-light text-[#3C2F2B]">Program Not Found</h2>
+                    <p className="font-serif font-light text-[#8F6B5A]">The program you're looking for doesn't exist.</p>
+                    <Link to="/programs">
+                        <Button className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm px-6 py-2">
+                            Back to Programs
+                        </Button>
+                    </Link>
                 </div>
             </div>
         );
@@ -339,97 +262,131 @@ export default function ProgramDetail() {
         setActiveVideo(null);
     };
 
-    const getSessionTypeBadge = (type) => {
-        switch (type) {
-            case 'creation':
-                return <Badge className="bg-purple-100 text-purple-700 text-xs"><Palette className="w-3 h-3 mr-1" /> Creation</Badge>;
-            case 'application':
-                return <Badge className="bg-teal-100 text-teal-700 text-xs"><Activity className="w-3 h-3 mr-1" /> Application</Badge>;
-            case 'live-recording':
-                return <Badge className="bg-red-100 text-red-700 text-xs"><Camera className="w-3 h-3 mr-1" /> Live Recording</Badge>;
-            default:
-                return <Badge variant="outline" className="text-xs">{type}</Badge>;
-        }
-    };
-
     return (
-        <div className="overflow-hidden">
-            {/* Hero */}
-            <section className="relative py-20 md:py-28 bg-heritage-terracotta">
-                <div className="absolute inset-0 opacity-5 mandala-bg" />
+        <div className="min-h-screen bg-[#FDFBF7] font-serif">
+
+            {/* ============ HERO ============ */}
+            <section className="relative py-16 md:py-20 lg:py-24 bg-[#3C2F2B] overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.04]">
+                    <div className="absolute top-20 left-20 w-48 h-48 border border-[#C9A96E] rounded-full animate-spin-slow" />
+                    <div className="absolute bottom-20 right-20 w-64 h-64 border border-[#C9A96E]/50 rounded-full animate-spin-slower" />
+                </div>
+
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-6">
-                        <Link to="/programs" className="inline-flex items-center gap-1 text-sm font-body text-text-main hover:text-heritage-gold transition-colors">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className="space-y-4 md:space-y-6"
+                    >
+                        <Link to="/programs" className="inline-flex items-center gap-1.5 text-sm font-serif font-light text-[#D4A574] hover:text-[#C9A96E] transition-colors duration-300">
                             <ArrowLeft className="w-4 h-4" /> Back to Programs
                         </Link>
+
                         <div className="flex flex-wrap gap-2">
-                            <Badge variant="gold" className="text-sm px-4 py-1">{program.categoryLabel}</Badge>
+                            <span className="px-3 py-0.5 bg-[#C9A96E]/20 border border-[#C9A96E]/30 text-[#C9A96E] font-serif text-xs tracking-[0.15em] uppercase">
+                                {program.categoryLabel}
+                            </span>
                             {program.ageGroup && (
-                                <Badge variant="outlineGold" className="text-sm px-4 py-1">
-                                    <Users className="w-3 h-3 mr-1" /> {ageGroupLabels[program.ageGroup] || program.ageGroup}
-                                </Badge>
+                                <span className="px-3 py-0.5 border border-[#C9A96E]/30 text-[#D4A574] font-serif text-xs tracking-[0.15em] uppercase">
+                                    <Users className="w-3 h-3 inline mr-1" /> {ageGroupLabels[program.ageGroup] || program.ageGroup}
+                                </span>
                             )}
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-heading font-bold text-text-main">{program.title}</h1>
-                        <p className="text-lg font-accent text-text-main italic">{program.desc}</p>
-                        <div className="flex flex-wrap gap-4 text-sm font-body text-text-main">
-                            <span className="flex items-center gap-1"><Calendar className="w-4 h-4 text-heritage-gold" /> {program.duration}</span>
-                            <span className="flex items-center gap-1"><Star className="w-4 h-4 text-heritage-gold" /> {program.level}</span>
-                            <span className="flex items-center gap-1"><Users className="w-4 h-4 text-heritage-gold" /> {program.instructor}</span>
-                            <span className="flex items-center gap-1"><Award className="w-4 h-4 text-heritage-gold" /> Certificate Included</span>
+
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-light text-[#FDFBF7] leading-tight">
+                            {program.title}
+                        </h1>
+
+                        <p className="text-base md:text-lg font-serif font-light italic text-[#D4A574] max-w-3xl leading-relaxed">
+                            {program.desc}
+                        </p>
+
+                        <div className="flex flex-wrap gap-4 text-sm font-serif font-light text-[#D4A574]">
+                            <span className="flex items-center gap-1.5">
+                                <Calendar className="w-4 h-4 text-[#C9A96E]" /> {program.duration}
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <Star className="w-4 h-4 text-[#C9A96E]" /> {program.level}
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <Users className="w-4 h-4 text-[#C9A96E]" /> {program.instructor}
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <Award className="w-4 h-4 text-[#C9A96E]" /> Certificate Included
+                            </span>
                             {program.isChaitanyaOrSparsh && (
-                                <span className="flex items-center gap-1"><Layers className="w-4 h-4 text-heritage-gold" /> {activeModules.length} Active Art Forms</span>
+                                <span className="flex items-center gap-1.5">
+                                    <Layers className="w-4 h-4 text-[#C9A96E]" /> {activeModules.length} Active Art Forms
+                                </span>
                             )}
                         </div>
-                        <div className="flex flex-wrap gap-4">
+
+                        <div className="flex flex-wrap gap-3 pt-2">
                             {program.isChaitanyaOrSparsh ? (
-                                <Button variant="gold" size="xl" onClick={() => document.getElementById('modules-section').scrollIntoView({ behavior: 'smooth' })}>
-                                    View Modules <ArrowRight className="ml-2 w-5 h-5" />
+                                <Button
+                                    className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm md:text-base px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300"
+                                    onClick={() => document.getElementById('modules-section').scrollIntoView({ behavior: 'smooth' })}
+                                >
+                                    View Modules <ArrowRight className="ml-2 w-4 h-4" />
                                 </Button>
                             ) : (
                                 user ? (
-                                    <Button variant="gold" size="xl" onClick={() => handleProgramEnroll(program._id)} disabled={enrollLoading}>
-                                        {enrollLoading ? <Loader2 className="animate-spin mr-2" /> : `Enroll Now — ${program.price}`} <ArrowRight className="ml-2 w-5 h-5" />
+                                    <Button
+                                        className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm md:text-base px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300"
+                                        onClick={() => handleProgramEnroll(program._id)}
+                                        disabled={enrollLoading}
+                                    >
+                                        {enrollLoading ? <Loader2 className="animate-spin mr-2 w-4 h-4" /> : `Enroll Now — ${program.price}`} <ArrowRight className="ml-2 w-4 h-4" />
                                     </Button>
                                 ) : (
                                     <Link to="/register">
-                                        <Button variant="gold" size="xl">
-                                            Enroll Now — {program.price} <ArrowRight className="ml-2 w-5 h-5" />
+                                        <Button className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm md:text-base px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300">
+                                            Enroll Now — {program.price} <ArrowRight className="ml-2 w-4 h-4" />
                                         </Button>
                                     </Link>
                                 )
                             )}
                             {user && (
-                                <Button variant="outlineGold" size="xl" onClick={() => setShowSponsorModal(true)}>
+                                <Button
+                                    variant="outline"
+                                    className="border-[#C9A96E]/40 text-[#D4A574] hover:bg-[#C9A96E]/10 text-sm md:text-base px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300"
+                                    onClick={() => setShowSponsorModal(true)}
+                                >
                                     Have a Sponsor Code?
                                 </Button>
                             )}
-
                             {program.isChaitanyaOrSparsh && user && (
-                                <Link to={`/dashboard/learning`}>
-                                    <Button variant="outlineGold" size="xl">
-                                        <Play className="mr-2 w-5 h-5" /> Go to Learning Dashboard
+                                <Link to="/dashboard/learning">
+                                    <Button
+                                        variant="outline"
+                                        className="border-[#C9A96E]/40 text-[#D4A574] hover:bg-[#C9A96E]/10 text-sm md:text-base px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300"
+                                    >
+                                        <Play className="mr-2 w-4 h-4" /> Go to Learning
                                     </Button>
                                 </Link>
                             )}
                         </div>
                     </motion.div>
                 </div>
+
                 <div className="absolute bottom-0 left-0 right-0">
-                    <svg viewBox="0 0 1440 80" className="w-full h-auto"><path fill="#F4E8D8" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" /></svg>
+                    <svg viewBox="0 0 1440 80" className="w-full h-auto" preserveAspectRatio="none">
+                        <path fill="#FDFBF7" d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" />
+                    </svg>
                 </div>
             </section>
 
-            {/* Chaitanya/Sparsh Module Structure */}
+            {/* ============ CHAITANYA/SPARSH MODULES ============ */}
             {program.isChaitanyaOrSparsh && (
-                <section id="modules-section" className="py-16 bg-heritage-creamLight">
+                <section id="modules-section" className="py-12 md:py-16 lg:py-20 bg-[#FDFBF7]">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="mb-8">
-                            <h2 className="text-2xl font-heading font-bold text-heritage-terracottaDark mb-2">
+                            <h2 className="text-xl md:text-2xl font-serif font-light text-[#3C2F2B]">
                                 {activeModules.length} Tribal & Folk Art Forms
                             </h2>
-                            <p className="text-text-main font-body">
-                                Each module explores a different Indian art form. Every module includes <strong>4 creation sessions</strong> and <strong>2 application sessions</strong> where you apply the art on usable surfaces.
+                            <p className="text-xs md:text-sm font-serif font-light text-[#6B5B4B] mt-1">
+                                Each module explores a different Indian art form. Every module includes <span className="text-[#B87333] font-medium">4 creation sessions</span> and <span className="text-[#B87333] font-medium">2 application sessions</span>.
                             </p>
                         </div>
 
@@ -443,32 +400,32 @@ export default function ProgramDetail() {
                                 return (
                                     <motion.div
                                         key={mod._id || i}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
+                                        transition={{ delay: i * 0.06 }}
                                     >
-                                        <Card className={`overflow-hidden transition-shadow ${mod.isLocked ? 'opacity-60' : 'hover:shadow-md'}`}>
+                                        <div className={`border ${mod.isLocked ? 'border-[#B87333]/20 opacity-60' : 'border-[#B87333]/10 hover:shadow-md'} transition-all duration-300 bg-white`}>
                                             <div
                                                 className="p-4 flex items-center justify-between cursor-pointer"
                                                 onClick={() => setExpandedModule(isExpanded ? null : mod._id)}
                                             >
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-lg bg-heritage-terracotta/10 flex items-center justify-center text-heritage-terracottaDark font-heading font-bold">
+                                                    <div className="w-10 h-10 flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-sm font-normal">
                                                         {mod.order || i + 1}
                                                     </div>
                                                     <div>
                                                         <div className="flex items-center gap-2">
-                                                            <h3 className="font-heading font-semibold text-heritage-terracottaDark">
+                                                            <h3 className="font-serif font-medium text-[#3C2F2B] text-sm md:text-base">
                                                                 {mod.artFormName || mod.title}
                                                             </h3>
                                                             {mod.artFormType && (
-                                                                <Badge variant="outline" className="text-xs capitalize">
+                                                                <span className="px-1.5 py-0.5 border border-[#B87333]/20 text-[#8F6B5A] text-[9px] font-serif font-light uppercase tracking-wider">
                                                                     {mod.artFormType}
-                                                                </Badge>
+                                                                </span>
                                                             )}
                                                         </div>
-                                                        <p className="text-xs font-body text-text-main">
+                                                        <p className="text-[10px] md:text-xs font-serif font-light text-[#8F6B5A]">
                                                             {creationSessions.length} creation + {applicationSessions.length} application sessions
                                                             {liveRecordings.length > 0 && ` · ${liveRecordings.length} live recordings`}
                                                         </p>
@@ -477,45 +434,45 @@ export default function ProgramDetail() {
                                                 <div className="flex items-center gap-2">
                                                     {mod.isLocked ? (
                                                         <>
-                                                            <span className="text-xs text-heritage-terracotta/60 font-medium">Locked</span>
-                                                            <Lock className="w-5 h-5 text-heritage-terracotta/40" />
+                                                            <span className="text-[10px] font-serif font-light text-[#8F6B5A]">Locked</span>
+                                                            <Lock className="w-4 h-4 text-[#8F6B5A]" />
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <span className="text-xs text-heritage-gold font-medium">{isExpanded ? 'Collapse' : 'Click to expand'}</span>
                                                             {isExpanded ? (
-                                                                <ChevronUp className="w-5 h-5 text-heritage-gold" />
+                                                                <ChevronUp className="w-5 h-5 text-[#B87333]" />
                                                             ) : (
-                                                                <ChevronDown className="w-5 h-5 text-heritage-gold/70" />
+                                                                <ChevronDown className="w-5 h-5 text-[#B87333]" />
                                                             )}
                                                         </>
                                                     )}
                                                 </div>
                                             </div>
 
-                                            {/* Expanded module details */}
                                             {isExpanded && !mod.isLocked && (
-                                                <div className="px-4 pb-4 border-t border-heritage-gold/10 pt-4">
-                                                    {/* Module Enrollment Check for KalaPath */}
+                                                <div className="px-4 pb-4 border-t border-[#B87333]/10 pt-4 space-y-4">
+                                                    {/* Module Enrollment */}
                                                     {program.programType === 'KalaPath' && (
-                                                        <div className="mb-6 p-4 bg-white rounded-lg border border-heritage-gold/20 flex items-center justify-between">
+                                                        <div className="p-4 border border-[#B87333]/10 bg-[#F5E6D3]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                                                             <div>
-                                                                <h4 className="font-heading font-semibold text-heritage-terracottaDark">Module Access</h4>
-                                                                <p className="text-sm font-body text-text-main">
-                                                                    {enrolledModules.includes(mod._id) 
+                                                                <h4 className="text-xs font-serif font-medium text-[#3C2F2B]">Module Access</h4>
+                                                                <p className="text-[10px] font-serif font-light text-[#6B5B4B]">
+                                                                    {enrolledModules.includes(mod._id)
                                                                         ? "You have full access to this module."
-                                                                        : "Enroll in this module to unlock its sessions and materials."}
+                                                                        : "Enroll in this module to unlock its sessions."}
                                                                 </p>
                                                             </div>
                                                             {enrolledModules.includes(mod._id) ? (
-                                                                <Badge className="bg-green-100 text-green-800 text-sm px-3 py-1"><CheckCircle className="w-4 h-4 mr-1"/> Enrolled</Badge>
+                                                                <span className="px-2 py-0.5 bg-[#C9A96E] text-[#3C2F2B] text-[10px] font-serif font-medium flex items-center gap-1">
+                                                                    <CheckCircle className="w-3 h-3" /> Enrolled
+                                                                </span>
                                                             ) : (
-                                                                <Button 
-                                                                    variant="gold" 
+                                                                <Button
+                                                                    className="bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-[10px] px-3 py-1 h-auto"
                                                                     onClick={() => handleModuleEnroll(mod._id)}
                                                                     disabled={enrollLoading}
                                                                 >
-                                                                    {enrollLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
+                                                                    {enrollLoading ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Lock className="w-3 h-3 mr-1" />}
                                                                     Enroll in Module
                                                                 </Button>
                                                             )}
@@ -523,98 +480,103 @@ export default function ProgramDetail() {
                                                     )}
 
                                                     {mod.description && (
-                                                        <p className="text-sm font-body text-text-main mb-4">{mod.description}</p>
+                                                        <p className="text-xs md:text-sm font-serif font-light text-[#6B5B4B]">{mod.description}</p>
                                                     )}
 
                                                     {/* Fundamentals Video */}
                                                     {mod.fundamentalsVideoUrl && (
-                                                        <div className="mb-4">
-                                                            <h4 className="text-sm font-heading font-semibold text-heritage-terracottaDark mb-2 flex items-center gap-1">
-                                                                <Video className="w-4 h-4" /> Fundamentals Video
+                                                        <div>
+                                                            <h4 className="text-xs font-serif font-medium text-[#3C2F2B] mb-2 flex items-center gap-1.5">
+                                                                <Video className="w-4 h-4 text-[#B87333]" /> Fundamentals Video
                                                             </h4>
                                                             <div
-                                                                className="bg-heritage-cream p-3 rounded flex items-center gap-2 cursor-pointer hover:bg-heritage-creamDark transition-colors"
+                                                                className="border border-[#B87333]/10 p-3 flex items-center gap-2 cursor-pointer hover:bg-[#F5E6D3]/30 transition-colors duration-300"
                                                                 onClick={() => openVideo(mod.fundamentalsVideoUrl, `Fundamentals: ${mod.artFormName || mod.title}`, mod._id)}
                                                             >
-                                                                <Play className="w-4 h-4 text-heritage-gold" />
-                                                                <span className="text-sm text-text-main">Pre-recorded fundamentals — Click to Watch</span>
+                                                                <Play className="w-4 h-4 text-[#B87333]" />
+                                                                <span className="text-xs font-serif font-light text-[#6B5B4B]">Pre-recorded fundamentals — Click to Watch</span>
                                                             </div>
                                                         </div>
                                                     )}
 
                                                     {/* Material List */}
                                                     {mod.materialListUrl && enrolledModules.includes(mod._id) && (
-                                                        <div className="mb-4">
+                                                        <div>
                                                             <a href={mod.materialListUrl} target="_blank" rel="noopener noreferrer"
-                                                                className="inline-flex items-center gap-1 text-sm text-heritage-gold hover:text-heritage-terracottaDark">
-                                                                <Download className="w-4 h-4" /> Download Material List
+                                                                className="inline-flex items-center gap-1.5 text-xs font-serif font-light text-[#B87333] hover:text-[#8F6B5A] transition-colors duration-300"
+                                                            >
+                                                                <Download className="w-3 h-3" /> Download Material List
                                                             </a>
                                                         </div>
                                                     )}
 
-                                                    {/* Creation Sessions (4) */}
+                                                    {/* Creation Sessions */}
                                                     {creationSessions.length > 0 && (
-                                                        <div className="mb-4">
-                                                            <h4 className="text-sm font-heading font-semibold text-purple-700 mb-2 flex items-center gap-1">
-                                                                <Palette className="w-4 h-4" /> Creation Sessions ({creationSessions.length})
+                                                        <div>
+                                                            <h4 className="text-xs font-serif font-medium text-[#3C2F2B] mb-2 flex items-center gap-1.5">
+                                                                <Palette className="w-4 h-4 text-[#B87333]" /> Creation Sessions ({creationSessions.length})
                                                             </h4>
-                                                            <div className="space-y-2">
+                                                            <div className="space-y-1.5">
                                                                 {creationSessions.map((session, si) => (
                                                                     <div
                                                                         key={si}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl && enrolledModules.includes(mod._id) ? 'bg-purple-50/50 cursor-pointer hover:bg-purple-100/50 transition-colors' : 'bg-purple-50/50 opacity-80'}`}
+                                                                        className={`flex items-center gap-2 p-2 border border-[#B87333]/5 ${session.videoUrl && enrolledModules.includes(mod._id) ? 'cursor-pointer hover:bg-[#F5E6D3]/20 transition-colors duration-300' : 'opacity-70'}`}
                                                                         onClick={() => session.videoUrl && enrolledModules.includes(mod._id) && openVideo(session.videoUrl, session.title, mod._id)}
                                                                     >
-                                                                        <span className="text-xs font-bold text-purple-600 w-6">{session.sessionNumber || si + 1}.</span>
-                                                                        <span className="text-sm text-text-main flex-1">{session.title}</span>
-                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ? <Play className="w-4 h-4 text-purple-500" /> : <Lock className="w-4 h-4 text-purple-300" />}
-                                                                        {session.duration && <span className="text-xs text-muted-foreground">{session.duration}</span>}
+                                                                        <span className="text-[10px] font-serif font-medium text-[#B87333] w-6">{session.sessionNumber || si + 1}.</span>
+                                                                        <span className="text-xs font-serif font-light text-[#6B5B4B] flex-1">{session.title}</span>
+                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ?
+                                                                            <Play className="w-3 h-3 text-[#B87333]" /> :
+                                                                            <Lock className="w-3 h-3 text-[#B87333]/30" />
+                                                                        }
                                                                     </div>
                                                                 ))}
                                                             </div>
                                                         </div>
                                                     )}
 
-                                                    {/* Application Sessions (2) */}
+                                                    {/* Application Sessions */}
                                                     {applicationSessions.length > 0 && (
-                                                        <div className="mb-4">
-                                                            <h4 className="text-sm font-heading font-semibold text-teal-700 mb-2 flex items-center gap-1">
-                                                                <Activity className="w-4 h-4" /> Application Sessions ({applicationSessions.length})
+                                                        <div>
+                                                            <h4 className="text-xs font-serif font-medium text-[#3C2F2B] mb-2 flex items-center gap-1.5">
+                                                                <Activity className="w-4 h-4 text-[#B87333]" /> Application Sessions ({applicationSessions.length})
                                                             </h4>
-                                                            <div className="space-y-2">
+                                                            <div className="space-y-1.5">
                                                                 {applicationSessions.map((session, si) => (
                                                                     <div
                                                                         key={si}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${session.videoUrl && enrolledModules.includes(mod._id) ? 'bg-teal-50/50 cursor-pointer hover:bg-teal-100/50 transition-colors' : 'bg-teal-50/50 opacity-80'}`}
+                                                                        className={`flex items-center gap-2 p-2 border border-[#B87333]/5 ${session.videoUrl && enrolledModules.includes(mod._id) ? 'cursor-pointer hover:bg-[#F5E6D3]/20 transition-colors duration-300' : 'opacity-70'}`}
                                                                         onClick={() => session.videoUrl && enrolledModules.includes(mod._id) && openVideo(session.videoUrl, session.title, mod._id)}
                                                                     >
-                                                                        <span className="text-xs font-bold text-teal-600 w-6">{session.sessionNumber || creationSessions.length + si + 1}.</span>
-                                                                        <span className="text-sm text-text-main flex-1">{session.title}</span>
-                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ? <Play className="w-4 h-4 text-teal-500" /> : <Lock className="w-4 h-4 text-teal-300" />}
-                                                                        {session.duration && <span className="text-xs text-muted-foreground">{session.duration}</span>}
+                                                                        <span className="text-[10px] font-serif font-medium text-[#B87333] w-6">{session.sessionNumber || creationSessions.length + si + 1}.</span>
+                                                                        <span className="text-xs font-serif font-light text-[#6B5B4B] flex-1">{session.title}</span>
+                                                                        {session.videoUrl && enrolledModules.includes(mod._id) ?
+                                                                            <Play className="w-3 h-3 text-[#B87333]" /> :
+                                                                            <Lock className="w-3 h-3 text-[#B87333]/30" />
+                                                                        }
                                                                     </div>
                                                                 ))}
                                                             </div>
                                                         </div>
                                                     )}
 
-                                                    {/* Live Class Recordings */}
+                                                    {/* Live Recordings */}
                                                     {liveRecordings.length > 0 && (
                                                         <div>
-                                                            <h4 className="text-sm font-heading font-semibold text-red-700 mb-2 flex items-center gap-1">
-                                                                <Camera className="w-4 h-4" /> Weekly Live Class Recordings
+                                                            <h4 className="text-xs font-serif font-medium text-[#3C2F2B] mb-2 flex items-center gap-1.5">
+                                                                <Camera className="w-4 h-4 text-[#B87333]" /> Weekly Live Class Recordings
                                                             </h4>
-                                                            <div className="space-y-2">
+                                                            <div className="space-y-1.5">
                                                                 {liveRecordings.map((rec, ri) => (
                                                                     <div
                                                                         key={ri}
-                                                                        className={`flex items-center gap-2 p-2 rounded ${rec.videoUrl ? 'bg-red-50/50 cursor-pointer hover:bg-red-100/50 transition-colors' : 'bg-red-50/50'}`}
+                                                                        className={`flex items-center gap-2 p-2 border border-[#B87333]/5 ${rec.videoUrl ? 'cursor-pointer hover:bg-[#F5E6D3]/20 transition-colors duration-300' : 'opacity-70'}`}
                                                                         onClick={() => rec.videoUrl && openVideo(rec.videoUrl, rec.title, mod._id)}
                                                                     >
-                                                                        <Play className="w-4 h-4 text-red-500" />
-                                                                        <span className="text-sm text-text-main flex-1">{rec.title}</span>
+                                                                        <Play className="w-3 h-3 text-[#B87333]" />
+                                                                        <span className="text-xs font-serif font-light text-[#6B5B4B] flex-1">{rec.title}</span>
                                                                         {rec.recordedAt && (
-                                                                            <span className="text-xs text-muted-foreground">
+                                                                            <span className="text-[10px] font-serif font-light text-[#8F6B5A]">
                                                                                 {new Date(rec.recordedAt).toLocaleDateString('en-IN')}
                                                                             </span>
                                                                         )}
@@ -624,16 +586,16 @@ export default function ProgramDetail() {
                                                         </div>
                                                     )}
 
-                                                    {/* Submission reminder */}
-                                                    <div className="mt-4 p-3 bg-heritage-gold/10 rounded border border-heritage-gold/20">
-                                                        <p className="text-xs text-text-main flex items-center gap-1">
-                                                            <FileText className="w-3 h-3 text-heritage-gold" />
-                                                            After completing this module, submit <strong>1 artwork</strong> and <strong>1 activity work</strong> for certification.
+                                                    {/* Submission Reminder */}
+                                                    <div className="p-3 border border-[#B87333]/10 bg-[#F5E6D3]/20">
+                                                        <p className="text-[10px] font-serif font-light text-[#6B5B4B] flex items-center gap-1.5">
+                                                            <FileText className="w-3 h-3 text-[#B87333]" />
+                                                            After completing this module, submit <span className="font-medium">1 artwork</span> and <span className="font-medium">1 activity work</span> for certification.
                                                         </p>
                                                     </div>
                                                 </div>
                                             )}
-                                        </Card>
+                                        </div>
                                     </motion.div>
                                 );
                             })}
@@ -642,26 +604,34 @@ export default function ProgramDetail() {
                 </section>
             )}
 
-            {/* Standard Modules (for non-Chaitanya/Sparsh programs) */}
+            {/* ============ STANDARD MODULES ============ */}
             {!program.isChaitanyaOrSparsh && (program.modules || []).length > 0 && (
-                <section className="py-16 bg-heritage-creamLight">
+                <section className="py-12 md:py-16 bg-[#FDFBF7]">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h2 className="text-2xl font-heading font-bold text-heritage-terracottaDark mb-8">Program Modules</h2>
-                        <div className="space-y-4">
+                        <h2 className="text-xl md:text-2xl font-serif font-light text-[#3C2F2B] mb-6">Program Modules</h2>
+                        <div className="space-y-3">
                             {(program.modules || []).map((mod, i) => (
-                                <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                                    <Card className="p-4 flex items-center justify-between hover:shadow-md transition-shadow">
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.06 }}
+                                >
+                                    <div className="border border-[#B87333]/10 p-4 flex items-center justify-between bg-white hover:shadow-md transition-all duration-300">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-lg bg-heritage-terracotta/10 flex items-center justify-center text-heritage-terracottaDark font-heading font-bold">
+                                            <div className="w-10 h-10 flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-sm font-normal">
                                                 {i + 1}
                                             </div>
                                             <div>
-                                                <h3 className="font-heading font-semibold text-heritage-terracottaDark">{mod.title}</h3>
-                                                <p className="text-xs font-body text-text-main">{(mod.sessions || mod.lessons || []).length} sessions/lessons {mod.duration ? `· ${mod.duration}` : ''}</p>
+                                                <h3 className="font-serif font-medium text-[#3C2F2B] text-sm md:text-base">{mod.title}</h3>
+                                                <p className="text-[10px] md:text-xs font-serif font-light text-[#8F6B5A]">
+                                                    {(mod.sessions || mod.lessons || []).length} sessions/lessons {mod.duration ? `· ${mod.duration}` : ''}
+                                                </p>
                                             </div>
                                         </div>
-                                        <CheckCircle className="w-5 h-5 text-heritage-gold/40" />
-                                    </Card>
+                                        <CheckCircle className="w-5 h-5 text-[#B87333]/30" />
+                                    </div>
                                 </motion.div>
                             ))}
                         </div>
@@ -669,71 +639,70 @@ export default function ProgramDetail() {
                 </section>
             )}
 
-            {/* Learning Outcomes */}
-            <section className="py-16 bg-heritage-cream">
+            {/* ============ LEARNING OUTCOMES ============ */}
+            <section className="py-12 md:py-16 bg-[#F5E6D3]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                         <div>
-                            <h2 className="text-2xl font-heading font-bold text-heritage-terracottaDark mb-6">What You'll Achieve</h2>
-                            <ul className="space-y-3">
+                            <h2 className="text-xl md:text-2xl font-serif font-light text-[#3C2F2B] mb-4 md:mb-6">
+                                What You'll <span className="text-[#B87333] font-normal">Achieve</span>
+                            </h2>
+                            <ul className="space-y-2 md:space-y-3">
                                 {(program.outcomes || []).map((outcome, i) => (
-                                    <li key={i} className="flex items-start gap-2 font-body text-text-main">
-                                        <CheckCircle className="w-5 h-5 text-heritage-gold mt-0.5" />
+                                    <li key={i} className="flex items-start gap-2 text-sm md:text-base font-serif font-light text-[#6B5B4B]">
+                                        <CheckCircle className="w-4 h-4 text-[#B87333] mt-0.5 flex-shrink-0" />
                                         <span>{outcome}</span>
                                     </li>
                                 ))}
                             </ul>
                         </div>
-                        <div className="space-y-6">
-                            <Card className="p-6 heritage-border">
-                                <h3 className="font-heading font-semibold text-heritage-terracottaDark mb-2">Program Details</h3>
-                                <Separator className="mb-4" />
-                                <ul className="space-y-2 text-sm font-body text-text-main">
-                                    <li><strong>Duration:</strong> {program.duration}</li>
-                                    <li><strong>Level:</strong> {program.level}</li>
-                                    <li><strong>Instructor:</strong> {program.instructor}</li>
-                                    <li><strong>Price:</strong> <span className="text-heritage-gold font-heading font-bold">{program.price}</span></li>
+
+                        <div className="space-y-4 md:space-y-6">
+                            <div className="border border-[#B87333]/10 p-5 md:p-6 bg-white">
+                                <h3 className="font-serif font-medium text-[#3C2F2B] text-base md:text-lg mb-2">Program Details</h3>
+                                <div className="w-12 h-px bg-[#B87333] mb-4" />
+                                <ul className="space-y-2 text-xs md:text-sm font-serif font-light text-[#6B5B4B]">
+                                    <li><span className="font-medium text-[#3C2F2B]">Duration:</span> {program.duration}</li>
+                                    <li><span className="font-medium text-[#3C2F2B]">Level:</span> {program.level}</li>
+                                    <li><span className="font-medium text-[#3C2F2B]">Instructor:</span> {program.instructor}</li>
+                                    <li><span className="font-medium text-[#3C2F2B]">Price:</span> <span className="text-[#B87333] font-medium">{program.price}</span></li>
                                     {program.isChaitanyaOrSparsh && program.programType !== 'KalaVritti' && (
                                         <>
-                                            <li><strong>Active Art Forms:</strong> {activeModules.length} of {program.maxActiveModules || 7}</li>
-                                            <li><strong>Structure:</strong> 4 creation + 2 application sessions per art form</li>
-                                            <li><strong>Excellence Certificate:</strong> After 3 & 6 modules</li>
-                                            <li><strong>Completion Certificate:</strong> After all 7 modules</li>
+                                            <li><span className="font-medium text-[#3C2F2B]">Active Art Forms:</span> {activeModules.length} of {program.maxActiveModules || 7}</li>
+                                            <li><span className="font-medium text-[#3C2F2B]">Structure:</span> 4 creation + 2 application sessions</li>
                                         </>
                                     )}
-                                    {program.programType === 'KalaVritti' && (
-                                        <>
-                                            <li><strong>Program Structure:</strong> 2 Fixed Modules (Fundamentals & Business)</li>
-                                            <li><strong>Included:</strong> Downloadable material list per module</li>
-                                            <li><strong>Outcomes:</strong> Create and sell your products on Adyom</li>
-                                        </>
-                                    )}
-                                    <li><strong>Certificate:</strong> Included on completion</li>
-                                    <li><strong>Community:</strong> Access to peer group</li>
+                                    <li><span className="font-medium text-[#3C2F2B]">Certificate:</span> Included on completion</li>
                                 </ul>
-                            </Card>
-                            <Link to="/register">
-                                <Button variant="gold" size="lg" className="w-full">
-                                    Enroll Now <ArrowRight className="ml-2 w-4 h-4" />
-                                </Button>
-                            </Link>
-                            {user && (
-                                <Button variant="outlineGold" size="lg" className="w-full mt-2" onClick={() => setShowSponsorModal(true)}>
-                                    Have a Sponsor Code?
-                                </Button>
-                            )}
+                            </div>
 
+                            <div className="flex flex-col gap-3">
+                                <Link to="/register">
+                                    <Button className="w-full bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm md:text-base px-6 py-2.5 transition-all duration-300">
+                                        Enroll Now <ArrowRight className="ml-2 w-4 h-4" />
+                                    </Button>
+                                </Link>
+                                {user && (
+                                    <Button
+                                        variant="outline"
+                                        className="w-full border-[#C9A96E]/40 text-[#3C2F2B] hover:bg-[#C9A96E]/10 text-sm md:text-base px-6 py-2.5 transition-all duration-300"
+                                        onClick={() => setShowSponsorModal(true)}
+                                    >
+                                        Have a Sponsor Code?
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Video Player Overlay */}
+            {/* ============ VIDEO PLAYER OVERLAY ============ */}
             {showVideoPlayer && activeVideo && (
-                <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-                    <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden">
-                        <div className="flex items-center justify-between p-4 bg-black/90">
-                            <h3 className="text-white font-heading font-semibold text-sm truncate pr-4">{activeVideo.title}</h3>
+                <div className="fixed inset-0 z-50 bg-[#3C2F2B]/95 flex items-center justify-center p-4">
+                    <div className="relative w-full max-w-4xl bg-[#1C1C18] overflow-hidden">
+                        <div className="flex items-center justify-between p-3 bg-[#1C1C18]">
+                            <h3 className="text-white font-serif font-light text-sm truncate pr-4">{activeVideo.title}</h3>
                             <button
                                 onClick={closeVideoPlayer}
                                 className="text-white/70 hover:text-white transition-colors p-1"
@@ -753,32 +722,65 @@ export default function ProgramDetail() {
                 </div>
             )}
 
-            {/* Sponsor Code Modal */}
+            {/* ============ SPONSOR MODAL ============ */}
             {showSponsorModal && (
-                <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-                    <div className="relative w-full max-w-md bg-background rounded-xl p-6 border border-heritage-gold/30">
-                        <button onClick={() => setShowSponsorModal(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
+                <div className="fixed inset-0 z-50 bg-[#3C2F2B]/95 flex items-center justify-center p-4">
+                    <div className="relative w-full max-w-md bg-[#FDFBF7] p-6 border border-[#C9A96E]/20">
+                        <button
+                            onClick={() => setShowSponsorModal(false)}
+                            className="absolute top-4 right-4 text-[#8F6B5A] hover:text-[#3C2F2B] transition-colors"
+                        >
                             <X className="w-5 h-5" />
                         </button>
-                        <h3 className="text-xl font-heading font-bold mb-2">Enroll with Sponsor Code</h3>
-                        <p className="text-sm text-muted-foreground mb-4">Enter your organization's sponsor code to enroll in {program.title} for free.</p>
-                        
-                        {sponsorSuccess && <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-md text-sm">{sponsorSuccess}</div>}
-                        {sponsorError && <div className="mb-4 p-3 bg-red-100 text-red-800 rounded-md text-sm">{sponsorError}</div>}
-                        
+                        <h3 className="text-xl font-serif font-light text-[#3C2F2B] mb-2">Enroll with Sponsor Code</h3>
+                        <p className="text-sm font-serif font-light text-[#6B5B4B] mb-4">Enter your organization's sponsor code to enroll for free.</p>
+
+                        {sponsorSuccess && (
+                            <div className="mb-4 p-3 border border-[#C9A96E] bg-[#C9A96E]/10 text-[#3C2F2B] text-sm">
+                                {sponsorSuccess}
+                            </div>
+                        )}
+                        {sponsorError && (
+                            <div className="mb-4 p-3 border border-[#B87333] bg-[#B87333]/10 text-[#B87333] text-sm">
+                                {sponsorError}
+                            </div>
+                        )}
+
                         <div className="space-y-4">
-                            <Input 
-                                value={sponsorCode} 
-                                onChange={(e) => setSponsorCode(e.target.value.toUpperCase())} 
-                                placeholder="e.g. TATA2026" 
+                            <Input
+                                value={sponsorCode}
+                                onChange={(e) => setSponsorCode(e.target.value.toUpperCase())}
+                                placeholder="e.g. TATA2026"
+                                className="border-[#B87333]/20 font-serif text-sm"
                             />
-                            <Button variant="gold" className="w-full" onClick={handleSponsorEnroll} disabled={sponsorLoading || !sponsorCode.trim()}>
+                            <Button
+                                className="w-full bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm py-2.5 transition-all duration-300"
+                                onClick={handleSponsorEnroll}
+                                disabled={sponsorLoading || !sponsorCode.trim()}
+                            >
                                 {sponsorLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : 'Validate & Enroll'}
                             </Button>
                         </div>
                     </div>
                 </div>
             )}
+
+            {/* ============ STYLES ============ */}
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+                * { font-family: 'Playfair Display', 'Georgia', serif !important; }
+
+                @keyframes spin-slow {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                @keyframes spin-slower {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(-360deg); }
+                }
+                .animate-spin-slow { animation: spin-slow 25s linear infinite; }
+                .animate-spin-slower { animation: spin-slower 35s linear infinite; }
+            `}</style>
         </div>
     );
 }

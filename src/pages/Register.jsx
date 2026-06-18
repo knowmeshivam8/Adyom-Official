@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
     Mail, Lock, User, Phone, Eye, EyeOff, ArrowRight,
-    BookOpen, Palette, Lightbulb, Heart, Camera, Music, HandHeart,
+    BookOpen, Palette, Lightbulb, Heart, Camera, Music, HandHeart, Sparkles,
 } from 'lucide-react';
 
 const interestOptions = [
@@ -69,73 +69,136 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-heritage-creamLight py-12">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-lg px-4">
-                <Card className="p-8 heritage-border relative overflow-hidden">
-                    <div className="absolute top-3 right-3 text-heritage-gold/20 text-4xl font-heading">❋</div>
+        <div className="min-h-[80vh] flex items-center justify-center bg-[#FDFBF7] font-serif py-10 md:py-14">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="w-full max-w-lg px-4"
+            >
+                <Card className="p-6 md:p-8 border border-[#B87333]/10 bg-white shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden">
+                    <div className="absolute top-3 right-4 text-[#B87333]/10 text-4xl font-serif">✦</div>
 
-                    <div className="text-center space-y-4 mb-6">
-                        <div className="w-12 h-12 mx-auto rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-gold font-heading text-xl font-bold">A</div>
-                        <Badge variant="outlineGold" className="text-sm px-4 py-1">✦ Begin Your Journey</Badge>
-                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Join Adyom Foundation</h1>
-                        <p className="font-body text-text-main">Become part of our heritage community</p>
+                    <div className="text-center space-y-3 md:space-y-4 mb-6">
+                        <div className="w-14 h-14 mx-auto flex items-center justify-center bg-[#C9A96E] text-[#3C2F2B] font-serif text-2xl font-normal">
+                            A
+                        </div>
+                        <div>
+                            <span className="inline-block px-3 py-0.5 border border-[#B87333]/20 text-[#B87333] font-serif text-[10px] tracking-[0.15em] uppercase">
+                                ✦ Begin Your Journey
+                            </span>
+                        </div>
+                        <h1 className="text-2xl md:text-3xl font-serif font-light text-[#3C2F2B]">
+                            Join <span className="text-[#B87333] font-normal">Adyom</span> Foundation
+                        </h1>
+                        <p className="text-xs md:text-sm font-serif font-light text-[#6B5B4B]">
+                            Become part of our heritage community
+                        </p>
                     </div>
 
                     {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm font-body mb-4">
+                        <div className="border border-[#B87333]/20 bg-[#B87333]/5 text-[#B87333] px-4 py-2.5 text-sm font-serif font-light mb-4">
                             {error}
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Full Name *</label>
+                            <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-1.5">
+                                Full Name <span className="text-[#B87333]">*</span>
+                            </label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                <Input required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Your full name" className="pl-10" />
+                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8F6B5A]" />
+                                <Input
+                                    required
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder="Your full name"
+                                    className="pl-9 border-[#B87333]/20 font-serif text-sm bg-[#FDFBF7] focus:border-[#B87333] focus:outline-none"
+                                />
                             </div>
                         </div>
+
                         <div>
-                            <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Email Address *</label>
+                            <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-1.5">
+                                Email Address <span className="text-[#B87333]">*</span>
+                            </label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                <Input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="your@email.com" className="pl-10" />
+                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8F6B5A]" />
+                                <Input
+                                    required
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    placeholder="your@email.com"
+                                    className="pl-9 border-[#B87333]/20 font-serif text-sm bg-[#FDFBF7] focus:border-[#B87333] focus:outline-none"
+                                />
                             </div>
                         </div>
+
                         <div>
-                            <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Phone</label>
+                            <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-1.5">
+                                Phone
+                            </label>
                             <div className="relative">
-                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+91 XXX-XXX-XXXX" className="pl-10" />
+                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8F6B5A]" />
+                                <Input
+                                    value={formData.phone}
+                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                    placeholder="+91 XXX-XXX-XXXX"
+                                    className="pl-9 border-[#B87333]/20 font-serif text-sm bg-[#FDFBF7] focus:border-[#B87333] focus:outline-none"
+                                />
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Password *</label>
+                                <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-1.5">
+                                    Password <span className="text-[#B87333]">*</span>
+                                </label>
                                 <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                    <Input required type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} placeholder="Min 6 characters" className="pl-10" />
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8F6B5A]" />
+                                    <Input
+                                        required
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        placeholder="Min 6 characters"
+                                        className="pl-9 border-[#B87333]/20 font-serif text-sm bg-[#FDFBF7] focus:border-[#B87333] focus:outline-none"
+                                    />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-1">Confirm Password *</label>
+                                <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-1.5">
+                                    Confirm Password <span className="text-[#B87333]">*</span>
+                                </label>
                                 <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-main" />
-                                    <Input required type={showPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} placeholder="Confirm password" className="pl-10" />
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8F6B5A]" />
+                                    <Input
+                                        required
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formData.confirmPassword}
+                                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                        placeholder="Confirm password"
+                                        className="pl-9 border-[#B87333]/20 font-serif text-sm bg-[#FDFBF7] focus:border-[#B87333] focus:outline-none"
+                                    />
                                 </div>
                             </div>
                         </div>
+
                         <div>
-                            <label className="block text-sm font-body font-medium text-heritage-terracottaDark mb-2">Your Interests</label>
+                            <label className="block text-xs md:text-sm font-serif font-light text-[#3C2F2B] mb-2">
+                                Your Interests
+                            </label>
                             <div className="grid grid-cols-2 gap-2">
                                 {interestOptions.map((opt) => (
                                     <button
                                         key={opt.key}
                                         type="button"
                                         onClick={() => toggleInterest(opt.key)}
-                                        className={`px-3 py-2 rounded-md text-xs font-body font-medium transition-all flex items-center gap-2 ${formData.interests.includes(opt.key)
-                                                ? 'bg-heritage-terracotta text-heritage-cream'
-                                                : 'bg-heritage-cream text-text-main hover:bg-heritage-creamDark border border-heritage-creamDark'
+                                        className={`px-3 py-2 text-[10px] md:text-xs font-serif font-light transition-all duration-300 border flex items-center gap-2 ${formData.interests.includes(opt.key)
+                                                ? 'bg-[#C9A96E] border-[#C9A96E] text-[#3C2F2B]'
+                                                : 'bg-[#FDFBF7] border-[#B87333]/20 text-[#6B5B4B] hover:border-[#B87333]/50'
                                             }`}
                                     >
                                         <opt.icon className="w-3 h-3" /> {opt.label}
@@ -143,16 +206,44 @@ export default function Register() {
                                 ))}
                             </div>
                         </div>
-                        <Button variant="gold" size="lg" type="submit" disabled={loading} className="w-full">
-                            {loading ? 'Creating Account...' : <><ArrowRight className="mr-2 w-4 h-4" /> Join Adyom</>}
+
+                        <div className="flex items-center gap-2 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="text-xs font-serif font-light text-[#8F6B5A] hover:text-[#B87333] transition-colors duration-300 flex items-center gap-1.5"
+                            >
+                                {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                                {showPassword ? 'Hide Password' : 'Show Password'}
+                            </button>
+                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-[#C9A96E] hover:bg-[#B87333] text-[#3C2F2B] hover:text-white text-sm md:text-base py-2.5 transition-all duration-300"
+                        >
+                            {loading ? (
+                                <span className="flex items-center justify-center">
+                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#3C2F2B]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Creating Account...
+                                </span>
+                            ) : (
+                                <span className="flex items-center justify-center">
+                                    <ArrowRight className="mr-2 w-4 h-4" /> Sign Up
+                                </span>
+                            )}
                         </Button>
                     </form>
 
-                    <Separator className="my-6" />
+                    <Separator className="my-5 bg-[#B87333]/10" />
 
-                    <p className="text-center text-sm font-body text-text-main">
+                    <p className="text-center text-xs md:text-sm font-serif font-light text-[#6B5B4B]">
                         Already a member?{' '}
-                        <Link to="/login" className="text-heritage-gold hover:text-heritage-goldLight font-semibold">
+                        <Link to="/login" className="text-[#B87333] hover:text-[#8F6B5A] font-medium transition-colors duration-300">
                             Log In →
                         </Link>
                     </p>
