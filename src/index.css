@@ -1,9 +1,15 @@
+/* ===== FONT IMPORTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* ===== TAILWIND ===== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ===== BASE STYLES ===== */
 @layer base {
   :root {
     --background: 12 32% 88%;
@@ -51,15 +57,27 @@
   }
 }
 
+/* ===== GLOBAL ELEMENTS ===== */
 @layer base {
   * {
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-text-main font-sans;
+  /* Apply Lora as default font */
+  html {
+    font-family: 'Lora', 'Georgia', serif;
   }
 
+  body {
+    @apply bg-background text-text-main font-lora;
+    font-family: 'Lora', 'Georgia', serif;
+    font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings - Lora with bold weights */
   h1,
   h2,
   h3,
@@ -67,10 +85,141 @@
   h5,
   h6 {
     @apply font-serif text-text-main leading-tight tracking-tight;
+    font-family: 'Lora', 'Georgia', serif;
+  }
+
+  h1 {
+    font-weight: 700;
+    /* Bold */
+  }
+
+  h2 {
+    font-weight: 600;
+    /* Semi-bold */
+  }
+
+  h3 {
+    font-weight: 600;
+    /* Semi-bold */
+  }
+
+  h4 {
+    font-weight: 500;
+    /* Medium */
+  }
+
+  h5 {
+    font-weight: 500;
+    /* Medium */
+  }
+
+  h6 {
+    font-weight: 500;
+    /* Medium */
+  }
+
+  /* Paragraphs */
+  p {
+    font-family: 'Lora', 'Georgia', serif;
+    font-weight: 400;
+  }
+
+  /* Links */
+  a {
+    font-family: 'Lora', 'Georgia', serif;
+  }
+
+  /* Buttons and inputs */
+  button,
+  input,
+  textarea,
+  select {
+    font-family: 'Lora', 'Georgia', serif;
+  }
+
+  /* Strong/Emphasis */
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  em,
+  i {
+    font-style: italic;
   }
 }
 
-/* Heritage Decorative Styles */
+/* ===== FONT UTILITY CLASSES ===== */
+@layer components {
+  .font-lora {
+    font-family: 'Lora', 'Georgia', serif;
+  }
+
+  .font-playfair {
+    font-family: 'Playfair Display', 'Georgia', serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', 'Roboto', sans-serif;
+  }
+
+  .font-outfit {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .font-roboto {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  /* Font weights */
+  .fw-light {
+    font-weight: 300;
+  }
+
+  .fw-regular {
+    font-weight: 400;
+  }
+
+  .fw-medium {
+    font-weight: 500;
+  }
+
+  .fw-semibold {
+    font-weight: 600;
+  }
+
+  .fw-bold {
+    font-weight: 700;
+  }
+
+  /* Italic variants */
+  .italic-light {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .italic-regular {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .italic-medium {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .italic-semibold {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .italic-bold {
+    font-style: italic;
+    font-weight: 700;
+  }
+}
+
+/* ===== HERITAGE DECORATIVE STYLES ===== */
 .heritage-border {
   border-image: linear-gradient(135deg, #D9A441, #C48C7C, #D9A441) 1;
   border-width: 3px;
@@ -120,7 +269,7 @@
   background-clip: text;
 }
 
-/* Scrollbar styling */
+/* ===== SCROLLBAR STYLING ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -138,23 +287,88 @@
   background: #D69F8E;
 }
 
-/* Selection styling */
+/* ===== SELECTION STYLING ===== */
 ::selection {
   background: #D9A441;
   color: #4A332C;
 }
 
-/* Smooth scroll */
+/* ===== SMOOTH SCROLL ===== */
 html {
   scroll-behavior: smooth;
 }
 
-/* Terracotta Texture Overlay */
+/* ===== TERRACOTTA TEXTURE OVERLAY ===== */
 .bg-heritage-terracotta,
 .bg-heritage-terracottaLight,
 .bg-heritage-terracottaDark {
-  background-image: 
-    radial-gradient(ellipse at top, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0.05) 100%),
+  background-image:
+    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.05) 100%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.28'/%3E%3C/svg%3E") !important;
   background-blend-mode: soft-light, multiply;
+}
+
+/* ===== DROP CAP (for About page) ===== */
+.drop-cap::first-letter {
+  float: left;
+  font-family: 'Lora', 'Georgia', serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 0.8;
+  padding-right: 12px;
+  color: #B87333;
+}
+
+@media (min-width: 768px) {
+  .drop-cap::first-letter {
+    font-size: 5.5rem;
+    padding-right: 14px;
+  }
+}
+
+/* ===== RESPONSIVE FONT ADJUSTMENTS ===== */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  body {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+  }
 }
