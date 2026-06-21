@@ -151,9 +151,6 @@ export default function DashboardHome() {
 
     const quickActions = [
         { label: 'Enrolled Programs', icon: BookOpen, count: stats.enrolledPrograms, link: '/dashboard/programs', color: 'from-blue-500 to-indigo-600' },
-        { label: 'My Artworks', icon: Palette, count: stats.artworksSubmitted, link: '/dashboard/artwork', color: 'from-purple-500 to-pink-600' },
-        { label: 'My Videos', icon: Video, count: stats.videosSubmitted, link: '/dashboard/videos', color: 'from-red-500 to-orange-600' },
-        { label: 'Certificates', icon: Award, count: stats.certificatesEarned, link: '/dashboard/certificates', color: 'from-amber-500 to-yellow-600' },
         { label: 'Community', icon: Users, count: stats.communityPosts, link: '/dashboard/community', color: 'from-green-500 to-emerald-600' },
         { label: 'Learning', icon: Sparkles, count: stats.learningCompleted, link: '/dashboard/learning', color: 'from-cyan-500 to-teal-600' },
     ];

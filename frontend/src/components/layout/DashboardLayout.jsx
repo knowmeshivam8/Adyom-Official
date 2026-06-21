@@ -30,14 +30,11 @@ import {
 import { useState } from 'react';
 
 const memberNav = [
-    { name: 'Profile', path: '/dashboard', icon: User },
+    { name: 'Profile', path: '/dashboard/profile', icon: User },
     { name: 'My Programs', path: '/dashboard/programs', icon: BookOpen },
     { name: 'Pratibimb', path: '/dashboard/pratibimb', icon: Sparkles },
-    { name: 'Artwork Upload', path: '/dashboard/artwork', icon: Palette },
-    { name: 'Video Submission', path: '/dashboard/videos', icon: Video },
     { name: 'Learning Library', path: '/dashboard/learning', icon: Library },
     { name: 'Community Feed', path: '/dashboard/community', icon: MessageSquare },
-    { name: 'Certificates', path: '/dashboard/certificates', icon: Award },
 ];
 
 const adminNav = [
@@ -119,7 +116,7 @@ export default function DashboardLayout() {
                                         {user?.name || 'User'}
                                     </p>
                                     <p className="text-xs text-text-main font-body font-semibold opacity-80">
-                                        {isAdmin ? 'Administrator' : 'Member'}
+                                        {isAdmin ? 'Administrator' : 'User'}
                                     </p>
                                 </div>
                             </div>

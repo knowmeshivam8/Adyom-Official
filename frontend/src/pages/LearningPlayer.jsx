@@ -5,7 +5,7 @@ import {
     ArrowLeft, Lock, PlayCircle, Loader2, Video, 
     Palette, Activity, ChevronDown, ChevronUp, BookOpen
 } from 'lucide-react';
-import { programAPI } from '@/api';
+import { programAPI, learningAPI } from '@/api';
 import { useAuth } from '@/context/AuthContext';
 import SecureVideoPlayer from '@/components/ui/SecureVideoPlayer';
 
@@ -18,6 +18,7 @@ export default function LearningPlayer() {
     const [program, setProgram] = useState(null);
     const [loading, setLoading] = useState(true);
     const [expandedModules, setExpandedModules] = useState({});
+    const [videoProgress, setVideoProgress] = useState([]);
 
     const activeModuleId = searchParams.get('module');
     const activeVideoId = searchParams.get('video');
@@ -41,6 +42,18 @@ export default function LearningPlayer() {
 
                 setProgram({ ...apiProgram, modules });
                 
+                // Fetch user's video progress
+                if (user) {
+                    try {
+                        const progRes = await learningAPI.getVideoProgress(apiProgram._id);
+                        if (progRes.data?.data?.videoProgress) {
+                            setVideoProgress(progRes.data.data.videoProgress);
+                        }
+                    } catch (err) {
+                        console.error("Failed to load video progress", err);
+                    }
+                }
+
                 if (activeModuleId) {
                     setExpandedModules(prev => ({ ...prev, [activeModuleId]: true }));
                 }
@@ -101,22 +114,63 @@ export default function LearningPlayer() {
                         type: 'live-recording',
                         title: rec.title || `Live Recording ${i + 1}`,
                         url: rec.videoUrl,
-                        isLocked,
+                        isLocked, // Initially set to baseline program/module lock
                         icon: <Video className="w-4 h-4" />
                     });
                 }
             });
         });
-        return list;
-    }, [program, enrolledModules]);
+
+        // Enforce sequential locking: Video N is locked if Video N-1 is not completed
+        let previousVideoCompleted = true; // The first video is always unlocked (if not otherwise locked by enrollment)
+        
+        const sequentialList = list.map((video, index) => {
+            // Check if this specific video is marked as completed in the backend
+            const progressEntry = videoProgress.find(
+                vp => String(vp.videoId) === String(video.id) || vp.videoId === video.id
+            );
+            const isCompleted = !!(progressEntry && progressEntry.completed);
+
+            // Apply sequential lock
+            const sequentialLock = !previousVideoCompleted;
+            const finalLock = video.isLocked || sequentialLock;
+
+            // Update for the NEXT iteration
+            previousVideoCompleted = isCompleted;
+
+            return {
+                ...video,
+                isLocked: finalLock,
+                isCompleted
+            };
+        });
+
+        return sequentialList;
+    }, [program, enrolledModules, user, videoProgress]);
 
     const activeVideoIndex = playlist.findIndex(v => v.id === activeVideoId);
     const activeVideoInfo = activeVideoIndex >= 0 ? playlist[activeVideoIndex] : null;
 
     const handleVideoComplete = () => {
+        // Mark current video locally as completed so the UI unlocks the next video instantly
+        if (activeVideoInfo) {
+            setVideoProgress(prev => {
+                const exists = prev.find(p => p.videoId === activeVideoInfo.id);
+                if (exists) {
+                    return prev.map(p => p.videoId === activeVideoInfo.id ? { ...p, completed: true } : p);
+                }
+                return [...prev, { videoId: activeVideoInfo.id, completed: true }];
+            });
+        }
+
         if (activeVideoIndex >= 0 && activeVideoIndex < playlist.length - 1) {
             const nextVideo = playlist[activeVideoIndex + 1];
-            if (!nextVideo.isLocked) {
+            // Due to state update timing, nextVideo.isLocked might still be true in this render cycle, 
+            // but we know it SHOULD be unlocked because we just finished the prerequisite.
+            // However, if it's locked due to enrollment reasons, we shouldn't play it.
+            const isEnrolledLocked = program?.modules?.find(m => m._id === nextVideo.moduleId)?.isLocked && !user;
+            
+            if (!isEnrolledLocked) {
                 setSearchParams({ module: nextVideo.moduleId, video: nextVideo.id });
                 setExpandedModules(prev => ({ ...prev, [nextVideo.moduleId]: true }));
             }
