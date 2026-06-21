@@ -223,7 +223,7 @@ export default function ProgramDetail() {
 
     const handleModuleEnroll = async (moduleId) => {
         if (!user) {
-            window.location.href = '/register';
+            window.location.href = `/register?programId=${program._id}&amount=${program.price}`;
             return;
         }
         try {
@@ -243,9 +243,18 @@ export default function ProgramDetail() {
 
     const handleProgramEnroll = async (programId) => {
         if (!user) {
-            window.location.href = '/register';
+            window.location.href = `/register?programId=${program._id}&amount=${program.price}`;
             return;
         }
+
+        // Check if the program is paid
+        const isPaid = program.price && program.price !== 'Free' && program.price !== '₹0';
+        
+        if (isPaid) {
+            navigate(`/payment-test?programId=${programId}&amount=${program.price}`);
+            return;
+        }
+
         try {
             setEnrollLoading(true);
             const res = await userAPI.enrollProgram({ programId });
@@ -399,7 +408,7 @@ export default function ProgramDetail() {
                                         {enrollLoading ? <Loader2 className="animate-spin mr-2" /> : `Enroll Now — ${program.price}`} <ArrowRight className="ml-2 w-5 h-5" />
                                     </Button>
                                 ) : (
-                                    <Link to="/register">
+                                    <Link to={`/register?programId=${program._id}&amount=${program.price}`}>
                                         <Button variant="gold" size="xl">
                                             Enroll Now — {program.price} <ArrowRight className="ml-2 w-5 h-5" />
                                         </Button>

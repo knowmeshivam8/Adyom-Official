@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import Layout from '@/components/layout/Layout';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -21,9 +21,11 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Products from '@/pages/Products';
 import MeetJoin from '@/pages/MeetJoin';
+import PaymentTest from '@/pages/PaymentTest';
 
 // Member Dashboard Pages
 import DashboardHome from '@/pages/dashboard/DashboardHome';
+import DashboardProfile from '@/pages/dashboard/DashboardProfile';
 import DashboardPrograms from '@/pages/dashboard/DashboardPrograms';
 import DashboardArtwork from '@/pages/dashboard/DashboardArtwork';
 import DashboardVideos from '@/pages/dashboard/DashboardVideos';
@@ -82,6 +84,7 @@ export default function App() {
 
           {/* Standalone Public Routes */}
           <Route path="/meet/:meetId" element={<MeetJoin />} />
+          <Route path="/payment-test" element={<ProtectedRoute roles={['member', 'admin']}><PaymentTest /></ProtectedRoute>} />
 
           {/* Member Dashboard Routes */}
           <Route
@@ -91,7 +94,8 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/dashboard" element={<DashboardHome />} />
+            <Route path="/dashboard" element={<Navigate to="/dashboard/profile" replace />} />
+            <Route path="/dashboard/profile" element={<DashboardProfile />} />
             <Route path="/dashboard/programs" element={<DashboardPrograms />} />
             <Route path="/dashboard/pratibimb" element={<DashboardPratibimb />} />
             <Route path="/dashboard/artwork" element={<DashboardArtwork />} />
