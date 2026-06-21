@@ -63,6 +63,18 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+// Handle React routing, return all other requests to React app
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+    } else {
+        res.status(404).json({ success: false, message: 'API route not found' });
+    }
+});
+
 // Error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);

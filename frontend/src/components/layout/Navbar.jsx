@@ -62,7 +62,7 @@ export default function Navbar() {
         navigate('/');
     };
 
-    const dashboardPath = isAdmin ? '/admin' : '/dashboard';
+    const dashboardPath = isAdmin ? '/admin' : '/dashboard/profile';
 
     return (
         <nav
@@ -151,12 +151,14 @@ export default function Navbar() {
                                     </Link>
                                 )}
                                 <div className="flex items-center space-x-3 bg-heritage-cream px-3 py-1.5 rounded-full border border-heritage-creamDark">
-                                    <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-brown font-heading text-sm font-bold">
-                                        {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                                    </div>
-                                    <span className="font-body font-bold text-sm text-heritage-brown">
-                                        Hi, {user?.name?.split(' ')[0]}
-                                    </span>
+                                    <Link to={dashboardPath} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                                        <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-brown font-heading text-sm font-bold">
+                                            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                                        </div>
+                                        <span className="font-body font-bold text-sm text-heritage-brown">
+                                            Hi, {user?.name?.split(' ')[0]}
+                                        </span>
+                                    </Link>
                                     <div className="w-px h-4 bg-heritage-creamDark mx-1"></div>
                                     <button
                                         onClick={handleLogout}
@@ -232,14 +234,14 @@ export default function Navbar() {
                                             Admin Panel
                                         </Link>
                                     )}
-                                    <div className="px-4 py-3 flex items-center space-x-3 bg-heritage-cream">
+                                    <Link to={dashboardPath} className="px-4 py-3 flex items-center space-x-3 bg-heritage-cream hover:bg-heritage-creamDark transition-colors">
                                         <div className="w-8 h-8 rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-brown font-heading text-sm font-bold">
                                             {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                                         </div>
                                         <span className="font-body font-bold text-sm text-heritage-brown">
                                             Hi, {user?.name?.split(' ')[0]}
                                         </span>
-                                    </div>
+                                    </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="block px-4 py-3 text-sm font-body font-medium text-text-main w-full text-left border-t border-heritage-creamDark"

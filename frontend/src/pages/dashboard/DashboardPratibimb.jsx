@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
-    Calendar, CheckCircle2, Circle, Camera, Upload, Link as LinkIcon,
-    Sparkles, Loader2, Flame, Award, Clock, ChevronLeft, ChevronRight,
-    Image, ExternalLink, Users, Zap, Star, BookOpen, Palette
+    Calendar, CheckCircle2, Circle, Link as LinkIcon,
+    Sparkles, Loader2, Flame, ChevronLeft, ChevronRight,
+    ExternalLink, BookOpen, Zap
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { dashboardAPI, userAPI } from '@/api';
+import { useAuth } from '@/context/AuthContext';
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -19,99 +20,36 @@ const fadeInUp = {
 
 const TOTAL_DAYS = 41;
 
-/**
- * DashboardPratibimb — The dedicated Pratibimb (Reflection) 41-Day Sadhana Dashboard.
- *
- * Features:
- *  - 41-day calendar grid showing attendance status
- *  - Daily attendance marking (POST /api/dashboard/attendance)
- *  - Canvas progress photo upload
- *  - Live session links
- *  - Completion tracker with progress bar
- *  - Streak counter
- */
 export default function DashboardPratibimb() {
+    const { user } = useAuth();
     const [programId, setProgramId] = useState(null);
     const [attendance, setAttendance] = useState([]);
-    const [canvasPhotos, setCanvasPhotos] = useState([]);
     const [liveSessions, setLiveSessions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [markingAttendance, setMarkingAttendance] = useState(false);
-    const [error, setError] = useState(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [streakCount, setStreakCount] = useState(0);
-    const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-    // Fetch Pratibimb program and attendance data
-    const fetchData = useCallback(async () => {
-        try {
-            // Find the Pratibimb program from user's enrolled programs
-            const progRes = await userAPI.getMyPrograms();
-            const programs = progRes.data?.data || progRes.data?.programs || [];
-            const pratibimb = programs.find(
-                p => (p.program?.category || p.program?.programType || p.category || p.programType || '').toLowerCase() === 'pratibimb'
-            );
-
-            if (pratibimb) {
-                const pid = pratibimb.program?._id || pratibimb.program || pratibimb._id;
-                setProgramId(pid);
-
-                // Fetch attendance
-                try {
-                    const attRes = await dashboardAPI.getAttendance(pid);
-                    const attData = attRes.data?.data || [];
-                    setAttendance(attData.map(a => ({
-                        date: new Date(a.date),
-                        marked: a.marked || true,
-                    })));
-                    // Calculate streak
-                    calculateStreak(attData.map(a => new Date(a.date)));
-                } catch (attErr) {
-                    console.log('Using fallback attendance:', attErr.message);
-                }
-
-                // Set live sessions from program modules
-                const sessions = [];
-                if (pratibimb.program?.modules) {
-                    pratibimb.program.modules.forEach(mod => {
-                        if (mod.sessions) {
-                            mod.sessions.forEach(s => {
-                                sessions.push({
-                                    title: s.title || mod.title,
-                                    link: s.link || s.meetingLink || '#',
-                                    date: s.date || null,
-                                    module: mod.title,
-                                });
-                            });
-                        }
-                    });
-                } else if (pratibimb.modules) {
-                    pratibimb.modules.forEach(mod => {
-                        if (mod.sessions) {
-                            mod.sessions.forEach(s => {
-                                sessions.push({
-                                    title: s.title || mod.title,
-                                    link: s.link || s.meetingLink || '#',
-                                    date: s.date || null,
-                                    module: mod.title,
-                                });
-                            });
-                        }
-                    });
-                }
-                setLiveSessions(sessions);
+    const getLocalAttendance = () => {
+        if (!user?._id) return [];
+        const stored = localStorage.getItem(`pratibimb_attendance_${user._id}`);
+        if (stored) {
+            try {
+                return JSON.parse(stored).map(a => ({
+                    date: new Date(a.date),
+                    marked: true
+                }));
+            } catch (e) {
+                return [];
             }
-        } catch (err) {
-            console.log('Using fallback Pratibimb data:', err.message);
-            setError('Could not load Pratibimb data. Using demo mode.');
-        } finally {
-            setLoading(false);
         }
-    }, []);
+        return [];
+    };
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    const saveLocalAttendance = (newAttendance) => {
+        if (!user?._id) return;
+        localStorage.setItem(`pratibimb_attendance_${user._id}`, JSON.stringify(newAttendance));
+    };
 
     const calculateStreak = (dates) => {
         if (!dates.length) { setStreakCount(0); return; }
@@ -124,7 +62,6 @@ export default function DashboardPratibimb() {
         const latestDate = new Date(sorted[0]);
         latestDate.setHours(0, 0, 0, 0);
 
-        // Streak must include today or yesterday
         if (latestDate.getTime() !== today.getTime() && latestDate.getTime() !== yesterday.getTime()) {
             setStreakCount(0);
             return;
@@ -146,49 +83,94 @@ export default function DashboardPratibimb() {
         setStreakCount(streak);
     };
 
-    const handleMarkAttendance = async () => {
-        if (!programId || markingAttendance) return;
-        setMarkingAttendance(true);
+    const fetchData = useCallback(async () => {
         try {
-            const res = await dashboardAPI.markAttendance({ programId });
-            const newCount = res.data?.data?.attendanceCount || attendance.length + 1;
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            setAttendance(prev => [...prev, { date: today, marked: true }]);
-            calculateStreak([...attendance.map(a => a.date), today]);
-        } catch (err) {
-            if (err.response?.data?.message?.includes('already marked')) {
-                setError('Attendance already marked for today');
-            } else {
-                setError('Failed to mark attendance');
-            }
-            setTimeout(() => setError(null), 3000);
-        } finally {
-            setMarkingAttendance(false);
-        }
-    };
+            let attData = getLocalAttendance();
+            let sessions = [
+                { title: 'Week 1: Introduction to Pratibimb', link: 'https://meet.google.com/new', date: new Date(), module: 'Foundation' },
+                { title: 'Week 2: Canvas Preparation', link: 'https://meet.google.com/new', date: new Date(Date.now() + 7*24*60*60*1000), module: 'Technique' },
+            ];
 
-    const handlePhotoUpload = async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setUploadingPhoto(true);
-        // Simulate upload — in production this would use Cloudinary or similar
-        try {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setCanvasPhotos(prev => [{
-                    id: Date.now(),
-                    url: event.target.result,
-                    date: new Date(),
-                    caption: `Canvas Progress — Day ${attendance.length + 1}`,
-                }, ...prev]);
-            };
-            reader.readAsDataURL(file);
-        } catch (err) {
-            console.error('Photo upload failed:', err);
+            try {
+                const progRes = await userAPI.getMyPrograms();
+                const programs = progRes.data?.data || progRes.data?.programs || [];
+                const pratibimb = programs.find(
+                    p => (p.program?.category || p.program?.programType || p.category || p.programType || '').toLowerCase() === 'pratibimb'
+                );
+
+                if (pratibimb) {
+                    const pid = pratibimb.program?._id || pratibimb.program || pratibimb._id;
+                    setProgramId(pid);
+
+                    try {
+                        const attRes = await dashboardAPI.getAttendance(pid);
+                        const apiAtt = attRes.data?.data || [];
+                        if (apiAtt.length > 0) {
+                            attData = apiAtt.map(a => ({
+                                date: new Date(a.date),
+                                marked: true,
+                            }));
+                        }
+                    } catch (e) {
+                        console.log('Using local attendance');
+                    }
+
+                    const apiSessions = [];
+                    const mods = pratibimb.program?.modules || pratibimb.modules || [];
+                    mods.forEach(mod => {
+                        if (mod.sessions) {
+                            mod.sessions.forEach(s => {
+                                apiSessions.push({
+                                    title: s.title || mod.title,
+                                    link: s.link || s.meetingLink || '#',
+                                    date: s.date || null,
+                                    module: mod.title,
+                                });
+                            });
+                        }
+                    });
+                    if (apiSessions.length > 0) sessions = apiSessions;
+                }
+            } catch (err) {
+                console.log('Using fallback local data');
+            }
+
+            setAttendance(attData);
+            calculateStreak(attData.map(a => new Date(a.date)));
+            setLiveSessions(sessions);
         } finally {
-            setUploadingPhoto(false);
+            setLoading(false);
         }
+    }, [user?._id]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    const handleMarkAttendance = async () => {
+        if (markingAttendance) return;
+        setMarkingAttendance(true);
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const newAttendance = [...attendance, { date: today, marked: true }];
+        
+        // Always save to local storage for immediate/fallback feedback
+        saveLocalAttendance(newAttendance);
+        setAttendance(newAttendance);
+        calculateStreak([...newAttendance.map(a => a.date)]);
+
+        // Try hitting backend if program ID exists
+        if (programId) {
+            try {
+                await dashboardAPI.markAttendance({ programId });
+            } catch (err) {
+                console.log('Backend sync failed, local state updated.');
+            }
+        }
+        
+        setMarkingAttendance(false);
     };
 
     const isTodayMarked = () => {
@@ -201,7 +183,6 @@ export default function DashboardPratibimb() {
         });
     };
 
-    // Calendar helpers
     const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
 
@@ -231,26 +212,24 @@ export default function DashboardPratibimb() {
                 return ad.getTime() === date.getTime();
             });
 
-            let bgClass = 'bg-heritage-creamLight/50 text-muted-foreground';
+            let bgClass = 'bg-gray-100 text-gray-400';
             let icon = null;
             if (attended) {
-                bgClass = 'bg-green-500 text-white';
-                icon = <CheckCircle2 className="w-3 h-3" />;
+                bgClass = 'bg-green-500 text-white shadow-sm';
+                icon = <CheckCircle2 className="w-4 h-4" />;
             } else if (isToday) {
-                bgClass = 'bg-heritage-gold text-white ring-2 ring-heritage-gold/50';
+                bgClass = 'bg-heritage-gold text-white shadow-md ring-2 ring-offset-2 ring-heritage-gold';
             } else if (isPast) {
-                bgClass = 'bg-red-100 text-red-400';
+                bgClass = 'bg-red-50 text-red-300';
                 icon = <Circle className="w-3 h-3" />;
             }
 
             days.push(
                 <div
                     key={d}
-                    className={`aspect-square rounded-md flex flex-col items-center justify-center text-xs font-medium transition-all ${bgClass} ${isFuture ? 'opacity-40' : ''}`}
-                    title={`${monthName} ${d}${attended ? ' — Attended' : isPast ? ' — Missed' : ''}`}
+                    className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-semibold transition-all ${bgClass} ${isFuture ? 'opacity-40' : ''}`}
                 >
                     {icon || <span>{d}</span>}
-                    {attended && <span className="text-[10px] leading-none">{d}</span>}
                 </div>
             );
         }
@@ -258,423 +237,154 @@ export default function DashboardPratibimb() {
     };
 
     const { days, monthName } = renderCalendarGrid();
-
     const completedDays = attendance.length;
-    const progressPercent = Math.round((completedDays / TOTAL_DAYS) * 100);
-    const daysRemaining = TOTAL_DAYS - completedDays;
-
-    // Fallback live sessions
-    const displaySessions = liveSessions.length > 0 ? liveSessions : [
-        { title: 'Week 1: Introduction to Pratibimb', link: '#', date: null, module: 'Foundation' },
-        { title: 'Week 2: Canvas Preparation', link: '#', date: null, module: 'Technique' },
-        { title: 'Week 3: Color & Composition', link: '#', date: null, module: 'Practice' },
-        { title: 'Week 4: Midpoint Review', link: '#', date: null, module: 'Review' },
-        { title: 'Week 5: Advanced Techniques', link: '#', date: null, module: 'Mastery' },
-        { title: 'Week 6: Final Exhibition Prep', link: '#', date: null, module: 'Exhibition' },
-    ];
 
     if (loading) {
         return (
             <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-8 h-8 animate-spin text-heritage-gold" />
-                <span className="ml-3 text-muted-foreground">Loading Pratibimb dashboard...</span>
             </div>
         );
     }
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <motion.div {...fadeInUp}>
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                    <div>
-                        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                            <Sparkles className="w-6 h-6 text-heritage-gold" />
-                            Pratibimb — The Reflection
-                        </h1>
-                        <p className="text-muted-foreground mt-1">41-Day Sadhana · Track your daily practice and creative journey</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        {streakCount >= 3 && (
-                            <Badge variant="gold" className="text-sm flex items-center gap-1">
-                                <Flame className="w-4 h-4" /> {streakCount} Day Streak!
-                            </Badge>
-                        )}
-                        <Badge variant="outline" className="text-sm">
-                            Day {completedDays} of {TOTAL_DAYS}
+        <div className="max-w-5xl mx-auto space-y-6">
+            <motion.div {...fadeInUp} className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-heading font-bold text-heritage-terracottaDark flex items-center gap-2">
+                        <Sparkles className="w-8 h-8 text-heritage-gold" />
+                        Pratibimb
+                    </h1>
+                    <p className="text-muted-foreground mt-1 text-lg">Your 41-Day Creative Sadhana</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    {streakCount > 0 && (
+                        <Badge variant="gold" className="text-sm px-3 py-1 flex items-center gap-1 shadow-sm">
+                            <Flame className="w-4 h-4" /> {streakCount} Day Streak
                         </Badge>
-                    </div>
+                    )}
+                    <Badge variant="outline" className="text-sm px-3 py-1 shadow-sm">
+                        Day {completedDays} of {TOTAL_DAYS}
+                    </Badge>
                 </div>
             </motion.div>
 
             <Separator />
 
-            {/* Error Toast */}
-            {error && (
-                <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm"
-                >
-                    {error}
-                </motion.div>
-            )}
-
-            {/* Top Stats Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <motion.div {...fadeInUp}>
-                    <Card className="bg-gradient-to-br from-heritage-terracotta to-red-800 text-white">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Calendar className="w-5 h-5" />
-                                <span className="text-sm opacity-80">Completed</span>
+            <div className="grid lg:grid-cols-2 gap-6">
+                <motion.div {...fadeInUp} className="space-y-6">
+                    <Card className="border-none shadow-md">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-between flex-wrap gap-4">
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-800">Daily Attendance</h3>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        {isTodayMarked()
+                                            ? "You're all set for today. Great job!"
+                                            : "Don't forget to mark your practice for today."}
+                                    </p>
+                                </div>
+                                <Button
+                                    size="lg"
+                                    variant={isTodayMarked() ? 'outline' : 'gold'}
+                                    disabled={isTodayMarked() || markingAttendance}
+                                    onClick={handleMarkAttendance}
+                                    className="min-w-[160px] shadow-sm"
+                                >
+                                    {markingAttendance ? (
+                                        <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                                    ) : isTodayMarked() ? (
+                                        <CheckCircle2 className="w-5 h-5 mr-2" />
+                                    ) : (
+                                        <Zap className="w-5 h-5 mr-2" />
+                                    )}
+                                    {isTodayMarked() ? 'Completed' : 'Mark Attendance'}
+                                </Button>
                             </div>
-                            <p className="text-3xl font-bold">{completedDays}</p>
-                            <p className="text-xs opacity-80 mt-1">of {TOTAL_DAYS} days</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border-none shadow-md">
+                        <CardHeader className="pb-4">
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="text-xl flex items-center gap-2">
+                                    <Calendar className="w-6 h-6 text-heritage-gold" />
+                                    Calendar
+                                </CardTitle>
+                                <div className="flex items-center gap-1 bg-gray-50 rounded-lg p-1">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}>
+                                        <ChevronLeft className="w-4 h-4" />
+                                    </Button>
+                                    <span className="text-sm font-bold text-gray-700 min-w-[100px] text-center">
+                                        {monthName}
+                                    </span>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}>
+                                        <ChevronRight className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-7 gap-2 mb-2">
+                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                                    <div key={d} className="text-center text-xs font-bold text-gray-400 py-1 uppercase tracking-wider">
+                                        {d}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="grid grid-cols-7 gap-2">
+                                {days}
+                            </div>
                         </CardContent>
                     </Card>
                 </motion.div>
 
                 <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
-                    <Card className="bg-gradient-to-br from-heritage-gold to-amber-600 text-white">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Flame className="w-5 h-5" />
-                                <span className="text-sm opacity-80">Streak</span>
-                            </div>
-                            <p className="text-3xl font-bold">{streakCount}</p>
-                            <p className="text-xs opacity-80 mt-1">consecutive days</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-
-                <motion.div {...fadeInUp} transition={{ delay: 0.2 }}>
-                    <Card>
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Award className="w-5 h-5 text-heritage-gold" />
-                                <span className="text-sm text-muted-foreground">Progress</span>
-                            </div>
-                            <p className="text-3xl font-bold text-foreground">{progressPercent}%</p>
-                            <div className="w-full h-1.5 rounded-full bg-heritage-terracotta/20 mt-2">
-                                <div
-                                    className="h-1.5 rounded-full bg-gradient-to-r from-heritage-terracotta to-heritage-gold transition-all"
-                                    style={{ width: `${progressPercent}%` }}
-                                />
-                            </div>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-
-                <motion.div {...fadeInUp} transition={{ delay: 0.3 }}>
-                    <Card>
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Clock className="w-5 h-5 text-heritage-terracottaDark" />
-                                <span className="text-sm text-muted-foreground">Remaining</span>
-                            </div>
-                            <p className="text-3xl font-bold text-foreground">{daysRemaining}</p>
-                            <p className="text-xs text-muted-foreground mt-1">days to go</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-            </div>
-
-            {/* Main Content Grid */}
-            <div className="grid lg:grid-cols-3 gap-6">
-                {/* Calendar Grid — takes 2 columns */}
-                <div className="lg:col-span-2 space-y-4">
-                    {/* Attendance Button */}
-                    <motion.div {...fadeInUp}>
-                        <Card>
-                            <CardContent className="p-4">
-                                <div className="flex items-center justify-between flex-wrap gap-3">
-                                    <div>
-                                        <h3 className="font-semibold text-foreground">Today's Attendance</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {isTodayMarked()
-                                                ? '✓ You have completed today\'s practice. Keep the momentum!'
-                                                : 'Mark your daily sadhana practice to stay on track.'}
-                                        </p>
+                    <Card className="border-none shadow-md h-full">
+                        <CardHeader>
+                            <CardTitle className="text-xl flex items-center gap-2">
+                                <LinkIcon className="w-6 h-6 text-heritage-gold" />
+                                Live Sessions
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {liveSessions.map((session, i) => (
+                                <a 
+                                    key={i} 
+                                    href={session.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-heritage-gold/30 hover:bg-heritage-creamLight/30 transition-all group"
+                                >
+                                    <div className="w-12 h-12 rounded-full bg-heritage-cream flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                        <BookOpen className="w-6 h-6 text-heritage-terracotta" />
                                     </div>
-                                    <Button
-                                        variant={isTodayMarked() ? 'outline' : 'gold'}
-                                        disabled={isTodayMarked() || markingAttendance}
-                                        onClick={handleMarkAttendance}
-                                        className="min-w-[140px]"
-                                    >
-                                        {markingAttendance ? (
-                                            <Loader2 className="w-4 h-4 animate-spin mr-1" />
-                                        ) : isTodayMarked() ? (
-                                            <CheckCircle2 className="w-4 h-4 mr-1" />
-                                        ) : (
-                                            <Zap className="w-4 h-4 mr-1" />
-                                        )}
-                                        {isTodayMarked() ? 'Done for Today' : 'Mark Attendance'}
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-
-                    {/* Calendar */}
-                    <motion.div {...fadeInUp}>
-                        <Card>
-                            <CardHeader className="pb-2">
-                                <div className="flex items-center justify-between">
-                                    <CardTitle className="text-lg flex items-center gap-2">
-                                        <Calendar className="w-5 h-5 text-heritage-gold" />
-                                        41-Day Calendar
-                                    </CardTitle>
-                                    <div className="flex items-center gap-2">
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
-                                        >
-                                            <ChevronLeft className="w-4 h-4" />
-                                        </Button>
-                                        <span className="text-sm font-medium text-foreground min-w-[120px] text-center">
-                                            {monthName}
-                                        </span>
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
-                                        >
-                                            <ChevronRight className="w-4 h-4" />
-                                        </Button>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                {/* Day headers */}
-                                <div className="grid grid-cols-7 gap-1 mb-2">
-                                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                                        <div key={d} className="text-center text-xs font-medium text-muted-foreground py-1">
-                                            {d}
-                                        </div>
-                                    ))}
-                                </div>
-                                {/* Day grid */}
-                                <div className="grid grid-cols-7 gap-1">
-                                    {days}
-                                </div>
-
-                                {/* Legend */}
-                                <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground flex-wrap">
-                                    <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 rounded bg-green-500" />
-                                        <span>Attended</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 rounded bg-red-100 border border-red-200" />
-                                        <span>Missed</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 rounded bg-heritage-gold" />
-                                        <span>Today</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 rounded bg-heritage-creamLight/50" />
-                                        <span>Upcoming</span>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-
-                    {/* Canvas Progress Photos */}
-                    <motion.div {...fadeInUp}>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-lg flex items-center gap-2">
-                                    <Image className="w-5 h-5 text-heritage-gold" />
-                                    Canvas Progress Photos
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="mb-4">
-                                    <label className="cursor-pointer">
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handlePhotoUpload}
-                                            className="hidden"
-                                            disabled={uploadingPhoto}
-                                        />
-                                        <div className="border-2 border-dashed border-heritage-terracotta/30 rounded-lg p-6 text-center hover:border-heritage-gold/50 transition-colors">
-                                            {uploadingPhoto ? (
-                                                <Loader2 className="w-8 h-8 animate-spin text-heritage-gold mx-auto" />
-                                            ) : (
-                                                <>
-                                                    <Camera className="w-8 h-8 text-heritage-terracottaDark mx-auto mb-2" />
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Upload a photo of your canvas progress
-                                                    </p>
-                                                    <p className="text-xs text-muted-foreground mt-1">
-                                                        Click or drag & drop
-                                                    </p>
-                                                </>
-                                            )}
-                                        </div>
-                                    </label>
-                                </div>
-
-                                {canvasPhotos.length > 0 ? (
-                                    <div className="grid grid-cols-3 gap-3">
-                                        {canvasPhotos.map(photo => (
-                                            <div key={photo.id} className="relative group rounded-lg overflow-hidden aspect-square">
-                                                <img
-                                                    src={photo.url}
-                                                    alt={photo.caption}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-end p-2">
-                                                    <p className="text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        {photo.caption}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="text-center py-6">
-                                        <p className="text-sm text-muted-foreground">
-                                            No photos uploaded yet. Document your canvas journey!
-                                        </p>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </div>
-
-                {/* Right Sidebar */}
-                <div className="space-y-4">
-                    {/* Live Sessions */}
-                    <motion.div {...fadeInUp}>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-lg flex items-center gap-2">
-                                    <LinkIcon className="w-5 h-5 text-heritage-gold" />
-                                    Live Sessions
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                                {displaySessions.map((session, i) => (
-                                    <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-heritage-creamLight/50 transition-colors">
-                                        <div className="w-8 h-8 rounded-full bg-heritage-terracotta/10 flex items-center justify-center flex-shrink-0">
-                                            <BookOpen className="w-4 h-4 text-heritage-terracottaDark" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-foreground">{session.title}</p>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-base font-bold text-gray-800 truncate group-hover:text-heritage-terracottaDark transition-colors">{session.title}</p>
+                                        <div className="flex items-center gap-2 mt-1">
                                             {session.module && (
-                                                <p className="text-xs text-muted-foreground">{session.module}</p>
+                                                <Badge variant="secondary" className="text-xs">{session.module}</Badge>
                                             )}
                                             {session.date && (
-                                                <p className="text-xs text-muted-foreground">
+                                                <span className="text-xs font-medium text-gray-500">
                                                     {new Date(session.date).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                                </p>
+                                                </span>
                                             )}
                                         </div>
-                                        <a
-                                            href={session.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-heritage-gold hover:text-heritage-terracottaDark transition-colors"
-                                        >
-                                            <ExternalLink className="w-4 h-4" />
-                                        </a>
                                     </div>
-                                ))}
-                            </CardContent>
-                            <CardFooter className="pt-0">
-                                <p className="text-xs text-muted-foreground">
-                                    Join live sessions to connect with mentors and fellow practitioners
-                                </p>
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
-
-                    {/* Quick Tips */}
-                    <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-lg flex items-center gap-2">
-                                    <Star className="w-5 h-5 text-heritage-gold" />
-                                    Sadhana Tips
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                                {[
-                                    { icon: Palette, text: 'Set aside a dedicated time each day for your practice' },
-                                    { icon: Users, text: 'Share your progress with the community for accountability' },
-                                    { icon: Camera, text: 'Document your canvas at the same angle each day' },
-                                    { icon: Sparkles, text: 'Reflect on what you learned after each session' },
-                                ].map((tip, i) => {
-                                    const TipIcon = tip.icon;
-                                    return (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <TipIcon className="w-4 h-4 text-heritage-terracottaDark mt-0.5 flex-shrink-0" />
-                                            <p className="text-sm text-muted-foreground">{tip.text}</p>
-                                        </div>
-                                    );
-                                })}
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-
-                    {/* Completion Tracker */}
-                    <motion.div {...fadeInUp} transition={{ delay: 0.2 }}>
-                        <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-                            <CardHeader>
-                                <CardTitle className="text-lg flex items-center gap-2">
-                                    <Award className="w-5 h-5 text-purple-600" />
-                                    Completion Tracker
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-center">
-                                    <div className="relative w-24 h-24 mx-auto mb-3">
-                                        <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
-                                            <circle
-                                                cx="50" cy="50" r="42"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="8"
-                                                className="text-purple-200"
-                                            />
-                                            <circle
-                                                cx="50" cy="50" r="42"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="8"
-                                                strokeLinecap="round"
-                                                className="text-purple-600"
-                                                strokeDasharray={`${2 * Math.PI * 42}`}
-                                                strokeDashoffset={`${2 * Math.PI * 42 * (1 - progressPercent / 100)}`}
-                                            />
-                                        </svg>
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <span className="text-2xl font-bold text-purple-700">{progressPercent}%</span>
-                                        </div>
+                                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-heritage-gold group-hover:text-white text-gray-400 transition-colors">
+                                        <ExternalLink className="w-4 h-4" />
                                     </div>
-                                    <p className="text-sm font-medium text-purple-800">
-                                        {completedDays >= TOTAL_DAYS
-                                            ? '🎉 Sadhana Complete! Congratulations!'
-                                            : `${daysRemaining} days until completion`}
-                                    </p>
-                                    {completedDays >= TOTAL_DAYS && (
-                                        <Badge variant="success" className="mt-2">
-                                            Certificate Available
-                                        </Badge>
-                                    )}
+                                </a>
+                            ))}
+                            {liveSessions.length === 0 && (
+                                <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                    <p className="text-gray-500 font-medium">No live sessions scheduled yet.</p>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </motion.div>
             </div>
         </div>
     );

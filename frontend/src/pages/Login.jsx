@@ -34,10 +34,10 @@ export default function Login() {
         try {
             if (isLogin) {
                 const user = await login(email, password);
-                navigate(user.role === 'admin' ? '/admin' : '/');
+                navigate(user.role === 'admin' ? '/admin' : '/dashboard/profile');
             } else {
                 const user = await register({ name, email, password });
-                navigate(user.role === 'admin' ? '/admin' : '/');
+                navigate(user.role === 'admin' ? '/admin' : '/dashboard/profile');
             }
         } catch (err) {
             setError(err.response?.data?.message || `${isLogin ? 'Login' : 'Registration'} failed. Please try again.`);
