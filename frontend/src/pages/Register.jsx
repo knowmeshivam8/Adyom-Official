@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { authAPI } from '@/api';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,11 @@ const interestOptions = [
 ];
 
 export default function Register() {
+    const [searchParams] = useSearchParams();
+    const programId = searchParams.get('programId');
+    const amount = searchParams.get('amount');
+    const isProgramFlow = !!programId;
+    
     const [formData, setFormData] = useState({
         name: '', email: '', phone: '', interests: [],
     });
@@ -43,7 +48,7 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        const autoPassword = Math.random().toString(36).slice(-8) + 'A1!'; // Ensure it meets length and complexity
+        const autoPassword = 'ad' + Math.random().toString(36).slice(-8) + 'A1!'; // Ensure it meets length and complexity
 
         setLoading(true);
         try {
@@ -53,9 +58,22 @@ export default function Register() {
                 password: autoPassword,
                 phone: formData.phone,
                 interests: formData.interests,
-                isWebinar: true
+                isWebinar: !isProgramFlow // Only true if not program flow
             });
             setIsSuccess(true);
+            
+            // If program flow, immediately redirect to payment or enrollment
+            if (isProgramFlow) {
+                const isPaid = amount && amount !== 'Free' && amount !== '₹0' && amount !== '0';
+                setTimeout(() => {
+                    if (isPaid) {
+                        navigate(`/payment-test?programId=${programId}&amount=${amount}`);
+                    } else {
+                        navigate(`/dashboard/learning`);
+                    }
+                }, 1500);
+            }
+            
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed. Please try again.');
         } finally {
@@ -72,8 +90,12 @@ export default function Register() {
                     <div className="text-center space-y-4 mb-6">
                         <div className="w-12 h-12 mx-auto rounded-full bg-heritage-terracotta flex items-center justify-center text-heritage-gold font-heading text-xl font-bold">A</div>
                         <Badge variant="outlineGold" className="text-sm px-4 py-1">✦ Begin Your Journey</Badge>
-                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">Register for Webinar</h1>
-                        <p className="font-body text-text-main">Become part of our heritage community</p>
+                        <h1 className="text-2xl font-heading font-bold text-heritage-terracottaDark">
+                            {isProgramFlow ? 'Create Account to Enroll' : 'Register for Webinar'}
+                        </h1>
+                        <p className="font-body text-text-main">
+                            {isProgramFlow ? 'Sign up to continue to payment and enrollment' : 'Become part of our heritage community'}
+                        </p>
                     </div>
 
                     {isSuccess ? (
@@ -81,13 +103,19 @@ export default function Register() {
                             <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
                                 <Heart className="w-8 h-8 text-green-600" />
                             </div>
-                            <h2 className="text-3xl font-heading font-bold text-heritage-terracottaDark mb-2">Thank you for joining!</h2>
+                            <h2 className="text-3xl font-heading font-bold text-heritage-terracottaDark mb-2">
+                                {isProgramFlow ? 'Account Created!' : 'Thank you for joining!'}
+                            </h2>
                             <p className="font-body text-lg font-medium text-heritage-brown max-w-md mx-auto">
-                                You have successfully registered for the webinar. Please check your email for the WhatsApp group link and your account details.
+                                {isProgramFlow 
+                                    ? 'Redirecting you to enrollment...' 
+                                    : 'You have successfully registered for the webinar. Please check your email for the WhatsApp group link and your account details.'}
                             </p>
-                            <Button variant="outlineGold" size="lg" onClick={() => navigate('/')} className="mt-8 font-semibold">
-                                Return to Home
-                            </Button>
+                            {!isProgramFlow && (
+                                <Button variant="outlineGold" size="lg" onClick={() => navigate('/dashboard/profile')} className="mt-8 font-semibold">
+                                    Go to Profile
+                                </Button>
+                            )}
                         </div>
                     ) : (
                         <>
@@ -139,7 +167,7 @@ export default function Register() {
                             </div>
                         </div>
                         <Button variant="gold" size="lg" type="submit" disabled={loading} className="w-full">
-                            {loading ? 'Registering...' : <><ArrowRight className="mr-2 w-4 h-4" /> Register for Webinar</>}
+                            {loading ? (isProgramFlow ? 'Creating Account...' : 'Registering...') : <><ArrowRight className="mr-2 w-4 h-4" /> {isProgramFlow ? 'Continue to Enrollment' : 'Register for Webinar'}</>}
                         </Button>
                     </form>
                         </>
